@@ -44,6 +44,11 @@ view_connection(con1)
 
 <br/>
 
+```{r, eval = FALSE}
+dbWriteTable(con1, "ToothGrowth", ToothGrowth)
+update_connection(con1)
+```
+
 ```{r, eval = FALSE, echo = FALSE}
 library(DBI)
 library(connections)

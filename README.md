@@ -37,3 +37,8 @@ view_connection(con1)
 <img src="man/figures/sqlite-screenshot.png" align="center" width="500" />
 
 <br/>
+
+``` r
+dbWriteTable(con1, "ToothGrowth", ToothGrowth)
+update_connection(con1)
+```

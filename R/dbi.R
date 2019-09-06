@@ -62,7 +62,7 @@ base_spec <- function() {
   spec$name <- "name"
   spec$type <- "type"
   spec$host <- "host"
-  spec$connect_code <- "Place code here"
+  spec$connect_code <- ""
   spec$disconnect <- function() {}
   spec$preview_object <- function() {}
   spec$catalogs <- list(
