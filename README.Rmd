@@ -38,7 +38,12 @@ dbWriteTable(con1, "mtcars", mtcars)
 view_connection(con1)
 ```
 
-```{r, eval = FALSE}
+
+<img src="man/figures/sqlite-screenshot.png" align="center" width="500" />
+
+<br/>
+
+```{r, eval = FALSE, echo = FALSE}
 library(DBI)
 library(connections)
 library(RPostgres)
@@ -50,8 +55,3 @@ con2 <- dbConnect(
 )
 view_connection(con2)
 ```
-
-
-
-
-

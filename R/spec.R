@@ -1,4 +1,5 @@
 #' @import rlang
+#' @import DBI
 #' @importFrom purrr map2
 #' @importFrom purrr map
 #' @importFrom purrr map_chr

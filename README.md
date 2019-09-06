@@ -28,15 +28,6 @@ dbWriteTable(con1, "mtcars", mtcars)
 view_connection(con1)
 ```
 
-``` r
-library(DBI)
-library(connections)
-library(RPostgres)
-con2 <- dbConnect(
-  Postgres(),
-  host="localhost", dbname = "datawarehouse", 
-  user="dbadmin", password="dbadmin",
-  bigint = "integer", port="5432"
-)
-view_connection(con2)
-```
+<img src="man/figures/sqlite-screenshot.png" align="center" width="500" />
+
+<br/>

@@ -4,7 +4,7 @@ close_connection <- function(con) {
 }
 
 #' @export
-close_connection.DBIConnection <- function(con) {
+close_connection.DBIConnection <- function(con, leave_open = FALSE) {
   type <- as.character(class(con))
   host <- attr(class(con), "package")
   observer <- getOption("connectionObserver")
@@ -12,4 +12,5 @@ close_connection.DBIConnection <- function(con) {
     return(invisible(NULL))
   }
   observer$connectionClosed(type, host)
+  if(!leave_open) dbDisconnect(con)
 }
