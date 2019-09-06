@@ -29,9 +29,10 @@ remotes::install_github("edgararuiz/connections")
 ``` r
 library(DBI)
 library(connections)
-con1 <- dbConnect(RSQLite::SQLite(), path = ":dbname:")
+## Wraps DBI::dbConnect() & starts pane
+con1 <- open_connection(RSQLite::SQLite(), path = ":dbname:")
+## 'connections' method automates the update of the pane
 dbWriteTable(con1, "mtcars", mtcars)
-view_connection(con1)
 ```
 
 <img src="man/figures/sqlite-screenshot.png" align="center" width="500" />
@@ -39,6 +40,6 @@ view_connection(con1)
 <br/>
 
 ``` r
-dbWriteTable(con1, "ToothGrowth", ToothGrowth)
-update_connection(con1)
+# Closes connection and pane
+close_connection(con1)
 ```
