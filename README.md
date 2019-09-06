@@ -5,9 +5,15 @@
 
 <!-- badges: start -->
 
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-The goal of connections is to …
+Provides a generic implementation of the [RStudio Connection
+Contract](https://rstudio.github.io/rstudio-extensions/connections-contract.html)
+to make it easier for database connections, and other type of
+connections, opened via R packages to take advantage of the Connections
+Pane inside the RStudio IDE.
 
 ## Installation
 
