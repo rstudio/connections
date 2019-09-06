@@ -4,6 +4,11 @@ close_connection <- function(con) {
 }
 
 #' @export
+close_connection.connections <- function(con) {
+  close_connection(con$connection_object)
+}
+
+#' @export
 close_connection.DBIConnection <- function(con, leave_open = FALSE) {
   type <- as.character(class(con))
   host <- attr(class(con), "package")
