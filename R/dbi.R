@@ -40,12 +40,21 @@ dbi_tables <- function(con, schema = NULL) {
 
 dbi_fields <- function(con, table, schema = NULL) {
   if (is.null(schema)) {
-    top <- dbGetQuery(con, paste0("select * from ", table, " limit 10"))
+    top <- dbGetQuery(con, paste0("select * from ", table), n = 10)
   } else {
-    top <- dbGetQuery(con, paste0("select * from ", schema, ".", table, " limit 10"))
+    top <- dbGetQuery(con, paste0("select * from ", schema, ".", table), n = 10)
   }
   fd <- invisible(imap(top, ~ list(name = .y, type = class(.x)[[1]])))
   fd
+}
+
+dbi_preview <- function(limit, con, table, schema = NULL) {
+  if (is.null(schema)) {
+    top <- dbGetQuery(con, paste0("select * from ", table), n = limit)
+  } else {
+    top <- dbGetQuery(con, paste0("select * from ", schema, ".", table), n = limit)
+  }
+  top
 }
 
 base_spec <- function() {
