@@ -1,0 +1,12 @@
+name: rpostgres
+type: rpostgres
+host: host
+connect_code: Place connection code here
+catalogs:
+  name: PostgreSQL DB
+  schemas:
+    - code: pg_schemas(con)
+      tables: 
+        code: pg_tables(schema, con)
+        fields:
+          code: pg_fields(schema, table, con)

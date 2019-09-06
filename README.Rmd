@@ -1,0 +1,57 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# connections
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of connections is to ...
+
+## Installation
+
+Install the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("edgararuiz/connections")
+```
+## Example
+
+```{r, eval = FALSE}
+library(DBI)
+library(connections)
+con1 <- dbConnect(RSQLite::SQLite(), path = ":dbname:")
+dbWriteTable(con1, "mtcars", mtcars)
+view_connection(con1)
+```
+
+```{r, eval = FALSE}
+library(DBI)
+library(connections)
+library(RPostgres)
+con2 <- dbConnect(
+  Postgres(),
+  host="localhost", dbname = "datawarehouse", 
+  user="dbadmin", password="dbadmin",
+  bigint = "integer", port="5432"
+)
+view_connection(con2)
+```
+
+
+
+
+
