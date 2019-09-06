@@ -4,11 +4,13 @@ view_connection <- function(con) {
 }
 
 #' @export
-view_connection.default <- function(con) {
+view_connection.DBIConnection <- function(con) {
   connection_name <- deparse(substitute(con))
   spec <- base_spec()
   spec$type <- as.character(class(con))
+  spec$host <- attr(class(con), "package")
   spec$name <- attr(class(con), "package")
+  spec$disconnect <- function() close_connection(con)
   spec$catalogs$name <- as.character(class(con))
   spec$catalogs$schemas$code <- NULL
   obs <- dbListObjects(con)

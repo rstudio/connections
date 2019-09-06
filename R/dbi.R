@@ -52,8 +52,8 @@ base_spec <- function() {
   spec$type <- "type"
   spec$host <- "host"
   spec$connect_code <- "Place code here"
-  spec$disconnect <- function() observer$connectionClosed(spec$type, spec$host)
-  spec$previewObject <- function(){}
+  spec$disconnect <- function() {}
+  spec$preview_object <- function(){}
   spec$catalogs <- list(
     name = "Database",
     schemas = list(
@@ -68,4 +68,5 @@ base_spec <- function() {
   )
   spec
 }
+
 

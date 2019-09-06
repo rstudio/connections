@@ -127,8 +127,8 @@ connection_list <- function(spec) {
   open_spec$host <- spec_val(spec$host)
   open_spec$displayName <- spec_val(spec$name)
   open_spec$connectCode <- spec_val(spec$connect_code)
-  open_spec$disconnect <- function() observer$connectionClosed(spec_val(spec$type), spec_val(spec$host))
-  open_spec$previewObject <- function(){}
+  open_spec$disconnect <- spec$disconnect
+  open_spec$previewObject <- spec$preview_object
   open_spec$listObjectTypes <-  function(...){
     list(catalog = list(contains =
       list(schema = list(contains =
