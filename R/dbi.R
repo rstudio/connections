@@ -1,7 +1,9 @@
 dbi_schemas <- function(con) {
   obs <- dbListObjects(con)
   prefix_only <- obs[obs$is_prefix, 1]
-  if(length(prefix_only) == 0) return(NULL)
+  if (length(prefix_only) == 0) {
+    return(NULL)
+  }
   prefix_table <- map_dfr(
     prefix_only,
     ~ {
@@ -16,7 +18,7 @@ dbi_schemas <- function(con) {
 }
 
 dbi_tables <- function(con, schema = NULL) {
-  if(!is.null(schema)) {
+  if (!is.null(schema)) {
     dbu <- dbUnquoteIdentifier(ANSI(), Id(schema = schema))[[1]]
     obs <- dbListObjects(con, prefix = dbu)
   } else {
@@ -37,10 +39,10 @@ dbi_tables <- function(con, schema = NULL) {
 }
 
 dbi_fields <- function(con, table, schema = NULL) {
-  if(is.null(schema)) {
-    top <- dbGetQuery(con, paste0("select * from ", table," limit 10"))
+  if (is.null(schema)) {
+    top <- dbGetQuery(con, paste0("select * from ", table, " limit 10"))
   } else {
-    top <- dbGetQuery(con, paste0("select * from ", schema, ".", table," limit 10"))
+    top <- dbGetQuery(con, paste0("select * from ", schema, ".", table, " limit 10"))
   }
   fd <- invisible(imap(top, ~ list(name = .y, type = class(.x)[[1]])))
   fd
@@ -53,7 +55,7 @@ base_spec <- function() {
   spec$host <- "host"
   spec$connect_code <- "Place code here"
   spec$disconnect <- function() {}
-  spec$preview_object <- function(){}
+  spec$preview_object <- function() {}
   spec$catalogs <- list(
     name = "Database",
     schemas = list(
@@ -68,5 +70,3 @@ base_spec <- function() {
   )
   spec
 }
-
-

@@ -15,12 +15,12 @@ view_connection.DBIConnection <- function(con) {
   spec$catalogs$schemas$code <- NULL
   obs <- dbListObjects(con)
   prefix_only <- obs[obs$is_prefix, 1]
-  if(length(prefix_only) == 0) {
+  if (length(prefix_only) == 0) {
     spec$catalogs$schemas$name <- "Default"
   } else {
-    spec$catalogs$schemas$code <- paste0("connections:::dbi_schemas(", connection_name,")")
+    spec$catalogs$schemas$code <- paste0("connections:::dbi_schemas(", connection_name, ")")
   }
-  spec$catalogs$schemas$tables$code <- paste0("connections:::dbi_tables(", connection_name,")")
+  spec$catalogs$schemas$tables$code <- paste0("connections:::dbi_tables(", connection_name, ")")
   spec$catalogs$schemas$tables$fields$code <- paste0("connections:::dbi_fields(", connection_name, ", table)")
   open_connection_contract(spec)
 }
