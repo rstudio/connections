@@ -121,7 +121,7 @@ spec_val <- function(entry) {
 #' @export
 connection_list <- function(spec) {
   open_spec <- list()
-  open_spec$connectionObject <- ""
+  open_spec$connectionObject <- spec_val(spec$connection_object)
   open_spec$type <- spec_val(spec$type)
   open_spec$host <- spec_val(spec$host)
   open_spec$displayName <- spec_val(spec$name)

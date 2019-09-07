@@ -1,19 +1,13 @@
 dbi_schemas <- function(con) {
   obs <- dbListObjects(con)
   prefix_only <- obs[obs$is_prefix, 1]
-  if (length(prefix_only) == 0) {
-    return(NULL)
-  }
+  if (length(prefix_only) == 0) return(NULL)
   prefix_table <- map_dfr(
     prefix_only,
-    ~ {
-      atr <- attributes(.x)
-      list(
-        type = names(atr$name),
-        name = as.character(atr$name)
-      )
-    }
-  )
+    ~ list(
+        type = names(attributes(.x)$name),
+        name = as.character(attributes(.x)$name)
+      ))
   map(prefix_table$name, ~ list(name = .x))
 }
 
@@ -44,38 +38,36 @@ dbi_fields <- function(con, table, schema = NULL) {
   } else {
     top <- dbGetQuery(con, paste0("select * from ", schema, ".", table), n = 10)
   }
-  fd <- invisible(imap(top, ~ list(name = .y, type = class(.x)[[1]])))
-  fd
+  imap(top, ~ list(name = .y, type = class(.x)[[1]]))
 }
 
 dbi_preview <- function(limit, con, table, schema = NULL) {
   if (is.null(schema)) {
-    top <- dbGetQuery(con, paste0("select * from ", table), n = limit)
+    query <- paste0("select * from ", table)
   } else {
-    top <- dbGetQuery(con, paste0("select * from ", schema, ".", table), n = limit)
+    query <- paste0("select * from ", schema, ".", table)
   }
-  top
+  dbGetQuery(con, query, n = limit)
 }
 
 base_spec <- function() {
-  spec <- list()
-  spec$name <- "name"
-  spec$type <- "type"
-  spec$host <- "host"
-  spec$connect_code <- ""
-  spec$disconnect <- function() {}
-  spec$preview_object <- function() {}
-  spec$catalogs <- list(
-    name = "Database",
-    schemas = list(
-      code = "dbi_schemas(con)",
-      tables = list(
-        code = "dbi_tables(con, schema)",
-        fields = list(
-          code = "dbi_fields(con, table, schema)"
-        )
-      )
+  list(
+    name = "name",
+    type = "type",
+    host = "host",
+    connect_code = "",
+    connection_object = "",
+    disconnect = function() {},
+    preview_object = function() {},
+    catalogs = list(
+      name = "Database",
+      schemas = list(
+        code = "dbi_schemas(con)",
+        tables = list(
+          code = "dbi_tables(con, schema)",
+          fields = list(
+            code = "dbi_fields(con, table, schema)"
+          ))
+        ))
     )
-  )
-  spec
 }
