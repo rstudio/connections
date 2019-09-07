@@ -5,8 +5,16 @@ connection_open <- function(...) {
 
 #' @export
 connection_open.DBIDriver <- function(drv, ...) {
-  con <- list(connection_object = dbConnect(drv, ...))
-  connection_view(con$connection_object)
+  code_line <- expr_label(substitute(connection_open(drv, ...)))
+  code_line <- substr(code_line, 2, nchar(code_line) - 1)
+  code_line <- paste0("con <- ", code_line)
+  code_line <- c("library(DBI)", "library(connections)", code_line)
+  code_line <- paste(code_line, collapse = "\n")
+  con <- list(
+    connection_object = dbConnect(drv, ...),
+    connection_code = code_line
+    )
   class(con) <- "connections_class"
+  connection_view(con)
   con
 }
