@@ -35,7 +35,7 @@ remotes::install_github("edgararuiz/connections")
 library(DBI)
 library(connections)
 ## Wraps DBI::dbConnect() & starts pane
-con1 <- open_connection(RSQLite::SQLite(), path = ":dbname:")
+con1 <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 ## 'connections' method automates the update of the pane
 dbWriteTable(con1, "mtcars", mtcars)
 ```
@@ -47,7 +47,20 @@ dbWriteTable(con1, "mtcars", mtcars)
 
 ```{r, eval = FALSE}
 # Closes connection and pane
-close_connection(con1)
+connection_close(con1)
+```
+
+```{r, eval = FALSE, echo = FALSE}
+library(DBI)
+library(connections)
+library(RPostgres)
+con2 <- connection_open(
+  Postgres(),
+  host="localhost", dbname = "datawarehouse", 
+  user="dbadmin", password="dbadmin",
+  bigint = "integer", port="5432"
+)
+#connection_close(con2)
 ```
 
 ```{r, eval = FALSE, echo = FALSE}
@@ -60,5 +73,5 @@ con2 <- dbConnect(
   user="dbadmin", password="dbadmin",
   bigint = "integer", port="5432"
 )
-view_connection(con2)
+connection_view(con2)
 ```
