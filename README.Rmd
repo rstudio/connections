@@ -31,6 +31,16 @@ remotes::install_github("edgararuiz/connections")
 ```
 ## Example
 
+```{r}
+library(DBI)
+library(connections)
+
+con1 <- dbConnect(RSQLite::SQLite(), path = ":dbname:")
+dbWriteTable(con1, "mtcars", mtcars)
+connection_view(con1)
+```
+
+
 ```{r, eval = FALSE}
 library(DBI)
 library(connections)

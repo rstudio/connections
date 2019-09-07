@@ -29,6 +29,15 @@ remotes::install_github("edgararuiz/connections")
 ``` r
 library(DBI)
 library(connections)
+
+con1 <- dbConnect(RSQLite::SQLite(), path = ":dbname:")
+dbWriteTable(con1, "mtcars", mtcars)
+connection_view(con1)
+```
+
+``` r
+library(DBI)
+library(connections)
 ## Wraps DBI::dbConnect() & starts pane
 con1 <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 ## 'connections' method automates the update of the pane
