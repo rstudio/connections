@@ -5,14 +5,23 @@ connection_open <- function(...) {
 
 #' @export
 connection_open.DBIDriver <- function(drv, ...) {
-  code_line <- expr_label(substitute(connection_open(drv, ...)))
-  code_line <- substr(code_line, 2, nchar(code_line) - 1)
+  all_args <- substitute(connection_open(drv, ...))
+
+  arg_names <- tolower(as.character(imap(all_args, ~.y)))
+  arg_values <- map_chr(all_args, ~ as.character(.x))
+  arg_host <- ifelse(any(arg_names == "host"), arg_values[arg_names == "host"], "")
+  arg_name <- ifelse(any(arg_names == "database"), arg_values[arg_names == "database"], "")
+  arg_name <- ifelse(any(arg_names == "dbname") && arg_name == "", arg_values[arg_names == "dbname"], "")
+
+  code_line <- paste0(capture.output(all_args), collapse = "")
   code_line <- paste0("con <- ", code_line)
   code_line <- c("library(DBI)", "library(connections)", code_line)
   code_line <- paste(code_line, collapse = "\n")
   con <- list(
-    connection_object = dbConnect(drv, ...),
-    connection_code = code_line
+    host = arg_host,
+    name = arg_name,
+    connection_code = code_line,
+    connection_object = dbConnect(drv, ...)
     )
   class(con) <- "connections_class"
   connection_view(con)

@@ -6,7 +6,12 @@ connection_view <- function(con) {
 #' @export
 connection_view.connections_class <- function(con) {
   if(!is.null(con$connection_object)) {
-    connection_view_dbi(con$connection_object, connection_code = con$connection_code)
+    connection_view_dbi(
+      con$connection_object,
+      connection_code = con$connection_code,
+      host = con$host,
+      name = con$name
+      )
   }
 }
 
@@ -15,15 +20,16 @@ connection_view.DBIConnection <- function(con) {
   connection_view_dbi(con)
 }
 
-connection_view_dbi <- function(con, connection_code = "")  {
+connection_view_dbi <- function(con, connection_code = "", host = "", name = "")  {
   connection_name <- deparse(substitute(con))
+  host_name <- ifelse(host != "" && name != "", paste0(host, "/", name), "")
   spec <- base_spec()
   spec$type <- as.character(class(con))
-  spec$host <- attr(class(con), "package")
-  spec$name <- attr(class(con), "package")
+  spec$host <- ifelse(host == "", attr(class(con), "package"), host)
+  spec$name <- ifelse(host_name == "", attr(class(con), "package"), host_name)
   spec$disconnect <- function() connection_close(con)
   spec$connect_code <- connection_code
-  spec$catalogs$name <- as.character(class(con))
+  spec$catalogs$name <- ifelse(name == "", as.character(class(con)), name)
   spec$catalogs$schemas$code <- NULL
   obs <- dbListObjects(con)
   prefix_only <- obs[obs$is_prefix, 1]
