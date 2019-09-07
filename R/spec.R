@@ -119,50 +119,65 @@ spec_val <- function(entry) {
 }
 
 #' @export
-connection_list <- function(spec) {
-  open_spec <- list()
-  open_spec$connectionObject <- spec_val(spec$connection_object)
-  open_spec$type <- spec_val(spec$type)
-  open_spec$host <- spec_val(spec$host)
-  open_spec$displayName <- spec_val(spec$name)
-  open_spec$connectCode <- spec_val(spec$connect_code)
-  open_spec$disconnect <- spec$disconnect
-  open_spec$previewObject <- spec$preview_object
-  open_spec$listObjectTypes <- function(...) {
-    list(catalog = list(
-      contains =
-        list(schema = list(
-          contains =
-            list(
-              table = list(contains = "data"),
-              view = list(contains = "data")
-            )
-        ))
-    ))
-  }
-  open_spec$listObjects <- function(catalog = NULL, schema = NULL, ...) {
-    if (is.null(catalog)) {
-      return(get_catalogs(spec)$data)
+connection_list <- function(spec = base_spec()) {
+  list(
+    connectionObject = spec_val(spec$connection_object),
+    type = spec_val(spec$type),
+    host = spec_val(spec$host),
+    displayName = spec_val(spec$name),
+    connectCode = spec_val(spec$connect_code),
+    disconnect = spec$disconnect,
+    previewObject = spec$preview_object,
+    listObjectTypes = function(...) {
+      list(catalog = list(contains =
+        list(schema = list(contains =
+          list(table = list(contains = "data"),
+               view = list(contains = "data")
+              )))
+      ))
+    },
+    listObjects = function(catalog = NULL, schema = NULL, ...) {
+      if (is.null(catalog)) {
+        return(get_catalogs(spec)$data)
+      }
+      if (is.null(schema)) {
+        return(get_schemas(catalog, spec)$data)
+      }
+      get_tables(catalog, schema, spec)$data
+    },
+    listColumns = function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
+      table_object = paste0(table, view)
+      get_fields(catalog, schema, table_object, spec)
     }
-    if (is.null(schema)) {
-      return(get_schemas(catalog, spec)$data)
-    }
-    get_tables(catalog, schema, spec)$data
-  }
-  open_spec$listColumns <- function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
-    table_object <- paste0(table, view)
-    get_fields(catalog, schema, table_object, spec)
-  }
-  open_spec
+  )
 }
 
 #' @export
 open_connection_contract <- function(spec) {
-  open_spec <- connection_list(spec)
   observer <- getOption("connectionObserver")
-  if (is.null(observer)) {
-    return(invisible(NULL))
-  }
+  if (is.null(observer)) return(invisible(NULL))
   connection_opened <- function(...) observer$connectionOpened(...)
-  do.call("connection_opened", open_spec)
+  do.call("connection_opened", spec)
+}
+
+base_spec <- function() {
+  list(
+    name = "name",
+    type = "type",
+    host = "host",
+    connect_code = "",
+    connection_object = "",
+    disconnect = function() {},
+    preview_object = function() {},
+    catalogs = list(
+      name = "Database",
+      schemas = list(
+        code = "dbi_schemas(con)",
+        tables = list(
+          code = "dbi_tables(con, schema)",
+          fields = list(
+            code = "dbi_fields(con, table, schema)"
+          ))
+      ))
+  )
 }

@@ -49,25 +49,3 @@ dbi_preview <- function(limit, con, table, schema = NULL) {
   }
   dbGetQuery(con, query, n = limit)
 }
-
-base_spec <- function() {
-  list(
-    name = "name",
-    type = "type",
-    host = "host",
-    connect_code = "",
-    connection_object = "",
-    disconnect = function() {},
-    preview_object = function() {},
-    catalogs = list(
-      name = "Database",
-      schemas = list(
-        code = "dbi_schemas(con)",
-        tables = list(
-          code = "dbi_tables(con, schema)",
-          fields = list(
-            code = "dbi_fields(con, table, schema)"
-          ))
-        ))
-    )
-}
