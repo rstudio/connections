@@ -1,23 +1,3 @@
-#' @rdname DBI
-#' @export
-setClass(
-  "connections",
-  contains = "DBIConnection",
-  slots = list()
-)
-
-#' @inheritParams DBI::dbWriteTable
-#' @export
-setMethod(
-  "dbWriteTable", "connections",
-  function(conn, name, value, ...) {
-    dbWriteTable(conn$connection_object, name, value, ...)
-    update_connection(conn$connection_object)
-    }
-)
-
-# Internal to connections -------------------------------
-
 dbi_schemas <- function(con) {
   obs <- dbListObjects(con)
   prefix_only <- obs[obs$is_prefix, 1]

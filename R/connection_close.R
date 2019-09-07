@@ -1,15 +1,15 @@
 #' @export
-close_connection <- function(con) {
-  UseMethod("close_connection")
+connection_close <- function(con) {
+  UseMethod("connection_close")
 }
 
 #' @export
-close_connection.connections <- function(con) {
-  close_connection(con$connection_object)
+connection_close.connections_class <- function(con) {
+  connection_close(con$connection_object)
 }
 
 #' @export
-close_connection.DBIConnection <- function(con, leave_open = FALSE) {
+connection_close.DBIConnection <- function(con, leave_open = FALSE) {
   type <- as.character(class(con))
   host <- attr(class(con), "package")
   observer <- getOption("connectionObserver")

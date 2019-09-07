@@ -1,10 +1,10 @@
 #' @export
-update_connection <- function(con) {
-  UseMethod("update_connection")
+connection_update <- function(con) {
+  UseMethod("connection_update")
 }
 
 #' @export
-update_connection.DBIConnection <- function(con, hint = "") {
+connection_update.DBIConnection <- function(con, hint = "") {
   type <- as.character(class(con))
   host <- attr(class(con), "package")
   observer <- getOption("connectionObserver")
