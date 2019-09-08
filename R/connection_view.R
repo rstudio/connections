@@ -30,12 +30,13 @@ connection_view.connections_class <- function(con, connection_code = "", host = 
 #' @export
 connection_view.DBIConnection <- function(con, connection_code = "", host = "", name = "") {
   host_name <- ifelse(host != "" && name != "", paste0(host, "/", name), "")
+  host <- ifelse(host == "", attr(class(con), "package"), host)
   sch <- dbi_schemas(con)
   spec <- connection_list()
   spec$type <- as.character(class(con))
-  spec$host <- ifelse(host == "", attr(class(con), "package"), host)
+  spec$host <- host
   spec$displayName <- ifelse(host_name == "", attr(class(con), "package"), host_name)
-  spec$disconnect <- function() connection_close(con)
+  spec$disconnect <- function() connection_close(con, host = host)
   spec$connectCode <- connection_code
   spec$listObjects <- function(catalog = NULL, schema = NULL, ...) {
     if (is.null(catalog)) {

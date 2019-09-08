@@ -4,12 +4,16 @@
 \alias{connection_close}
 \title{Close a connection}
 \usage{
-connection_close(con, leave_open = FALSE)
+connection_close(con, host = "", type = "", leave_open = FALSE)
 }
 \arguments{
 \item{con}{Connection variable}
 
-\item{leave_open}{Should the connection be left open. Defaults to FALSE.}
+\item{host}{Host name of the connection. Optional, defaults to empty}
+
+\item{type}{Type of connection. Optional, defaults to empty}
+
+\item{leave_open}{Should the connection be left open. Defaults to FALSE}
 }
 \description{
 Close a connection
