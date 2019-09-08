@@ -13,9 +13,16 @@ connection_open.DBIDriver <- function(drv, ...) {
   arg_name <- ifelse(any(arg_names == "database"), arg_values[arg_names == "database"], "")
   arg_name <- ifelse(any(arg_names == "dbname") && arg_name == "", arg_values[arg_names == "dbname"], "")
 
+  drv_package <- attributes(class(drv))$package
+  if(!is.null(drv_package)) {
+    pkg_lib <- paste0("library(", drv_package, ")")
+  } else {
+    pkg_lib <- NULL
+  }
+
   code_line <- paste0(capture.output(all_args), collapse = "")
   code_line <- paste0("con <- ", code_line)
-  code_line <- c("library(DBI)", "library(connections)", code_line)
+  code_line <- c("library(DBI)", "library(connections)", pkg_lib,  code_line)
   code_line <- paste(code_line, collapse = "\n")
   con <- list(
     host = arg_host,

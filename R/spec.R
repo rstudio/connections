@@ -137,12 +137,8 @@ connection_list <- function(spec = base_spec()) {
       ))
     },
     listObjects = function(catalog = NULL, schema = NULL, ...) {
-      if (is.null(catalog)) {
-        return(get_catalogs(spec)$data)
-      }
-      if (is.null(schema)) {
-        return(get_schemas(catalog, spec)$data)
-      }
+      if (is.null(catalog)) return(get_catalogs(spec)$data)
+      if (is.null(schema)) return(get_schemas(catalog, spec)$data)
       get_tables(catalog, schema, spec)$data
     },
     listColumns = function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {

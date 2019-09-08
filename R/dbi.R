@@ -2,13 +2,13 @@ dbi_schemas <- function(con) {
   obs <- dbListObjects(con)
   prefix_only <- obs[obs$is_prefix, 1]
   if (length(prefix_only) == 0) return(NULL)
-  prefix_table <- map_dfr(
+  pt <- map_dfr(
     prefix_only,
     ~ list(
         type = names(attributes(.x)$name),
         name = as.character(attributes(.x)$name)
       ))
-  map(prefix_table$name, ~ list(name = .x))
+  map(pt$name, ~ list(name = .x))
 }
 
 dbi_tables <- function(con, schema = NULL) {
