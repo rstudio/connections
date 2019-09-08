@@ -15,5 +15,4 @@ Creates an RStudio IDE Contract object
 \examples{
 
 connection_list()
-
 }

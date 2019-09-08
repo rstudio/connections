@@ -52,15 +52,15 @@ connection_view.DBIConnection <- function(con, connection_code = "", host = "", 
           data_frame(name = "Default", type = "schema")
         )
       } else {
-        return(
-          as_data_frame(sch)
-        )
+        st <- map_df(sch, ~.x)
+        st$type = "schema"
+        return(st)
       }
     }
     sel_schema <- NULL
     if (!is.null(sch)) sel_schema <- schema
-    tbls <- dbi_tables(con, schema = NULL)
-    as_data_frame(tbls)
+    tbls <- dbi_tables(con, schema = sel_schema)
+    map_df(tbls, ~.x)
   }
   spec$listColumns <- function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
     sel_schema <- NULL
