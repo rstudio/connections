@@ -119,6 +119,13 @@ spec_val <- function(entry) {
   }
 }
 
+#' Creates an RStudio IDE Contract object
+#'
+#' @param spec A list object that containing the structure of the Contract object
+#'
+#' @examples
+#'
+#' connection_list()
 #' @export
 connection_list <- function(spec = base_spec()) {
   list(
@@ -130,29 +137,38 @@ connection_list <- function(spec = base_spec()) {
     disconnect = spec$disconnect,
     previewObject = spec$preview_object,
     listObjectTypes = function(...) {
-      list(catalog = list(contains =
-        list(schema = list(contains =
-          list(table = list(contains = "data"),
-               view = list(contains = "data")
-              )))
+      list(catalog = list(
+        contains =
+          list(schema = list(
+            contains =
+              list(
+                table = list(contains = "data"),
+                view = list(contains = "data")
+              )
+          ))
       ))
     },
     listObjects = function(catalog = NULL, schema = NULL, ...) {
-      if (is.null(catalog)) return(get_catalogs(spec)$data)
-      if (is.null(schema)) return(get_schemas(catalog, spec)$data)
+      if (is.null(catalog)) {
+        return(get_catalogs(spec)$data)
+      }
+      if (is.null(schema)) {
+        return(get_schemas(catalog, spec)$data)
+      }
       get_tables(catalog, schema, spec)$data
     },
     listColumns = function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
-      table_object = paste0(table, view)
+      table_object <- paste0(table, view)
       get_fields(catalog, schema, table_object, spec)
     }
   )
 }
 
-#' @export
 open_connection_contract <- function(spec) {
   observer <- getOption("connectionObserver")
-  if (is.null(observer)) return(invisible(NULL))
+  if (is.null(observer)) {
+    return(invisible(NULL))
+  }
   connection_opened <- function(...) observer$connectionOpened(...)
   do.call("connection_opened", spec)
 }
@@ -174,7 +190,9 @@ base_spec <- function() {
           code = "dbi_tables(con, schema)",
           fields = list(
             code = "dbi_fields(con, table, schema)"
-          ))
-      ))
+          )
+        )
+      )
+    )
   )
 }
