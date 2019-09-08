@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build status](https://travis-ci.com/edgararuiz/connections.svg?branch=master)](https://travis-ci.com/edgararuiz/connections)
 <!-- badges: end -->
 
 Provides a generic implementation of the [RStudio Connection Contract](https://rstudio.github.io/rstudio-extensions/connections-contract.html) to make it easier for database connections, and other type of connections, opened via R packages to take advantage of the Connections Pane inside the RStudio IDE.
