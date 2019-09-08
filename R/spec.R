@@ -16,7 +16,7 @@ get_catalogs <- function(catalog) {
   name <- map_chr(cts, ~ .x$name)
   list(
     icon = NULL,
-    data = data.frame(name, type = "catalog", stringsAsFactors = FALSE)
+    data = data_frame(name, type = "catalog")
   )
 }
 
@@ -47,7 +47,7 @@ get_schemas <- function(catalog_name, catalog) {
 
   list(
     schemas = schemas,
-    data = data.frame(name, type = "schema", stringsAsFactors = FALSE)
+    data = data_frame(name, type = "schema")
   )
 }
 
@@ -81,7 +81,7 @@ get_tables <- function(catalog_name, schema_name, catalog) {
 
   list(
     tables = tbls,
-    data = data.frame(name, type, stringsAsFactors = FALSE)
+    data = data_frame(name, type)
   )
 }
 

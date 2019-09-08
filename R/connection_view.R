@@ -17,8 +17,6 @@ connection_view.connections_class <- function(con, ...) {
 
 #' @export
 connection_view.DBIConnection <- function(con, connection_code = "", host = "", name = "")  {
-
-  connection_name <- deparse(substitute(con))
   host_name <- ifelse(host != "" && name != "", paste0(host, "/", name), "")
   sch <- dbi_schemas(con)
   spec <- connection_list()
@@ -30,27 +28,26 @@ connection_view.DBIConnection <- function(con, connection_code = "", host = "", 
   spec$listObjects <-  function(catalog = NULL, schema = NULL, ...) {
     if(is.null(catalog))
       return(
-        data.frame(
+        data_frame(
           name = ifelse(name == "", as.character(class(con)), name),
-          type = "catalog",
-          stringsAsFactors = FALSE
+          type = "catalog"
           )
       )
     if(is.null(schema)) {
       if(is.null(sch)) {
         return(
-          data.frame(name = "Default", type = "schema", stringsAsFactors = FALSE)
+          data_frame(name = "Default", type = "schema")
         )
       } else {
         return(
-          as.data.frame(sch, stringsAsFactors = FALSE)
+          as_data_frame(sch)
         )
       }
     }
     sel_schema <- NULL
     if(!is.null(sch)) sel_schema <- schema
     tbls <- dbi_tables(con, schema = NULL)
-    as.data.frame(tbls, stringsAsFactors = FALSE)
+    as_data_frame(tbls)
   }
   spec$listColumns <- function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
     sel_schema <- NULL
