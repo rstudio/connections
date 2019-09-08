@@ -8,6 +8,7 @@
 #' @importFrom purrr imap
 #' @importFrom purrr map_dfr
 #' @importFrom purrr transpose
+#' @importFrom utils capture.output
 #' @keywords internal
 get_catalogs <- function(catalog) {
   catalogs <- catalog$catalogs

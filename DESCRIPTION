@@ -1,18 +1,17 @@
 Package: connections
-Title: What the Package Does (One Line, Title Case)
+Title: Database and other connections on the RStudio IDE
 Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: What license it uses
+Authors@R:
+    person("Edgar", "Ruiz", email = "edgar@rstudio.com", role = c("aut", "cre"))
+Description: Provides a generic implementation of the RStudio Connection Contract to 
+    make it easier for database connections, and other type of connections, opened 
+    via R packages to take advantage of the Connections Pane inside the RStudio IDE.
+License: MIT + file LICENSE
 Imports:
   rlang,
   purrr,
-  DBI
+  DBI,
+  methods
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
