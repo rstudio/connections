@@ -9,7 +9,6 @@ Description: Provides a generic implementation of the RStudio Connection Contrac
 License: MIT + file LICENSE
 Imports:
   rlang,
-  purrr,
   DBI,
   methods
 Suggests:

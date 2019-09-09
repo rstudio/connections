@@ -4,14 +4,17 @@ dbi_schemas <- function(con) {
   if (length(prefix_only) == 0) {
     return(NULL)
   }
-  pt <- map_dfr(
+  schs <- lapply(
     prefix_only,
-    ~ list(
-      type = names(attributes(.x)$name),
-      name = as.character(attributes(.x)$name)
-    )
+    function(x) {
+      list(
+        type = names(attributes(x)$name),
+        name = as.character(attributes(x)$name)
+      )
+    }
+
   )
-  map(pt$name, ~ list(name = .x))
+  item_to_table(schs)
 }
 
 dbi_tables <- function(con, schema = NULL) {
@@ -21,18 +24,15 @@ dbi_tables <- function(con, schema = NULL) {
   } else {
     obs <- dbListObjects(con)
   }
-  obs_only <- obs[!obs$is_prefix, 1]
-  tbls <- map_dfr(
-    obs_only,
-    ~ {
-      atr <- attributes(.x)
-      list(
-        type = names(atr$name),
-        name = as.character(atr$name)
+  obs_only <- lapply(
+    obs[!obs$is_prefix, 1],
+    function(x) list(
+      name = as.character(attributes(x)$name),
+      type = names(attributes(x)$name)
       )
-    }
-  )
-  transpose(tbls[tbls$type == "table", ])
+    )
+  tbls <- item_to_table(obs_only)
+  tbls[tbls$type != "schema", ]
 }
 
 dbi_fields <- function(con, table, schema = NULL) {
@@ -41,7 +41,13 @@ dbi_fields <- function(con, table, schema = NULL) {
   } else {
     top <- dbGetQuery(con, paste0("select * from ", schema, ".", table), n = 10)
   }
-  imap(top, ~ list(name = .y, type = class(.x)[[1]]))
+  names <- colnames(top)
+  types <- as.character(lapply(top, class))
+  flds <- lapply(
+    seq_along(names),
+    function(x) list(name = names[x], type = types[x])
+    )
+  item_to_table(flds)
 }
 
 dbi_preview <- function(limit, con, table, schema = NULL) {
@@ -51,4 +57,13 @@ dbi_preview <- function(limit, con, table, schema = NULL) {
     query <- paste0("select * from ", schema, ".", table)
   }
   dbGetQuery(con, query, n = limit)
+}
+
+item_to_table <- function(item) {
+  i_tables <- lapply(item, function(x) data_frame(name = x$name, type = x$type))
+  i_table <- NULL
+  for(j in seq_along(i_tables)) {
+    i_table <- rbind(i_table, i_tables[[j]])
+  }
+  i_table
 }

@@ -1,0 +1,43 @@
+name: Full
+type:
+  code: toupper("fulltype")
+host: fullhost
+connect_code: Place connection code here
+disconnect:  function() observer$connectionClosed("type", "host")
+preview_object: function(table, view, ...) c(table, view)
+catalogs:
+  - name: first_catalog
+    schemas:
+      - code: list(list(name = "prog_schema", type = "schema"), list(name = "prog2", type = "schema"))
+        tables:
+          code: list(list(name = "prog_table", type = "table"), list(name = "prog_view", type = "view"))
+          fields:
+            code: list(list(name = "testfield", type = "fct"))
+      - name: my_schema
+        tables:
+          - name: my_table1
+            type: table
+            fields:
+              - name: field1
+                type: nbr
+              - name: field2
+                type: chr
+  - name: second_catalog
+    schemas:
+      name: my_schema
+      tables:
+        - name: my_table1
+          type: table
+          fields:
+            - name: field1
+              type: nbr
+            - name: field2
+              type: chr
+        - name: my_view1
+          type: view
+          fields:
+            - name: field3
+              type: nbr
+            - name: field4
+              type: chr
+            - code: data.frame(name = "testfield", type = "fct",  stringsAsFactors = FALSE)

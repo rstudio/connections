@@ -16,8 +16,8 @@ connection_open <- function(...) {
 connection_open.DBIDriver <- function(drv, ...) {
   all_args <- substitute(connection_open(drv, ...))
 
-  arg_names <- tolower(as.character(imap(all_args, ~.y)))
-  arg_values <- map_chr(all_args, ~ as.character(.x))
+  arg_names <- tolower(as.character(lapply(all_args, function(x) names(x))))
+  arg_values <- as.character(all_args)
   arg_host <- ifelse(any(arg_names == "host"), arg_values[arg_names == "host"], "")
   arg_name <- ifelse(any(arg_names == "database"), arg_values[arg_names == "database"], "")
   arg_name <- ifelse(any(arg_names == "dbname") && arg_name == "", arg_values[arg_names == "dbname"], "")
