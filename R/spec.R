@@ -196,3 +196,29 @@ base_spec <- function() {
     )
   )
 }
+
+test_spec <- function() {
+  list(
+    name = "name",
+    type = "type",
+    host = "host",
+    connect_code = "",
+    connection_object = "",
+    disconnect = function() {},
+    preview_object = function() {},
+    catalogs = list(
+      name = "Database",
+      schemas = list(
+        name = "Schema",
+        tables = list(
+          name = "table1",
+          type = "table",
+          fields = list(
+            name = "field1",
+            type = "chr"
+          )
+        )
+      )
+    )
+  )
+}

@@ -16,7 +16,6 @@ connection_close <- function(con, host = "", type = "", leave_open = FALSE) {
 
 #' @export
 connection_close.connections_class <- function(con, host = "", type = "", leave_open = FALSE) {
-  print(con$host)
   connection_close(
     con$connection_object,
     host = con$host,
@@ -29,8 +28,6 @@ connection_close.connections_class <- function(con, host = "", type = "", leave_
 connection_close.DBIConnection <- function(con, host = "", type = "", leave_open = FALSE) {
   type <- ifelse(type == "", as.character(class(con)), type)
   host <- ifelse(host == "", attr(class(con), "package"), host)
-  print(type)
-  print(host)
   observer <- getOption("connectionObserver")
   if (is.null(observer)) {
     return(invisible(NULL))
