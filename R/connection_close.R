@@ -21,7 +21,7 @@ connection_close.connections_class <- function(con, host = "", type = "", leave_
     host = con$host,
     type = as.character(class(con$connection_object)),
     leave_open
-    )
+  )
 }
 
 #' @export

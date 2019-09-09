@@ -1,19 +1,18 @@
 dbi_schemas <- function(con) {
   obs <- dbListObjects(con)
-  prefix_only <- obs[obs$is_prefix, 1]
-  if (length(prefix_only) == 0) {
+  po <- obs[obs$is_prefix, 1]
+  if (length(po) == 0) {
     return(NULL)
   }
   schs <- lapply(
-    prefix_only,
-    function(x) {
+    po,
+    function(x)
       list(
         type = names(attributes(x)$name),
         name = as.character(attributes(x)$name)
       )
-    }
-
   )
+
   item_to_table(schs)
 }
 
@@ -27,10 +26,10 @@ dbi_tables <- function(con, schema = NULL) {
   obs_only <- lapply(
     obs[!obs$is_prefix, 1],
     function(x) list(
-      name = as.character(attributes(x)$name),
-      type = names(attributes(x)$name)
+        name = as.character(attributes(x)$name),
+        type = names(attributes(x)$name)
       )
-    )
+  )
   tbls <- item_to_table(obs_only)
   tbls[tbls$type != "schema", ]
 }
@@ -46,7 +45,7 @@ dbi_fields <- function(con, table, schema = NULL) {
   flds <- lapply(
     seq_along(names),
     function(x) list(name = names[x], type = types[x])
-    )
+  )
   item_to_table(flds)
 }
 
@@ -60,10 +59,13 @@ dbi_preview <- function(limit, con, table, schema = NULL) {
 }
 
 item_to_table <- function(item) {
-  i_tables <- lapply(item, function(x) data_frame(name = x$name, type = x$type))
-  i_table <- NULL
-  for(j in seq_along(i_tables)) {
-    i_table <- rbind(i_table, i_tables[[j]])
+  t <- lapply(
+    item,
+    function(x) data_frame(name = x$name, type = x$type)
+  )
+  tbls <- NULL
+  for (j in seq_along(t)) {
+    tbls <- rbind(tbls, t[[j]])
   }
-  i_table
+  tbls
 }

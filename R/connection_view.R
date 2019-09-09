@@ -29,6 +29,11 @@ connection_view.connections_class <- function(con, connection_code = "", host = 
 
 #' @export
 connection_view.DBIConnection <- function(con, connection_code = "", host = "", name = "") {
+  spec <- conn_dbi_spec(con, connection_code, host, name)
+  open_connection_contract(spec)
+}
+
+conn_dbi_spec <- function(con, connection_code = "", host = "", name = "") {
   host_name <- ifelse(host != "" && name != "", paste0(host, "/", name), "")
   host <- ifelse(host == "", attr(class(con), "package"), host)
   sch <- dbi_schemas(con)
@@ -42,16 +47,14 @@ connection_view.DBIConnection <- function(con, connection_code = "", host = "", 
     if (is.null(catalog)) {
       return(
         data_frame(
-          name = ifelse(name == "", as.character(class(con)), name),
+          name = ifelse(name == "", spec$type, name),
           type = "catalog"
         )
       )
     }
     if (is.null(schema)) {
       if (is.null(sch)) {
-        return(
-          data_frame(name = "Default", type = "schema")
-        )
+        return(data_frame(name = "Default", type = "schema"))
       } else {
         return(sch)
       }
@@ -60,7 +63,8 @@ connection_view.DBIConnection <- function(con, connection_code = "", host = "", 
     if (!is.null(sch)) sel_schema <- schema
     dbi_tables(con, schema = sel_schema)
   }
-  spec$listColumns <- function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
+  spec$listColumns <- function(catalog = NULL, schema = NULL,
+                                 table = NULL, view = NULL, ...) {
     sel_schema <- NULL
     if (!is.null(sch)) sel_schema <- schema
     dbi_fields(con, table, sel_schema)
@@ -70,5 +74,5 @@ connection_view.DBIConnection <- function(con, connection_code = "", host = "", 
     if (!is.null(sch)) sel_schema <- schema
     dbi_preview(limit, con, table, sel_schema)
   }
-  open_connection_contract(spec)
+  spec
 }

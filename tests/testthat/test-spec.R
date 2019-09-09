@@ -1,11 +1,12 @@
 context("spec")
-#
-# spec <- test_spec()
-#
-# test_that("this works", {
-#   expect_equal(get_catalogs(spec)$data$name, "Database")
-#   expect_equal(get_schemas("Database", spec)$data$name, "Schema")
-#   #expect_equal(get_tables("Database", "Schema", spec)$data$name, "table1")
-# })
 
+spec <- connection_list(connections:::test_spec())
+test_that("spec works", {
+  expect_silent(open_connection_contract(spec))
+  expect_is(spec$listObjectTypes(), "list")
+  expect_is(spec$listObjects(), "data.frame")
+  expect_is(spec$listObjects("Database"), "data.frame")
+  expect_is(spec$listObjects("Database", "Schema"), "data.frame")
+  expect_is(spec$listColumns("Database", "Schema", "table1"), "data.frame")
+})
 
