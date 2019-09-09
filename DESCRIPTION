@@ -8,7 +8,6 @@ Description: Provides a generic implementation of the RStudio Connection Contrac
     via R packages to take advantage of the Connections Pane inside the RStudio IDE.
 License: MIT + file LICENSE
 Imports:
-  rlang,
   DBI,
   methods
 Suggests:

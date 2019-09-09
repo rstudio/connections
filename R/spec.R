@@ -96,7 +96,7 @@
 #
 spec_val <- function(entry) {
   if (class(entry) == "list") {
-    eval(rlang::parse_expr(entry$code))
+    eval(parse(text = entry$code))
   } else {
     entry
   }
