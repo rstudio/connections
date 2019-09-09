@@ -53,7 +53,7 @@ connection_view.DBIConnection <- function(con, connection_code = "", host = "", 
           data_frame(name = "Default", type = "schema")
         )
       } else {
-        st <- map_df(sch, ~.x)
+        st <- map_dfr(sch, ~.x)
         st$type = "schema"
         return(st)
       }
@@ -61,13 +61,13 @@ connection_view.DBIConnection <- function(con, connection_code = "", host = "", 
     sel_schema <- NULL
     if (!is.null(sch)) sel_schema <- schema
     tbls <- dbi_tables(con, schema = sel_schema)
-    map_df(tbls, ~.x)
+    map_dfr(tbls, ~.x)
   }
   spec$listColumns <- function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
     sel_schema <- NULL
     if (!is.null(sch)) sel_schema <- schema
     fields <- dbi_fields(con, table, sel_schema)
-    map_df(fields, ~.x)
+    map_dfr(fields, ~.x)
   }
   spec$previewObject <- function(limit, table, schema, ...) {
     sel_schema <- NULL

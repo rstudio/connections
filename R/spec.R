@@ -4,7 +4,6 @@
 #' @importFrom purrr map
 #' @importFrom purrr map_chr
 #' @importFrom purrr map_lgl
-#' @importFrom purrr map_df
 #' @importFrom purrr imap
 #' @importFrom purrr map_dfr
 #' @importFrom purrr transpose
@@ -108,7 +107,7 @@ get_fields <- function(catalog_name, schema_name, table_name, catalog) {
   } else {
     fields_info <- NULL
   }
-  map_df(c(fields_code, fields_info), ~.x)
+  map_dfr(c(fields_code, fields_info), ~.x)
 }
 
 spec_val <- function(entry) {
