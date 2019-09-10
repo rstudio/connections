@@ -27,3 +27,78 @@ Install the development version from [GitHub](https://github.com/) with:
 # install.packages("remotes")
 remotes::install_github("edgararuiz/connections")
 ```
+
+## Usage
+
+### Basic
+
+``` r
+library(connections)
+library(RSQLite)
+library(DBI)
+
+con <- connection_open(SQLite(), path = ":dbname")
+```
+
+``` r
+dbWriteTable(con, "db_mtcars", mtcars)
+```
+
+``` r
+connection_close(con)
+```
+
+### Not integrated
+
+``` r
+con <- dbConnect(SQLite(), path = ":dbname")
+connection_view(con)
+```
+
+``` r
+dbWriteTable(con, "db_mtcars", mtcars)
+```
+
+``` r
+connection_update(con)
+```
+
+``` r
+connection_close(con)
+```
+
+``` r
+con <- dbConnect(SQLite(), path = ":dbname")
+
+connection_view(
+  con, 
+  host = "my_host", 
+  name = "my_name",
+  connection_code = "library(connections)\ndbConnect(...)"
+  )
+```
+
+``` r
+connection_close(con)
+```
+
+## `DBI` packages examples
+
+### `bigrquery`
+
+``` r
+library(DBI)
+library(bigrquery)
+
+con <- dbConnect(
+  bigquery(),
+  project = "bigquery-public-data",
+  dataset = "austin_311",
+  billing = "rstudio-bigquery-event",
+  use_legacy_sql = FALSE
+)
+```
+
+``` r
+connection_view(con)
+```
