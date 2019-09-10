@@ -10,9 +10,7 @@ dbi_schemas <- function(con) {
       list(
         type = names(attributes(x)$name),
         name = as.character(attributes(x)$name)
-      )
-  )
-
+      ))
   item_to_table(schs)
 }
 
@@ -35,10 +33,11 @@ dbi_tables <- function(con, schema = NULL) {
 }
 
 dbi_fields <- function(con, table, schema = NULL) {
+  tbl <- dbQuoteIdentifier(con, table)
   if (is.null(schema)) {
-    top <- dbGetQuery(con, paste0("select * from ", table), n = 10)
+    top <- dbGetQuery(con, paste0("select * from ", tbl), n = 10)
   } else {
-    top <- dbGetQuery(con, paste0("select * from ", schema, ".", table), n = 10)
+    top <- dbGetQuery(con, paste0("select * from ", schema, ".", tbl), n = 10)
   }
   names <- colnames(top)
   types <- as.character(lapply(top, class))
@@ -50,10 +49,11 @@ dbi_fields <- function(con, table, schema = NULL) {
 }
 
 dbi_preview <- function(limit, con, table, schema = NULL) {
+  tbl <- dbQuoteIdentifier(con, table)
   if (is.null(schema)) {
-    query <- paste0("select * from ", table)
+    query <- paste0("select * from ", tbl)
   } else {
-    query <- paste0("select * from ", schema, ".", table)
+    query <- paste0("select * from ", schema, ".", tbl)
   }
   dbGetQuery(con, query, n = limit)
 }
