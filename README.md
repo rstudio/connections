@@ -40,20 +40,35 @@ library(DBI)
 con <- connection_open(SQLite(), path = ":dbname")
 ```
 
+<img src = "man/figures/sqlite-1.png" width = "400px"> <br/>
+
 ``` r
 dbWriteTable(con, "db_mtcars", mtcars)
 ```
+
+<img src = "man/figures/sqlite-2.png" width = "400px"> <br/>
+
+Preview button works as expected
+
+<img src = "man/figures/sqlite-3.png" width = "600px"> <br/>
 
 ``` r
 connection_close(con)
 ```
 
+<img src = "man/figures/sqlite-4.png" width = "400px"> <br/>
+
 ### Not integrated
 
 ``` r
 con <- dbConnect(SQLite(), path = ":dbname")
+```
+
+``` r
 connection_view(con)
 ```
+
+<img src = "man/figures/sqlite-5.png" width = "400px"> <br/>
 
 ``` r
 dbWriteTable(con, "db_mtcars", mtcars)
@@ -63,13 +78,21 @@ dbWriteTable(con, "db_mtcars", mtcars)
 connection_update(con)
 ```
 
+<img src = "man/figures/sqlite-6.png" width = "400px"> <br/>
+
 ``` r
 connection_close(con)
 ```
 
+<img src = "man/figures/sqlite-7.png" width = "400px"> <br/>
+
+### Customize names
+
 ``` r
 con <- dbConnect(SQLite(), path = ":dbname")
+```
 
+``` r
 connection_view(
   con, 
   host = "my_host", 
@@ -78,9 +101,11 @@ connection_view(
   )
 ```
 
-``` r
-connection_close(con)
-```
+<img src = "man/figures/sqlite-8.png" width = "400px"> <br/>
+
+Connection code is sourced from `connection_code`
+
+<img src = "man/figures/sqlite-9.png" width = "400px"> <br/>
 
 ## `DBI` packages examples
 
