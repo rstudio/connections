@@ -16,7 +16,7 @@ connection_open <- function(...) {
 connection_open.DBIDriver <- function(drv, ...) {
   all_args <- substitute(connection_open(drv, ...))
 
-  arg_names <- tolower(as.character(lapply(all_args, function(x) names(x))))
+  arg_names <- names(all_args)
   arg_values <- as.character(all_args)
   arg_host <- ifelse(any(arg_names == "host"), arg_values[arg_names == "host"], "")
   arg_name <- ifelse(any(arg_names == "database"), arg_values[arg_names == "database"], "")
@@ -29,7 +29,8 @@ connection_open.DBIDriver <- function(drv, ...) {
     pkg_lib <- NULL
   }
 
-  code_line <- paste0(capture.output(all_args), collapse = "")
+  code_line <- trimws(capture.output(all_args))
+  code_line <- paste0(code_line, collapse = "")
   code_line <- paste0("con <- ", code_line)
   code_line <- c("library(DBI)", "library(connections)", pkg_lib, code_line)
   code_line <- paste(code_line, collapse = "\n")

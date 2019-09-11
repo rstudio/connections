@@ -12,6 +12,28 @@ knitr::opts_chunk$set(
   out.width = "100%",
   eval = FALSE
 )
+
+toc <- function() {
+  re <- readLines("README.Rmd")
+  has_title <- as.logical(lapply(re, function(x) substr(x, 1, 2) == "##"))
+  only_titles <- re[has_title]
+  titles <- trimws(gsub("#", "", only_titles))
+  links <- trimws(gsub("`", "", titles))
+  links <- tolower(links)
+  links <- trimws(gsub(" ", "-", links))
+  toc_list <- lapply(
+    seq_along(titles),
+    function(x) {
+      if(substr(only_titles[x], 1, 3) == "###") {
+        paste0("<ul><li><a href=#", links[x], ">", titles[x], "</a></li></ul>")  
+      } else {
+        paste0("<li><a href=#", links[x], ">", titles[x], "</a></li>")  
+      }
+    }
+  )
+  toc_full <- paste(toc_list, collapse = "") 
+  paste0("<ul>", toc_full, "</ul>")
+}
 ```
 
 # connections
@@ -21,6 +43,8 @@ knitr::opts_chunk$set(
 [![Travis build status](https://travis-ci.com/edgararuiz/connections.svg?branch=master)](https://travis-ci.com/edgararuiz/connections)
 [![Codecov test coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge.svg)](https://codecov.io/gh/edgararuiz/connections?branch=master)
 <!-- badges: end -->
+
+`r toc()`
 
 Provides a generic implementation of the [RStudio Connection Contract](https://rstudio.github.io/rstudio-extensions/connections-contract.html) to make it easier for database connections, and other type of connections, opened via R packages to take advantage of the Connections Pane inside the RStudio IDE.
 
@@ -93,7 +117,7 @@ connection_close(con)
 
 <img src = "man/figures/sqlite-7.png" width = "400px"> <br/>
 
-### Customize names
+### Pre-set names
 
 ```{r}
 con <- dbConnect(SQLite(), path = ":dbname")
@@ -118,27 +142,61 @@ Connection code is sourced from `connection_code`
 
 ## `DBI` packages examples
 
-### `bigrquery`
-
 ```{r}
+library(RPostgres)
+library(connections)
 library(DBI)
-library(bigrquery)
 
-con <- dbConnect(
-  bigquery(),
-  project = "bigquery-public-data",
-  dataset = "austin_311",
-  billing = "rstudio-bigquery-event",
-  use_legacy_sql = FALSE
-)
+con <- connection_open(Postgres(), 
+                 host = "sol-eng-postgre.cihykudhzbgw.us-west-2.rds.amazonaws.com",
+                 dbname = "finance",
+                 user = "xxxxx",
+                 password = "xxxxx",
+                 port = 5432
+                 )
+
 ```
+
+<img src = "man/figures/postgres-1.png" width = "400px"> <br/>
+
+<img src = "man/figures/postgres-2.png" width = "400px"> <br/>
+
+## Custom connections
 
 ```{r}
-connection_view(con)
+library(connections)
+
+my_conn <-  list(
+    name = "name",
+    type = "type",
+    host = "host",
+    connect_code = "",
+    connection_object = "",
+    icon = "/usr/home/edgar/R/x86_64-pc-linux-gnu-library/3.6/connections/images/package-icon.png",
+    disconnect = function() connection_close(my_conn, "host", "type"),
+    preview_object = function() {},
+    catalogs = list(
+      name = "Database",
+      type = "catalog",
+      schemas = list(
+        name = "Schema",
+        type = "schema",
+        tables = list(
+          list(
+            name = "table1",
+            type = "table",
+            fields = list(
+              name = "field1",
+              type = "chr")
+            ),
+          list(
+            code = list(as.list(data.frame(name = "view1", type = "view", stringsAsFactors = FALSE)))  
+          )
+        ))
+    ))
+
+conn_list <- connection_contract(my_conn)
+connection_view(conn_list)
 ```
 
-
-
-
-
-
+<img src = "man/figures/custom-1.png" width = "400px"> <br/>

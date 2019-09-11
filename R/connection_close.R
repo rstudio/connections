@@ -15,6 +15,15 @@ connection_close <- function(con, host = "", type = "", leave_open = FALSE) {
 }
 
 #' @export
+connection_close.list <- function(con, host = "", type = "", leave_open = FALSE) {
+  observer <- getOption("connectionObserver")
+  if (is.null(observer)) {
+    return(invisible(NULL))
+  }
+  observer$connectionClosed(type, host)
+}
+
+#' @export
 connection_close.connections_class <- function(con, host = "", type = "", leave_open = FALSE) {
   connection_close(
     con$connection_object,

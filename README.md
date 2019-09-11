@@ -13,6 +13,64 @@ status](https://travis-ci.com/edgararuiz/connections.svg?branch=master)](https:/
 coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge.svg)](https://codecov.io/gh/edgararuiz/connections?branch=master)
 <!-- badges: end -->
 
+<ul>
+
+<li>
+
+<a href=#installation>Installation</a>
+
+</li>
+
+<li>
+
+<a href=#usage>Usage</a>
+
+</li>
+
+<ul>
+
+<li>
+
+<a href=#basic>Basic</a>
+
+</li>
+
+</ul>
+
+<ul>
+
+<li>
+
+<a href=#not-integrated>Not integrated</a>
+
+</li>
+
+</ul>
+
+<ul>
+
+<li>
+
+<a href=#pre-set-names>Pre-set names</a>
+
+</li>
+
+</ul>
+
+<li>
+
+<a href=#dbi-packages-examples>`DBI` packages examples</a>
+
+</li>
+
+<li>
+
+<a href=#custom-connections>Custom connections</a>
+
+</li>
+
+</ul>
+
 Provides a generic implementation of the [RStudio Connection
 Contract](https://rstudio.github.io/rstudio-extensions/connections-contract.html)
 to make it easier for database connections, and other type of
@@ -86,7 +144,7 @@ connection_close(con)
 
 <img src = "man/figures/sqlite-7.png" width = "400px"> <br/>
 
-### Customize names
+### Pre-set names
 
 ``` r
 con <- dbConnect(SQLite(), path = ":dbname")
@@ -109,21 +167,60 @@ Connection code is sourced from `connection_code`
 
 ## `DBI` packages examples
 
-### `bigrquery`
-
 ``` r
+library(RPostgres)
+library(connections)
 library(DBI)
-library(bigrquery)
 
-con <- dbConnect(
-  bigquery(),
-  project = "bigquery-public-data",
-  dataset = "austin_311",
-  billing = "rstudio-bigquery-event",
-  use_legacy_sql = FALSE
-)
+con <- connection_open(Postgres(), 
+                 host = "sol-eng-postgre.cihykudhzbgw.us-west-2.rds.amazonaws.com",
+                 dbname = "finance",
+                 user = "xxxxx",
+                 password = "xxxxx",
+                 port = 5432
+                 )
 ```
+
+<img src = "man/figures/postgres-1.png" width = "400px"> <br/>
+
+<img src = "man/figures/postgres-2.png" width = "400px"> <br/>
+
+## Custom connections
 
 ``` r
-connection_view(con)
+library(connections)
+
+my_conn <-  list(
+    name = "name",
+    type = "type",
+    host = "host",
+    connect_code = "",
+    connection_object = "",
+    icon = "/usr/home/edgar/R/x86_64-pc-linux-gnu-library/3.6/connections/images/package-icon.png",
+    disconnect = function() connection_close(my_conn, "host", "type"),
+    preview_object = function() {},
+    catalogs = list(
+      name = "Database",
+      type = "catalog",
+      schemas = list(
+        name = "Schema",
+        type = "schema",
+        tables = list(
+          list(
+            name = "table1",
+            type = "table",
+            fields = list(
+              name = "field1",
+              type = "chr")
+            ),
+          list(
+            code = list(as.list(data.frame(name = "view1", type = "view", stringsAsFactors = FALSE)))  
+          )
+        ))
+    ))
+
+conn_list <- connection_contract(my_conn)
+connection_view(conn_list)
 ```
+
+<img src = "man/figures/custom-1.png" width = "400px"> <br/>

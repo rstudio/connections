@@ -15,10 +15,10 @@ spec_val <- function(entry) {
 #'
 #' @examples
 #'
-#' connection_list()
+#' connection_contract()
 #' @export
-connection_list <- function(spec = base_spec()) {
-  list(
+connection_contract <- function(spec = base_spec()) {
+  cc <- list(
     connectionObject = spec_val(spec$connection_object),
     type = spec_val(spec$type),
     host = spec_val(spec$host),
@@ -58,6 +58,8 @@ connection_list <- function(spec = base_spec()) {
       get_object(tbls, "fields")$data
     }
   )
+  if(!is.null(spec$icon)) cc$icon <- spec_val(spec$icon)
+  cc
 }
 
 open_connection_contract <- function(spec) {

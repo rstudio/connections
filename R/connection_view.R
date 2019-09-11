@@ -16,6 +16,13 @@ connection_view <- function(con, connection_code = "", host = "", name = "") {
 }
 
 #' @export
+connection_view.list <- function(con, connection_code = "", host = "", name = "") {
+  if(host != "") con$host <- host
+  if(name != "") con$name <- name
+  open_connection_contract(con)
+}
+
+#' @export
 connection_view.connections_class <- function(con, connection_code = "", host = "", name = "") {
   if (!is.null(con$connection_object)) {
     connection_view(
@@ -37,7 +44,7 @@ conn_dbi_spec <- function(con, connection_code = "", host = "", name = "") {
   host_name <- ifelse(host != "" && name != "", paste0(host, "/", name), "")
   host <- ifelse(host == "", attr(class(con), "package"), host)
   sch <- dbi_schemas(con)
-  spec <- connection_list()
+  spec <- connection_contract()
   spec$type <- as.character(class(con))
   spec$host <- host
   spec$displayName <- ifelse(host_name == "", attr(class(con), "package"), host_name)

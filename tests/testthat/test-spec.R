@@ -1,6 +1,6 @@
 context("spec")
 
-spec <- connection_list(connections:::test_spec())
+spec <- connection_contract(connections:::test_spec())
 test_that("spec works", {
   expect_silent(open_connection_contract(spec))
   expect_is(spec$listObjectTypes(), "list")
