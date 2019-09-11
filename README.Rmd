@@ -46,6 +46,8 @@ toc <- function() {
 
 `r toc()`
 
+## Intro 
+
 The main goal of `connections` is to integrate `DBI`-compliant packages with the RStudio IDE's [Connection
 Pane](https://db.rstudio.com/rstudio/connections/).  Packages such as [RPostgres](https://github.com/r-dbi/RPostgres), [RSQLite](https://github.com/r-dbi/RSQLite), [RMariaDB](https://github.com/r-dbi/RMariaDB) and [bigrquery](https://github.com/r-dbi/bigrquery) connect R to those databases, but do not provide a direct integration with the Connections Pane. `connections` reads the configuration of the connection and creates the integration with RStudio.
 
@@ -96,7 +98,7 @@ connection_close(con)
 
 After closing, the code that can be used to re-connect is displayed in the Connections pane.  
 
-## `DBI`-compliant packages 
+## DBI-compliant packages 
 
 The main use for `connections` is to integrate the Connections pane with `DBI`-compliant connection packages.  These packages include: 
 
@@ -128,7 +130,7 @@ The code to reconnect is automatically created.  `connection_open()` makes sure 
 
 <img src = "man/figures/postgres-2.png" width = "400px"> <br/>
 
-## After `dbConnect()`
+## Non-integrated mode
 
 Even if `dbConnect()` is used to connect to the database, it is still possible to use the Connections pane.  
 

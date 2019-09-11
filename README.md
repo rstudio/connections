@@ -17,6 +17,12 @@ coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge
 
 <li>
 
+<a href=#intro>Intro</a>
+
+</li>
+
+<li>
+
 <a href=#installation>Installation</a>
 
 </li>
@@ -29,13 +35,13 @@ coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge
 
 <li>
 
-<a href=#dbi-compliant-packages>`DBI`-compliant packages</a>
+<a href=#dbi-compliant-packages>DBI-compliant packages</a>
 
 </li>
 
 <li>
 
-<a href=#after-dbconnect()>After `dbConnect()`</a>
+<a href=#non-integrated-mode>Non-integrated mode</a>
 
 </li>
 
@@ -46,6 +52,8 @@ coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge
 </li>
 
 </ul>
+
+## Intro
 
 The main goal of `connections` is to integrate `DBI`-compliant packages
 with the RStudio IDE’s [Connection
@@ -115,7 +123,7 @@ connection_close(con)
 After closing, the code that can be used to re-connect is displayed in
 the Connections pane.
 
-## `DBI`-compliant packages
+## DBI-compliant packages
 
 The main use for `connections` is to integrate the Connections pane with
 `DBI`-compliant connection packages. These packages include:
@@ -152,7 +160,7 @@ makes sure to also add a `library()` call for the respective
 
 <img src = "man/figures/postgres-2.png" width = "400px"> <br/>
 
-## After `dbConnect()`
+## Non-integrated mode
 
 Even if `dbConnect()` is used to connect to the database, it is still
 possible to use the Connections pane.
