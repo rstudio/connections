@@ -44,7 +44,12 @@ toc <- function() {
 [![Codecov test coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge.svg)](https://codecov.io/gh/edgararuiz/connections?branch=master)
 <!-- badges: end -->
 
-`r toc()`
+- [Intro](#intro)
+- [Installation](#installation)
+- [Basic Use](#basic-use)
+- [DBI-compliant packages](#dbi-compliant-packages)
+- [Non-integrated mode](#non-integrated-mode)
+- [Advanced Users](#advanced-users)
 
 ## Intro 
 

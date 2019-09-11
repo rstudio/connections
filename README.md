@@ -13,45 +13,12 @@ status](https://travis-ci.com/edgararuiz/connections.svg?branch=master)](https:/
 coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge.svg)](https://codecov.io/gh/edgararuiz/connections?branch=master)
 <!-- badges: end -->
 
-<ul>
-
-<li>
-
-<a href=#intro>Intro</a>
-
-</li>
-
-<li>
-
-<a href=#installation>Installation</a>
-
-</li>
-
-<li>
-
-<a href=#basic-use>Basic Use</a>
-
-</li>
-
-<li>
-
-<a href=#dbi-compliant-packages>DBI-compliant packages</a>
-
-</li>
-
-<li>
-
-<a href=#non-integrated-mode>Non-integrated mode</a>
-
-</li>
-
-<li>
-
-<a href=#advanced-users>Advanced Users</a>
-
-</li>
-
-</ul>
+  - [Intro](#intro)
+  - [Installation](#installation)
+  - [Basic Use](#basic-use)
+  - [DBI-compliant packages](#dbi-compliant-packages)
+  - [Non-integrated mode](#non-integrated-mode)
+  - [Advanced Users](#advanced-users)
 
 ## Intro
 
