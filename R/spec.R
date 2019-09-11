@@ -8,6 +8,14 @@ spec_val <- function(entry) {
     entry
   }
 }
+char_to_code <- function(entry) {
+  if (class(entry) == "character") {
+    eval(parse(text = entry))
+  } else {
+    entry
+  }
+}
+
 
 #' Creates an RStudio IDE Contract object
 #'
@@ -24,8 +32,8 @@ connection_contract <- function(spec = base_spec()) {
     host = spec_val(spec$host),
     displayName = spec_val(spec$name),
     connectCode = spec_val(spec$connect_code),
-    disconnect = spec$disconnect,
-    previewObject = spec$preview_object,
+    disconnect = char_to_code(spec$disconnect),
+    previewObject = char_to_code(spec$preview_object),
     listObjectTypes = function(...) {
       list(catalog = list(
         contains =

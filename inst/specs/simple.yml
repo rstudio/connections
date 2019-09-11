@@ -2,7 +2,7 @@ name: displayName
 type: type
 host: host
 connect_code: Place connection code here
-disconnect:  function() observer$connectionClosed("type", "host")
+disconnect:  function() connection_close(con, "host", "type")
 preview_object: function(table, view, ...) c(table, view)
 catalogs:
   name: my_catalog

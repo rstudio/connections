@@ -5,7 +5,7 @@ Authors@R:
     person("Edgar", "Ruiz", email = "edgar@rstudio.com", role = c("aut", "cre"))
 Description: Provides a generic implementation of the RStudio Connection Contract to 
     make it easier for database connections, and other type of connections, opened 
-    via R packages to take advantage of the Connections Pane inside the RStudio IDE.
+    via R packages integrate with the Connections Pane inside the RStudio IDE.
 License: MIT + file LICENSE
 Imports:
   DBI,
