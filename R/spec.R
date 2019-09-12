@@ -15,8 +15,6 @@ char_to_code <- function(entry) {
     entry
   }
 }
-
-
 #' Creates an RStudio IDE Contract object
 #'
 #' @param spec A list object that containing the structure of the Contract object
@@ -57,15 +55,18 @@ connection_contract <- function(spec = base_spec()) {
       ctls <- get_object(spec, "catalogs", catalog)
       schs <- get_object(ctls, "schemas", schema)
       return(get_object(schs, "tables")$data)
-    },
-    listColumns = function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
+    })
+  if(!is.null(spec$list_columns)) {
+    cc$listColumns  <- char_to_code(spec$list_columns)
+  } else {
+   cc$listColumns  <- function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
       table_object <- paste0(table, view)
       ctls <- get_object(spec, "catalogs", catalog)
       schs <- get_object(ctls, "schemas", schema)
       tbls <- get_object(schs, "tables", table_object)
       get_object(tbls, "fields")$data
     }
-  )
+  }
   if(!is.null(spec$icon)) cc$icon <- spec_val(spec$icon)
   cc
 }
