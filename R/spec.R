@@ -1,4 +1,6 @@
 #' @import DBI
+#' @import pins
+#' @importFrom dplyr tbl
 #' @importFrom utils capture.output
 #' @keywords internal
 spec_val <- function(entry) {

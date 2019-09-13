@@ -9,7 +9,9 @@ Description: Provides a generic implementation of the RStudio Connection Contrac
 License: MIT + file LICENSE
 Imports:
   DBI,
-  methods
+  methods,
+  pins,
+  dplyr
 Suggests:
     RSQLite,
     testthat (>= 2.1.0),

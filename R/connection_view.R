@@ -23,33 +23,18 @@ connection_view.list <- function(con, connection_code = "", host = "", name = ""
 }
 
 #' @export
-connection_view.connections_class <- function(con, connection_code = "", host = "", name = "") {
-  if (!is.null(con$connection_object)) {
-    connection_view(
-      con$connection_object,
-      connection_code = con$connection_code,
-      host = con$host,
-      name = con$name
-    )
-  }
-}
-
-#' @export
 connection_view.DBIConnection <- function(con, connection_code = "", host = "", name = "") {
-  spec <- conn_dbi_spec(con, connection_code, host, name)
-  open_connection_contract(spec)
-}
-
-conn_dbi_spec <- function(con, connection_code = "", host = "", name = "") {
+  con_metadata <- cnn_session_get(cnn_get_id(con))
+  if(is.null(con_metadata)) stop("No metadata was found for this connection")
   host_name <- ifelse(host != "" && name != "", paste0(host, "/", name), "")
-  host <- ifelse(host == "", attr(class(con), "package"), host)
+  host <- ifelse(host == "", con_metadata$host, host)
   sch <- dbi_schemas(con)
   spec <- connection_contract()
   spec$type <- as.character(class(con))
   spec$host <- host
   spec$displayName <- ifelse(host_name == "", attr(class(con), "package"), host_name)
   spec$disconnect <- function() connection_close(con, host = host)
-  spec$connectCode <- connection_code
+  spec$connectCode <- ifelse(connection_code == "", build_code(con_metadata), connection_code)
   spec$listObjects <- function(catalog = NULL, schema = NULL, ...) {
     if (is.null(catalog)) {
       return(
@@ -81,5 +66,15 @@ conn_dbi_spec <- function(con, connection_code = "", host = "", name = "") {
     if (!is.null(sch)) sel_schema <- schema
     dbi_preview(limit, con, table, sel_schema)
   }
-  spec
+  open_connection_contract(spec)
+}
+
+build_code <- function(metadata) {
+  code_library <- lapply(metadata$libraries, function(x) paste0("library(", x, ")"))
+  code_line <- trimws(capture.output(metadata$args))
+  code_line <- paste0(code_line, collapse = "")
+  code_line <- paste0("con <- ", code_line)
+  code_line <- c(code_library, code_line)
+  code_line <- paste(code_line, collapse = "\n")
+  code_line
 }

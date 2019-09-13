@@ -15,32 +15,29 @@ connection_open <- function(...) {
 #' @export
 connection_open.DBIDriver <- function(drv, ...) {
   all_args <- substitute(connection_open(drv, ...))
+  con <- dbConnect(drv, ...)
 
-  arg_names <- names(all_args)
-  arg_values <- as.character(all_args)
-  arg_host <- ifelse(any(arg_names == "host"), arg_values[arg_names == "host"], "")
-  arg_name <- ifelse(any(arg_names == "database"), arg_values[arg_names == "database"], "")
-  arg_name <- ifelse(any(arg_names == "dbname") && arg_name == "", arg_values[arg_names == "dbname"], "")
+  ans <- names(all_args)
+  avs <- as.character(all_args)
+  ah <- ifelse(any(ans == "host"), avs[ans == "host"], "")
+  ah <- ifelse(ah == "", attr(class(con), "package"), ah)
+  an <- ifelse(any(ans == "database"), avs[ans == "database"], "")
+  an <- ifelse(any(ans == "dbname") && an == "", avs[ans == "dbname"], "")
 
-  drv_package <- attributes(class(drv))$package
-  if (!is.null(drv_package)) {
-    pkg_lib <- paste0("library(", drv_package, ")")
-  } else {
-    pkg_lib <- NULL
-  }
-
-  code_line <- trimws(capture.output(all_args))
-  code_line <- paste0(code_line, collapse = "")
-  code_line <- paste0("con <- ", code_line)
-  code_line <- c("library(DBI)", "library(connections)", pkg_lib, code_line)
-  code_line <- paste(code_line, collapse = "\n")
-  con <- list(
-    host = arg_host,
-    name = arg_name,
-    connection_code = code_line,
-    connection_object = dbConnect(drv, ...)
+  pkg <- attributes(class(drv))$package
+  libraries <- list("DBI", "connections")
+  if(!is.null(pkg)) libraries <- c(libraries, pkg)
+  meta_data <- list(
+    args = all_args,
+    libraries = libraries,
+    host = ah,
+    name = an,
+    type = as.character(class(con))
   )
-  class(con) <- "connections_class"
+  cnn_session_set(
+    capture.output(con@ptr),
+    meta_data
+  )
   connection_view(con)
   con
 }
