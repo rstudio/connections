@@ -16,7 +16,7 @@ Refreshes a connection
 }
 \examples{
 library(DBI)
-con <- dbConnect(RSQLite::SQLite(), path = ":dbname:")
+con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 connection_update(con)
 connection_close(con)
 }

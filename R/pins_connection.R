@@ -3,7 +3,7 @@ pin.DBIConnection <- function(x, name = NULL, description = NULL, board = NULL, 
   path <- tempfile()
   dir.create(path)
   on.exit(unlink(path))
-  mt <- cnn_session_get(cnn_get_id(con))
+  mt <- cnn_session_get(cnn_get_id(x))
   saveRDS(mt, file.path(path, "code.rds"))
   metadata <- list(
     columns = list(

@@ -19,6 +19,6 @@ test_that("Connection works", {
   expect_silent(using_connections())
 })
 
-test_that("DBI connection works", {
-  expect_silent(using_DBI())
-})
+# test_that("DBI connection works", {
+#   expect_silent(using_DBI())
+# })
