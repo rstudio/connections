@@ -69,3 +69,37 @@ item_to_table <- function(item) {
   }
   tbls
 }
+
+dbi_list_objects <- function(catalog = NULL, schema = NULL, sch, name = "", type = "", con, ...) {
+  if (is.null(catalog)) {
+    return(
+      data_frame(
+        name = ifelse(name == "", type, name),
+        type = "catalog"
+      )
+    )
+  }
+  if (is.null(schema)) {
+    if (is.null(sch)) {
+      return(data_frame(name = "Default", type = "schema"))
+    } else {
+      return(sch)
+    }
+  }
+  sel_schema <- NULL
+  if (!is.null(sch)) sel_schema <- schema
+  dbi_tables(con, schema = sel_schema)
+}
+
+dbi_list_columns <- function(catalog = NULL, schema = NULL,
+                             table = NULL, view = NULL, sch, con, ...) {
+  sel_schema <- NULL
+  if (!is.null(sch)) sel_schema <- schema
+  dbi_fields(con, table, sel_schema)
+}
+
+dbi_preview_object <- function(limit, table, schema, sch, con, ...) {
+  sel_schema <- NULL
+  if (!is.null(sch)) sel_schema <- schema
+  dbi_preview(limit, con, table, sel_schema)
+}

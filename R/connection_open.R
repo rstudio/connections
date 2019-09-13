@@ -17,23 +17,37 @@ connection_open.DBIDriver <- function(drv, ...) {
   all_args <- substitute(connection_open(drv, ...))
   con <- dbConnect(drv, ...)
 
-  ans <- names(all_args)
-  avs <- as.character(all_args)
-  ah <- ifelse(any(ans == "host"), avs[ans == "host"], "")
-  ah <- ifelse(ah == "", attr(class(con), "package"), ah)
-  an <- ifelse(any(ans == "database"), avs[ans == "database"], "")
-  an <- ifelse(any(ans == "dbname") && an == "", avs[ans == "dbname"], "")
+  arg_names <- names(all_args)
+  arg_vals <- as.character(all_args)
+
+  host <- first_non_empty(
+    arg_vals[arg_names == "host"],
+    attr(class(con), "package")
+    )
+
+  name <- first_non_empty(
+    arg_vals[arg_names == "database"],
+    arg_vals[arg_names == "dbname"]
+  )
+
+  if(is.null(name)) {
+    name <- as.character(class(con))
+  } else {
+    name <- paste0(host, "/", name)
+  }
 
   pkg <- attributes(class(drv))$package
   libraries <- list("DBI", "connections")
   if(!is.null(pkg)) libraries <- c(libraries, pkg)
+
   meta_data <- list(
     args = all_args,
     libraries = libraries,
-    host = ah,
-    name = an,
+    host = host,
+    name = name,
     type = as.character(class(con))
   )
+
   cnn_session_set(capture.output(con@ptr), meta_data)
   connection_view(con)
   con

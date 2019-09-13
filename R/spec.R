@@ -45,8 +45,11 @@ connection_contract <- function(spec = base_spec()) {
               )
           ))
       ))
-    },
-    listObjects = function(catalog = NULL, schema = NULL, ...) {
+    })
+  if(!is.null(spec$list_objects)) {
+    cc$listObjects  <- char_to_code(spec$list_objects)
+  } else {
+    cc$listObjects  <- function(catalog = NULL, schema = NULL, ...) {
       if (is.null(catalog)) {
         return(get_object(spec, "catalogs")$data)
       }
@@ -57,7 +60,8 @@ connection_contract <- function(spec = base_spec()) {
       ctls <- get_object(spec, "catalogs", catalog)
       schs <- get_object(ctls, "schemas", schema)
       return(get_object(schs, "tables")$data)
-    })
+    }
+  }
   if(!is.null(spec$list_columns)) {
     cc$listColumns  <- char_to_code(spec$list_columns)
   } else {
