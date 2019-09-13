@@ -71,10 +71,9 @@ connection_view.DBIConnection <- function(con, connection_code = "", host = "", 
 
 build_code <- function(metadata) {
   code_library <- lapply(metadata$libraries, function(x) paste0("library(", x, ")"))
-  code_line <- trimws(capture.output(metadata$args))
-  code_line <- paste0(code_line, collapse = "")
-  code_line <- paste0("con <- ", code_line)
-  code_line <- c(code_library, code_line)
-  code_line <- paste(code_line, collapse = "\n")
-  code_line
+  cl <- trimws(capture.output(metadata$args))
+  cl <- paste0(cl, collapse = "")
+  cl <- paste0("con <- ", cl)
+  cl <- c(code_library, cl)
+  paste(cl, collapse = "\n")
 }

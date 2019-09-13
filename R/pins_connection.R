@@ -1,28 +1,37 @@
 #' @export
-pin.connections_class <- function(x, name = NULL, description = NULL, board = NULL, ...) {
+pin.DBIConnection <- function(x, name = NULL, description = NULL, board = NULL, ...) {
   path <- tempfile()
   dir.create(path)
   on.exit(unlink(path))
-  code <- x$connection_code
-  saveRDS(code, file.path(path, "code.rds"))
-  host <- ifelse(x$host == "", attr(class(x$connection_object), "package"), x$host)
-  type <- as.character(class(x$connection_object))
+  mt <- cnn_session_get(cnn_get_id(con))
+  saveRDS(mt, file.path(path, "code.rds"))
   metadata <- list(
     columns = list(
-      host = host,
-      type = type
+      host = mt$host,
+      type = mt$type
     )
   )
-  board_pin_store(board, path, name, description, "connections_open", metadata, ...)
+  board_pin_store(board, path, name, description, "cnn_open", metadata, ...)
   # To prevent printout of x
   x <- NULL
 }
 
 #' @export
-pin_load.connections_open <- function(path, ...) {
+pin_load.cnn_open <- function(path, ...) {
   code <- readRDS(file.path(path, "code.rds"))
-  eval(parse(text = code))
+  open_code(code)
 }
 
 #' @export
-pin_preview.connections_class  <- function(x, board = NULL, ...) {}
+pin_preview.DBIConnection  <- function(x, board = NULL, ...) {}
+
+open_code <- function(metadata) {
+  code_library <- lapply(
+    metadata$libraries,
+    function(x) paste0("library(", x, ")")
+    )
+  eval(parse(text = code_library))
+  cl <- capture.output(metadata$args)
+  cl <- paste0(cl, collapse = "")
+  eval(parse(text = cl))
+}
