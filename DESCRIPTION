@@ -11,7 +11,8 @@ Imports:
   DBI,
   methods,
   pins,
-  dplyr
+  dplyr,
+  dbplyr
 Suggests:
     RSQLite,
     testthat (>= 2.1.0),
