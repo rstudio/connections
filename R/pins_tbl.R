@@ -1,8 +1,11 @@
 #' @export
-pin.tbl_ccn <- function(x, name = NULL, description = NULL, board = NULL, ...) {
+pin.tbl <- function(x, name = NULL, description = NULL, board = NULL, ...) {
   path <- tempfile()
   dir.create(path)
   on.exit(unlink(path))
+  mt <- cnn_session_get(cnn_get_id(x$src$con))
+  if(is.null(mt)) stop("No metadata was found for this connection")
+  saveRDS(mt, file.path(path, "code.rds"))
   saveRDS(x, file.path(path, "tbl.rds"))
   metadata <- list(
     columns = list(
@@ -17,20 +20,11 @@ pin.tbl_ccn <- function(x, name = NULL, description = NULL, board = NULL, ...) {
 #' @export
 pin_load.pinned_tbl <- function(path, ...) {
   tbl_read <- readRDS(file.path(path, "tbl.rds"))
-  code <- attr(tbl_read, "code")
-  eval(parse(text = code))
-  tbl_read$src$con <- con$connection_object
+  code <- readRDS(file.path(path, "code.rds"))
+  con <- open_code(code)
+  tbl_read$src$con <- con
   tbl_read
 }
 
 #' @export
 pin_preview.tbl_ccn <- function(x, board = NULL, ...) {}
-
-#' @export
-tbl.connections_class <- function(src, from, ...) {
-  con <- src$connection_object
-  t <- tbl(con, from)
-  attr(t, "code") <-  src$connection_code
-  class(t) <- c("tbl_ccn", class(t))
-  t
-}

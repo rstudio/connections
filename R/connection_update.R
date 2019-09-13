@@ -15,11 +15,11 @@ connection_update <- function(con, hint = "") {
 
 #' @export
 connection_update.DBIConnection <- function(con, hint = "") {
-  type <- as.character(class(con))
-  host <- attr(class(con), "package")
+  con_metadata <- cnn_session_get(cnn_get_id(con))
+  if(is.null(con_metadata)) stop("No metadata was found for this connection")
+  type <- con_metadata$type
+  host <- con_metadata$host
   observer <- getOption("connectionObserver")
-  if (is.null(observer)) {
-    return(invisible(NULL))
-  }
+  if (is.null(observer)) return(invisible(NULL))
   observer$connectionUpdated(type, host, hint = hint)
 }
