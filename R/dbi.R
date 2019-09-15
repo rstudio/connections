@@ -89,20 +89,20 @@ dbi_list_objects <- function(catalog = NULL, schema = NULL, sch, name = "", type
   }
   sel_schema <- NULL
   if (!is.null(sch)) sel_schema <- schema
-  dbi_tables(con@con, schema = sel_schema)
+  dbi_tables(con, schema = sel_schema)
 }
 
 dbi_list_columns <- function(catalog = NULL, schema = NULL,
                              table = NULL, view = NULL, sch, con, ...) {
   sel_schema <- NULL
   if (!is.null(sch)) sel_schema <- schema
-  dbi_fields(con@con, table, sel_schema)
+  dbi_fields(con, table, sel_schema)
 }
 
 dbi_preview_object <- function(limit, table, schema, sch, con, ...) {
   sel_schema <- NULL
   if (!is.null(sch)) sel_schema <- schema
-  dbi_preview(limit, con@con, table, sel_schema)
+  dbi_preview(limit, con, table, sel_schema)
 }
 
 dbi_build_code <- function(metadata) {
