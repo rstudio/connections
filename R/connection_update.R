@@ -19,6 +19,8 @@ connection_update.DBIConnection <- function(con, hint = "") {
   type <- session$type
   host <- session$host
   observer <- getOption("connectionObserver")
-  if (is.null(observer)) return(invisible(NULL))
+  if (is.null(observer)) {
+    return(invisible(NULL))
+  }
   observer$connectionUpdated(type, host, hint = hint)
 }

@@ -17,8 +17,8 @@ connection_view <- function(con, connection_code = "", host = "", name = "") {
 
 #' @export
 connection_view.list <- function(con, connection_code = "", host = "", name = "") {
-  if(host != "") con$host <- host
-  if(name != "") con$name <- name
+  if (host != "") con$host <- host
+  if (name != "") con$name <- name
   open_connection_contract(con)
 }
 

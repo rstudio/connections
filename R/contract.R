@@ -33,11 +33,12 @@ connection_contract <- function(spec = base_spec()) {
               )
           ))
       ))
-    })
-  if(!is.null(spec$list_objects)) {
-    cc$listObjects  <- eval_char(spec$list_objects)
+    }
+  )
+  if (!is.null(spec$list_objects)) {
+    cc$listObjects <- eval_char(spec$list_objects)
   } else {
-    cc$listObjects  <- function(catalog = NULL, schema = NULL, ...) {
+    cc$listObjects <- function(catalog = NULL, schema = NULL, ...) {
       if (is.null(catalog)) {
         return(get_object(spec, "catalogs")$data)
       }
@@ -50,10 +51,10 @@ connection_contract <- function(spec = base_spec()) {
       return(get_object(schs, "tables")$data)
     }
   }
-  if(!is.null(spec$list_columns)) {
-    cc$listColumns  <- eval_char(spec$list_columns)
+  if (!is.null(spec$list_columns)) {
+    cc$listColumns <- eval_char(spec$list_columns)
   } else {
-   cc$listColumns  <- function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
+    cc$listColumns <- function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
       table_object <- paste0(table, view)
       ctls <- get_object(spec, "catalogs", catalog)
       schs <- get_object(ctls, "schemas", schema)
@@ -61,7 +62,7 @@ connection_contract <- function(spec = base_spec()) {
       get_object(tbls, "fields")$data
     }
   }
-  if(!is.null(spec$icon)) cc$icon <- eval_list(spec$icon)
+  if (!is.null(spec$icon)) cc$icon <- eval_list(spec$icon)
   cc
 }
 

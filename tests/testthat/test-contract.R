@@ -9,4 +9,3 @@ test_that("Contract spec function works", {
   expect_is(spec$listObjects("Database", "Schema"), "data.frame")
   expect_is(spec$listColumns("Database", "Schema", "table1"), "data.frame")
 })
-

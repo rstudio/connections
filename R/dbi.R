@@ -10,7 +10,8 @@ dbi_schemas <- function(con) {
       list(
         type = names(attributes(x)$name),
         name = as.character(attributes(x)$name)
-      ))
+      )
+  )
   item_to_table(schs)
 }
 

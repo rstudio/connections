@@ -13,5 +13,3 @@ test_that("list methods work", {
   expect_silent(connection_view(test_spec()))
   expect_silent(connection_close(list(), "type", "host"))
 })
-
-
