@@ -1,17 +1,51 @@
 #' @import DBI
 #' @import pins
+#' @importFrom methods new
 #' @importFrom dplyr tbl
+#' @importFrom dplyr copy_to
 #' @importFrom utils capture.output
 #' @keywords internal
 NULL
 
-#' Creates an RStudio IDE Contract object
+#' Converts a list obejct into an RStudio IDE Contract object
 #'
-#' @param spec A list object that containing the structure of the Contract object
+#' @param spec A list object that containing the structure of the Contract object.
+#' For a reference of the list structure see the example.
 #'
 #' @examples
 #'
-#' connection_contract()
+#' my_conn <-  list(
+#'   name = "name",
+#'   type = "type",
+#'   host = "host",
+#'   connect_code = "",
+#'   connection_object = "",
+#'   icon = "",
+#'   disconnect = function() connection_close(my_conn, "host", "type"),
+#'   preview_object = function() {},
+#'   catalogs = list(
+#'     name = "Database",
+#'     type = "catalog",
+#'     schemas = list(
+#'       name = "Schema",
+#'       type = "schema",
+#'       tables = list(
+#'         list(
+#'           name = "table1",
+#'           type = "table",
+#'           fields = list(name = "field1", type = "chr")
+#'         ),
+#'         list(
+#'           code = list(as.list(
+#'             data.frame(name = "view1", type = "view", stringsAsFactors = FALSE))
+#'           )
+#'         )
+#'       ))
+#'   ))
+#' contract <- connection_contract(my_conn)
+#' str(contract)
+
+
 #' @export
 connection_contract <- function(spec = base_spec()) {
   cc <- list(

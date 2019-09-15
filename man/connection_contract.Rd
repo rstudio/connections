@@ -2,17 +2,47 @@
 % Please edit documentation in R/contract.R
 \name{connection_contract}
 \alias{connection_contract}
-\title{Creates an RStudio IDE Contract object}
+\title{Converts a list obejct into an RStudio IDE Contract object}
 \usage{
 connection_contract(spec = base_spec())
 }
 \arguments{
-\item{spec}{A list object that containing the structure of the Contract object}
+\item{spec}{A list object that containing the structure of the Contract object.
+For a reference of the list structure see the example.}
 }
 \description{
-Creates an RStudio IDE Contract object
+Converts a list obejct into an RStudio IDE Contract object
 }
 \examples{
 
-connection_contract()
+my_conn <-  list(
+  name = "name",
+  type = "type",
+  host = "host",
+  connect_code = "",
+  connection_object = "",
+  icon = "",
+  disconnect = function() connection_close(my_conn, "host", "type"),
+  preview_object = function() {},
+  catalogs = list(
+    name = "Database",
+    type = "catalog",
+    schemas = list(
+      name = "Schema",
+      type = "schema",
+      tables = list(
+        list(
+          name = "table1",
+          type = "table",
+          fields = list(name = "field1", type = "chr")
+        ),
+        list(
+          code = list(as.list(
+            data.frame(name = "view1", type = "view", stringsAsFactors = FALSE))
+          )
+        )
+      ))
+  ))
+contract <- connection_contract(my_conn)
+str(contract)
 }

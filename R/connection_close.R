@@ -24,13 +24,11 @@ connection_close.list <- function(con, host = "", type = "", leave_open = FALSE)
 }
 
 #' @export
-connection_close.DBIConnection <- function(con, host = "", type = "", leave_open = FALSE) {
-  type <- ifelse(type == "", as.character(class(con)), type)
-  host <- ifelse(host == "", attr(class(con), "package"), host)
+connection_close.connConnection <- function(con, host = "", type = "", leave_open = FALSE) {
   observer <- getOption("connectionObserver")
   if (is.null(observer)) {
     return(invisible(NULL))
   }
-  observer$connectionClosed(type, host)
-  if (!leave_open) dbDisconnect(con)
+  observer$connectionClosed(con@type, con@host)
+  if (!leave_open) dbDisconnect(con@con)
 }

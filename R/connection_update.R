@@ -14,13 +14,10 @@ connection_update <- function(con, hint = "") {
 }
 
 #' @export
-connection_update.DBIConnection <- function(con, hint = "") {
-  session <- conn_session_get(capture.output(con@ptr))
-  type <- session$type
-  host <- session$host
+connection_update.connConnection <- function(con, hint = "") {
   observer <- getOption("connectionObserver")
   if (is.null(observer)) {
     return(invisible(NULL))
   }
-  observer$connectionUpdated(type, host, hint = hint)
+  observer$connectionUpdated(con@type, con@host, hint = hint)
 }

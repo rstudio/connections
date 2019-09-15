@@ -23,8 +23,9 @@ connection_view.list <- function(con, connection_code = "", host = "", name = ""
 }
 
 #' @export
-connection_view.DBIConnection <- function(con, connection_code = "", host = "", name = "") {
-  session <- conn_session_get(capture.output(con@ptr))
+connection_view.connConnection <- function(con, connection_code = "", host = "", name = "") {
+  session <- conn_session_get(con@id)
+  con <- con@con
   host_name <- ifelse(host != "" && name != "", paste0(host, "/", name), "")
   sch <- dbi_schemas(con)
   spec <- base_spec()

@@ -1,6 +1,6 @@
 Package: connections
 Title: Database and other connections on the RStudio IDE
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Authors@R:
     person("Edgar", "Ruiz", email = "edgar@rstudio.com", role = c("aut", "cre"))
 Description: Provides a generic implementation of the RStudio Connection Contract to 
@@ -12,7 +12,8 @@ Imports:
   methods,
   pins,
   dplyr,
-  dbplyr
+  dbplyr,
+  uuid
 Suggests:
     RSQLite,
     testthat (>= 2.1.0),

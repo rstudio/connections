@@ -47,7 +47,14 @@ connection_open.DBIDriver <- function(drv, ...) {
     name = name,
     type = as.character(class(con))
   )
-  conn_session_set(capture.output(con@ptr), meta_data)
-  connection_view(con)
-  con
+  id <- uuid::UUIDgenerate()
+  conn_session_set(id, meta_data)
+  cc <- connConnection(
+    host = host,
+    type = as.character(class(con)),
+    id = id,
+    con = con
+  )
+  connection_view(cc)
+  cc
 }
