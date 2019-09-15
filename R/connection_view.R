@@ -7,7 +7,7 @@
 #'
 #' @examples
 #' library(DBI)
-#' con <- dbConnect(RSQLite::SQLite(), path = ":dbname:")
+#' con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 #' connection_view(con)
 #' connection_close(con)
 #' @export
@@ -17,69 +17,28 @@ connection_view <- function(con, connection_code = "", host = "", name = "") {
 
 #' @export
 connection_view.list <- function(con, connection_code = "", host = "", name = "") {
-  if(host != "") con$host <- host
-  if(name != "") con$name <- name
+  if (host != "") con$host <- host
+  if (name != "") con$name <- name
   open_connection_contract(con)
 }
 
 #' @export
-connection_view.connections_class <- function(con, connection_code = "", host = "", name = "") {
-  if (!is.null(con$connection_object)) {
-    connection_view(
-      con$connection_object,
-      connection_code = con$connection_code,
-      host = con$host,
-      name = con$name
-    )
-  }
-}
-
-#' @export
 connection_view.DBIConnection <- function(con, connection_code = "", host = "", name = "") {
-  spec <- conn_dbi_spec(con, connection_code, host, name)
-  open_connection_contract(spec)
-}
-
-conn_dbi_spec <- function(con, connection_code = "", host = "", name = "") {
+  session <- conn_session_get(capture.output(con@ptr))
   host_name <- ifelse(host != "" && name != "", paste0(host, "/", name), "")
-  host <- ifelse(host == "", attr(class(con), "package"), host)
   sch <- dbi_schemas(con)
-  spec <- connection_contract()
-  spec$type <- as.character(class(con))
-  spec$host <- host
-  spec$displayName <- ifelse(host_name == "", attr(class(con), "package"), host_name)
-  spec$disconnect <- function() connection_close(con, host = host)
-  spec$connectCode <- connection_code
-  spec$listObjects <- function(catalog = NULL, schema = NULL, ...) {
-    if (is.null(catalog)) {
-      return(
-        data_frame(
-          name = ifelse(name == "", spec$type, name),
-          type = "catalog"
-        )
-      )
-    }
-    if (is.null(schema)) {
-      if (is.null(sch)) {
-        return(data_frame(name = "Default", type = "schema"))
-      } else {
-        return(sch)
-      }
-    }
-    sel_schema <- NULL
-    if (!is.null(sch)) sel_schema <- schema
-    dbi_tables(con, schema = sel_schema)
-  }
-  spec$listColumns <- function(catalog = NULL, schema = NULL,
-                                 table = NULL, view = NULL, ...) {
-    sel_schema <- NULL
-    if (!is.null(sch)) sel_schema <- schema
-    dbi_fields(con, table, sel_schema)
-  }
-  spec$previewObject <- function(limit, table, schema, ...) {
-    sel_schema <- NULL
-    if (!is.null(sch)) sel_schema <- schema
-    dbi_preview(limit, con, table, sel_schema)
-  }
-  spec
+  spec <- base_spec()
+  spec$type <- session$type
+  spec$name <- first_non_empty(name, session$name)
+  spec$host <- first_non_empty(host, session$host)
+  spec$connect_code <- first_non_empty(connection_code, dbi_build_code(session))
+  spec$disconnect <- function() connection_close(con, host = spec$host)
+  spec$list_objects <- function(catalog = NULL, schema = NULL, ...)
+    dbi_list_objects(catalog, schema, sch, spec$name, spec$type, con)
+  spec$list_columns <- function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...)
+    dbi_list_columns(catalog, schema, table, view, sch, con)
+  spec$preview_object <- function(limit, table, schema, ...)
+    dbi_preview_object(limit, table, schema, sch, con)
+  contract_spec <- connection_contract(spec)
+  open_connection_contract(contract_spec)
 }

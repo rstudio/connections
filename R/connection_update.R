@@ -5,7 +5,7 @@
 #'
 #' @examples
 #' library(DBI)
-#' con <- dbConnect(RSQLite::SQLite(), path = ":dbname:")
+#' con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 #' connection_update(con)
 #' connection_close(con)
 #' @export
@@ -15,8 +15,9 @@ connection_update <- function(con, hint = "") {
 
 #' @export
 connection_update.DBIConnection <- function(con, hint = "") {
-  type <- as.character(class(con))
-  host <- attr(class(con), "package")
+  session <- conn_session_get(capture.output(con@ptr))
+  type <- session$type
+  host <- session$host
   observer <- getOption("connectionObserver")
   if (is.null(observer)) {
     return(invisible(NULL))

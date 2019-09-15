@@ -1,20 +1,10 @@
 #' @import DBI
+#' @import pins
+#' @importFrom dplyr tbl
 #' @importFrom utils capture.output
 #' @keywords internal
-spec_val <- function(entry) {
-  if (class(entry) == "list") {
-    eval(parse(text = entry$code))
-  } else {
-    entry
-  }
-}
-char_to_code <- function(entry) {
-  if (class(entry) == "character") {
-    eval(parse(text = entry))
-  } else {
-    entry
-  }
-}
+NULL
+
 #' Creates an RStudio IDE Contract object
 #'
 #' @param spec A list object that containing the structure of the Contract object
@@ -25,13 +15,13 @@ char_to_code <- function(entry) {
 #' @export
 connection_contract <- function(spec = base_spec()) {
   cc <- list(
-    connectionObject = spec_val(spec$connection_object),
-    type = spec_val(spec$type),
-    host = spec_val(spec$host),
-    displayName = spec_val(spec$name),
-    connectCode = spec_val(spec$connect_code),
-    disconnect = char_to_code(spec$disconnect),
-    previewObject = char_to_code(spec$preview_object),
+    connectionObject = eval_list(spec$connection_object),
+    type = eval_list(spec$type),
+    host = eval_list(spec$host),
+    displayName = eval_list(spec$name),
+    connectCode = eval_list(spec$connect_code),
+    disconnect = eval_char(spec$disconnect),
+    previewObject = eval_char(spec$preview_object),
     listObjectTypes = function(...) {
       list(catalog = list(
         contains =
@@ -43,8 +33,12 @@ connection_contract <- function(spec = base_spec()) {
               )
           ))
       ))
-    },
-    listObjects = function(catalog = NULL, schema = NULL, ...) {
+    }
+  )
+  if (!is.null(spec$list_objects)) {
+    cc$listObjects <- eval_char(spec$list_objects)
+  } else {
+    cc$listObjects <- function(catalog = NULL, schema = NULL, ...) {
       if (is.null(catalog)) {
         return(get_object(spec, "catalogs")$data)
       }
@@ -55,11 +49,12 @@ connection_contract <- function(spec = base_spec()) {
       ctls <- get_object(spec, "catalogs", catalog)
       schs <- get_object(ctls, "schemas", schema)
       return(get_object(schs, "tables")$data)
-    })
-  if(!is.null(spec$list_columns)) {
-    cc$listColumns  <- char_to_code(spec$list_columns)
+    }
+  }
+  if (!is.null(spec$list_columns)) {
+    cc$listColumns <- eval_char(spec$list_columns)
   } else {
-   cc$listColumns  <- function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
+    cc$listColumns <- function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...) {
       table_object <- paste0(table, view)
       ctls <- get_object(spec, "catalogs", catalog)
       schs <- get_object(ctls, "schemas", schema)
@@ -67,7 +62,7 @@ connection_contract <- function(spec = base_spec()) {
       get_object(tbls, "fields")$data
     }
   }
-  if(!is.null(spec$icon)) cc$icon <- spec_val(spec$icon)
+  if (!is.null(spec$icon)) cc$icon <- eval_list(spec$icon)
   cc
 }
 
@@ -80,76 +75,40 @@ open_connection_contract <- function(spec) {
   do.call("connection_opened", spec)
 }
 
-base_spec <- function() {
-  list(
-    name = "name",
-    type = "type",
-    host = "host",
-    connect_code = "",
-    connection_object = "",
-    disconnect = function() {},
-    preview_object = function() {},
-    catalogs = list(
-      name = "Database",
-      schemas = list(
-        code = "dbi_schemas(con)",
-        tables = list(
-          code = "dbi_tables(con, schema)",
-          fields = list(
-            code = "dbi_fields(con, table, schema)"
-          )
-        )
-      )
-    )
-  )
+eval_list <- function(entry) {
+  if (class(entry) == "list") {
+    eval(parse(text = entry$code))
+  } else {
+    entry
+  }
 }
 
-test_spec <- function() {
-  list(
-    name = "name",
-    type = "type",
-    host = "host",
-    connect_code = "",
-    connection_object = "",
-    disconnect = function() {},
-    preview_object = function() {},
-    catalogs = list(
-      name = "Database",
-      type = "catalog",
-      schemas = list(
-        name = "Schema",
-        type = "schema",
-        tables = list(
-          name = "table1",
-          type = "table",
-          fields = list(
-            name = "field1",
-            type = "chr"
-          )
-        )
-      )
-    )
-  )
+eval_char <- function(entry) {
+  if (class(entry) == "character") {
+    eval(parse(text = entry))
+  } else {
+    entry
+  }
 }
 
 get_element <- function(obj, item, name = NULL, element = NULL) {
-  i <- obj[[item]]
-  if (flat_list(i)) {
+  item <- obj[[item]]
+  if (flat_list(item)) {
     if (!is.null(name)) {
-      ns <- as.logical(lapply(i, function(x) x$name == name))
-      i <- i[ns][[1]]
+      ns <- as.logical(lapply(item, function(x) x$name == name))
+      item <- item[ns][[1]]
     }
     if (!is.null(element)) {
-      i <- lapply(i, function(x) x[[element]])
-      if (length(i) == 1) i <- i[[1]]
-      i <- i[as.logical(lapply(i, function(x) !is.null(x)))]
-      i <- as.character(i)
+      item <- lapply(item, function(x) x[[element]])
+      if (length(item) == 1) item <- item[[1]]
+      item <- item[as.logical(lapply(item, function(x) !is.null(x)))]
+      item <- as.character(item)
     }
   } else {
-    if (!is.null(name)) i <- i[i$name == name]
-    if (!is.null(element)) i <- i[[element]]
+    if (!is.null(name)) item <- item[item$name == name]
+    if (!is.null(element)) item <- item[[element]]
   }
-  i
+  item
 }
 
 item_object <- function(ctl, item = "") {
@@ -182,6 +141,9 @@ item_object <- function(ctl, item = "") {
 
 get_object <- function(base, item, name = "") {
   x <- item_object(base, item)
-  if (name != "") x <- get_element(x, "raw", name = name)
-  x
+  if (name != "") {
+    get_element(x, "raw", name = name)
+  } else {
+    x
+  }
 }

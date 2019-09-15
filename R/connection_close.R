@@ -24,16 +24,6 @@ connection_close.list <- function(con, host = "", type = "", leave_open = FALSE)
 }
 
 #' @export
-connection_close.connections_class <- function(con, host = "", type = "", leave_open = FALSE) {
-  connection_close(
-    con$connection_object,
-    host = con$host,
-    type = as.character(class(con$connection_object)),
-    leave_open
-  )
-}
-
-#' @export
 connection_close.DBIConnection <- function(con, host = "", type = "", leave_open = FALSE) {
   type <- ifelse(type == "", as.character(class(con)), type)
   host <- ifelse(host == "", attr(class(con), "package"), host)
