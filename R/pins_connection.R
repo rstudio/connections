@@ -3,12 +3,12 @@ pin.DBIConnection <- function(x, name = NULL, description = NULL, board = NULL, 
   path <- tempfile()
   dir.create(path)
   on.exit(unlink(path))
-  mt <- cnn_session_get(cnn_get_id(x))
-  saveRDS(mt, file.path(path, "code.rds"))
+  session <- conn_session_get(capture.output(x@ptr))
+  saveRDS(session, file.path(path, "code.rds"))
   metadata <- list(
     columns = list(
-      host = mt$host,
-      type = mt$type
+      host = session$host,
+      type = session$type
     )
   )
   board_pin_store(board, path, name, description, "cnn_open", metadata, ...)

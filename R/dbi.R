@@ -103,3 +103,12 @@ dbi_preview_object <- function(limit, table, schema, sch, con, ...) {
   if (!is.null(sch)) sel_schema <- schema
   dbi_preview(limit, con, table, sel_schema)
 }
+
+dbi_build_code <- function(metadata) {
+  code_library <- lapply(metadata$libraries, function(x) paste0("library(", x, ")"))
+  cl <- trimws(capture.output(metadata$args))
+  cl <- paste0(cl, collapse = "")
+  cl <- paste0("con <- ", cl)
+  cl <- c(code_library, cl)
+  paste(cl, collapse = "\n")
+}

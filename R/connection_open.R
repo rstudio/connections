@@ -47,8 +47,7 @@ connection_open.DBIDriver <- function(drv, ...) {
     name = name,
     type = as.character(class(con))
   )
-
-  cnn_session_set(capture.output(con@ptr), meta_data)
+  conn_session_set(capture.output(con@ptr), meta_data)
   connection_view(con)
   con
 }

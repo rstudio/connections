@@ -2,7 +2,7 @@ context("pin-connection")
 
 con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 dbWriteTable(con, "mtcars", mtcars)
-cm <- cnn_session_get(cnn_get_id(con))
+cm <- conn_session_get(capture.output(con@ptr))
 
 test_that("yup, we're good", {
   expect_silent(pin(con, "test"))
@@ -12,7 +12,8 @@ test_that("yup, we're good", {
 context("pin-tbl")
 
 test_that("super, here", {
-  expect_silent(pin(tbl(con, "mtcars"), "test"))
+  t <- tbl(con, "mtcars")
+  expect_silent(pin(t, "test"))
 })
 
 

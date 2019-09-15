@@ -3,9 +3,8 @@ pin.tbl <- function(x, name = NULL, description = NULL, board = NULL, ...) {
   path <- tempfile()
   dir.create(path)
   on.exit(unlink(path))
-  mt <- cnn_session_get(cnn_get_id(x$src$con))
-  if(is.null(mt)) stop("No metadata was found for this connection")
-  saveRDS(mt, file.path(path, "code.rds"))
+  session <- conn_session_get(capture.output(x$src$con@ptr))
+  saveRDS(session, file.path(path, "code.rds"))
   saveRDS(x, file.path(path, "tbl.rds"))
   metadata <- list(
     columns = list(
