@@ -50,9 +50,10 @@ tbl.connConnection <- function(src, from, ...) {
 copy_to.connConnection <- function(dest, df,
                                    name = deparse(substitute(df)),
                                    overwrite = FALSE, ...) {
-  copy_to(dest = dest@con, df = df,
+  ct <- copy_to(dest = dest@con, df = df,
           name = name, overwrite = overwrite, ...)
   connection_update(dest)
+  ct
 }
 
 
