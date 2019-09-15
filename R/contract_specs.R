@@ -27,7 +27,7 @@ test_spec <- function() {
     name = "name",
     type = "type",
     host = "host",
-    connect_code = "",
+    icon = "test.png",
     connection_object = "",
     disconnect = function() {},
     preview_object = function() {},
@@ -41,8 +41,14 @@ test_spec <- function() {
           name = "table1",
           type = "table",
           fields = list(
-            name = "field1",
-            type = "chr"
+            list(
+              name = "field1",
+              type = "chr"
+            ),
+            list(
+              name = "field2",
+              type = "int"
+            )
           )
         )
       )
