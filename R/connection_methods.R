@@ -38,6 +38,16 @@ setMethod(
   }
 )
 
+#' @rdname DBI
+#' @inheritParams DBI::dbSendQuery
+#' @export
+setMethod(
+  "dbSendQuery", "connConnection",
+  function(conn, statement, ...) {
+    dbSendQuery(conn@con, statement, ...)
+  }
+)
+
 #' @export
 tbl.connConnection <- function(src, from, ...) {
   t <- tbl(src@con, from)

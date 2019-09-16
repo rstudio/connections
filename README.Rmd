@@ -9,8 +9,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%",
-  eval = FALSE
+  out.width = "100%"
 )
 
 toc <- function() {
@@ -60,3 +59,110 @@ Install the development version from [GitHub](https://github.com/) with:
 # install.packages("remotes")
 remotes::install_github("edgararuiz/connections")
 ```
+```{r setup, include = FALSE}
+library(connections)
+library(RSQLite)
+library(dplyr)
+
+library(pins)
+board_register_local(cache = "~/pins")
+pin_remove("my_conn", "local")
+pin_remove("avg_mpg", "local")
+pin_remove("cyl_avg_mpg", "local")
+
+if(file.exists("local.sqlite")) unlink("local.sqlite")
+```
+
+## Using
+
+```{r}
+library(connections)
+library(RSQLite)
+library(DBI)
+
+con <- connection_open(SQLite(), "local.sqlite")
+```
+
+```{r}
+copy_to(con, mtcars, temporary = FALSE, overwrite = TRUE)
+```
+
+```{r}
+connection_close(con)
+```
+
+```{r}
+con <- connection_open(SQLite(), "local.sqlite")
+```
+
+```{r}
+db_mtcars <- tbl(con, "mtcars")
+
+db_mtcars %>%
+  group_by(am) %>%
+  summarise(avg_mpg = mean(mpg, na.rm = TRUE))
+```
+
+## `pins`
+
+```{r}
+library(pins)
+board_register_local(cache = "~/pins")
+```
+
+### Pin a connection
+
+```{r}
+pin(con, "my_conn", board = "local")
+```
+
+```{r}
+connection_close(con)
+```
+
+```{r}
+con <- pin_get("my_conn", board = "local")
+```
+
+```{r}
+tbl(con, "mtcars")
+```
+
+### Pin a `dplyr` database query
+
+```{r}
+x <- tbl(con, "mtcars") %>%
+  group_by(am) %>%
+  summarise(avg_mpg = mean(mpg, na.rm = TRUE))
+
+x
+```
+
+
+```{r}
+pin(x, "avg_mpg", board = "local")
+```
+
+```{r}
+connection_close(con)
+```
+
+```{r}
+pin_get("avg_mpg", board = "local")
+```
+
+### Full `pins` example
+
+```{r}
+pin_get("my_conn", board = "local") %>%
+  tbl("mtcars") %>%
+  group_by(cyl) %>%
+  summarise(avg_mpg = mean(mpg, na.rm = TRUE)) %>%
+  pin("cyl_avg_mpg", board = "local")
+```
+
+```{r}
+pin_get("cyl_avg_mpg", board = "local")
+```
+
+

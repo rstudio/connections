@@ -21,7 +21,7 @@ pin_load.pinned_tbl <- function(path, ...) {
   tbl_read <- readRDS(file.path(path, "tbl.rds"))
   code <- readRDS(file.path(path, "code.rds"))
   con <- dbi_run_code(code)
-  tbl_read$src$con <- con
+  tbl_read$src$con <- con@con
   tbl_read
 }
 
