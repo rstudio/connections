@@ -43,7 +43,6 @@ toc <- function() {
 [![Codecov test coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge.svg)](https://codecov.io/gh/edgararuiz/connections?branch=master)
 <!-- badges: end -->
 
-
 The main goal of `connections` is to integrate `DBI`-compliant packages with the RStudio IDE's [Connection
 Pane](https://db.rstudio.com/rstudio/connections/).  Packages such as [RPostgres](https://github.com/r-dbi/RPostgres), [RSQLite](https://github.com/r-dbi/RSQLite), [RMariaDB](https://github.com/r-dbi/RMariaDB) and [bigrquery](https://github.com/r-dbi/bigrquery) connect R to those databases, but do not provide a direct integration with the Connections Pane. `connections` reads the configuration of the connection and creates the integration with RStudio.
 
@@ -63,23 +62,37 @@ remotes::install_github("edgararuiz/connections")
 library(connections)
 library(RSQLite)
 library(dplyr)
-
 library(pins)
+
 board_register_local(cache = "~/pins")
 pin_remove("my_conn", "local")
 pin_remove("avg_mpg", "local")
-pin_remove("cyl_avg_mpg", "local")
+pin_remove("cyl_avg", "local")
 
 if(file.exists("local.sqlite")) unlink("local.sqlite")
 ```
 
 ## Using
 
+The two main functions added by `connections` are: 
+
+- `connection_open()` - Opens the database connection. Use instead of `dbConnect()`, but use the exact same arguments. It also automatically starts the Connections pane. 
+- `connection_close()` - Closes the database connection.
+
 ```{r}
 library(connections)
 library(RSQLite)
-library(DBI)
 
+con <- connection_open(SQLite(), "local.sqlite")
+```
+
+```{r}
+connection_close(con)
+```
+
+### Integration with `dplyr`
+
+```{r}
 con <- connection_open(SQLite(), "local.sqlite")
 ```
 
@@ -88,19 +101,18 @@ copy_to(con, mtcars, temporary = FALSE, overwrite = TRUE)
 ```
 
 ```{r}
-connection_close(con)
-```
-
-```{r}
-con <- connection_open(SQLite(), "local.sqlite")
-```
-
-```{r}
 db_mtcars <- tbl(con, "mtcars")
+```
 
+
+```{r}
 db_mtcars %>%
   group_by(am) %>%
   summarise(avg_mpg = mean(mpg, na.rm = TRUE))
+```
+
+```{r}
+connection_close(con)
 ```
 
 ## `pins`
@@ -158,11 +170,9 @@ pin_get("my_conn", board = "local") %>%
   tbl("mtcars") %>%
   group_by(cyl) %>%
   summarise(avg_mpg = mean(mpg, na.rm = TRUE)) %>%
-  pin("cyl_avg_mpg", board = "local")
+  pin("cyl_mpg", board = "local")
 ```
 
 ```{r}
-pin_get("cyl_avg_mpg", board = "local")
+pin_get("cyl_mpg", board = "local")
 ```
-
-

@@ -46,18 +46,36 @@ remotes::install_github("edgararuiz/connections")
 
 ## Using
 
+The two main functions added by `connections` are:
+
+  - `connection_open()` - Opens the database connection. Use instead of
+    `dbConnect()`, but use the exact same arguments. It also
+    automatically starts the Connections pane.
+  - `connection_close()` - Closes the database connection.
+
+<!-- end list -->
+
 ``` r
 library(connections)
 library(RSQLite)
-library(DBI)
 
+con <- connection_open(SQLite(), "local.sqlite")
+```
+
+``` r
+connection_close(con)
+```
+
+### Integration with `dplyr`
+
+``` r
 con <- connection_open(SQLite(), "local.sqlite")
 ```
 
 ``` r
 copy_to(con, mtcars, temporary = FALSE, overwrite = TRUE)
 #> # Source:   table<mtcars> [?? x 11]
-#> # Database: sqlite 3.22.0 [local.sqlite]
+#> # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]
 #>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 #>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 #>  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
@@ -74,25 +92,23 @@ copy_to(con, mtcars, temporary = FALSE, overwrite = TRUE)
 ```
 
 ``` r
-connection_close(con)
-```
-
-``` r
-con <- connection_open(SQLite(), "local.sqlite")
-```
-
-``` r
 db_mtcars <- tbl(con, "mtcars")
+```
 
+``` r
 db_mtcars %>%
   group_by(am) %>%
   summarise(avg_mpg = mean(mpg, na.rm = TRUE))
 #> # Source:   lazy query [?? x 2]
-#> # Database: sqlite 3.22.0 [/usr/home/edgar/connections/local.sqlite]
+#> # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]
 #>      am avg_mpg
 #>   <dbl>   <dbl>
 #> 1     0    17.1
 #> 2     1    24.4
+```
+
+``` r
+connection_close(con)
 ```
 
 ## `pins`
@@ -119,7 +135,7 @@ con <- pin_get("my_conn", board = "local")
 ``` r
 tbl(con, "mtcars")
 #> # Source:   table<mtcars> [?? x 11]
-#> # Database: sqlite 3.22.0 [/usr/home/edgar/connections/local.sqlite]
+#> # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]
 #>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 #>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 #>  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
@@ -144,7 +160,7 @@ x <- tbl(con, "mtcars") %>%
 
 x
 #> # Source:   lazy query [?? x 2]
-#> # Database: sqlite 3.22.0 [/usr/home/edgar/connections/local.sqlite]
+#> # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]
 #>      am avg_mpg
 #>   <dbl>   <dbl>
 #> 1     0    17.1
@@ -162,7 +178,7 @@ connection_close(con)
 ``` r
 pin_get("avg_mpg", board = "local")
 #> # Source:   lazy query [?? x 2]
-#> # Database: sqlite 3.22.0 [/usr/home/edgar/connections/local.sqlite]
+#> # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]
 #>      am avg_mpg
 #>   <dbl>   <dbl>
 #> 1     0    17.1
@@ -176,13 +192,13 @@ pin_get("my_conn", board = "local") %>%
   tbl("mtcars") %>%
   group_by(cyl) %>%
   summarise(avg_mpg = mean(mpg, na.rm = TRUE)) %>%
-  pin("cyl_avg_mpg", board = "local")
+  pin("cyl_mpg", board = "local")
 ```
 
 ``` r
-pin_get("cyl_avg_mpg", board = "local")
+pin_get("cyl_mpg", board = "local")
 #> # Source:   lazy query [?? x 2]
-#> # Database: sqlite 3.22.0 [/usr/home/edgar/connections/local.sqlite]
+#> # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]
 #>     cyl avg_mpg
 #>   <dbl>   <dbl>
 #> 1     4    26.7
