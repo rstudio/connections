@@ -110,7 +110,10 @@
     </div>
 
     <pre class="usage"><span class='co'># S4 method for connConnection,ANY</span>
-<span class='fu'>dbWriteTable</span>(<span class='no'>conn</span>, <span class='no'>name</span>, <span class='no'>value</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>dbWriteTable</span>(<span class='no'>conn</span>, <span class='no'>name</span>, <span class='no'>value</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for connConnection</span>
+<span class='fu'>dbSendQuery</span>(<span class='no'>conn</span>, <span class='no'>statement</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,6 +135,10 @@ or the result of a call to <code>dbQuoteIdentifier()</code>.</p></td>
     <tr>
       <th>...</th>
       <td><p>Other parameters passed on to methods.</p></td>
+    </tr>
+    <tr>
+      <th>statement</th>
+      <td><p>a character string containing SQL.</p></td>
     </tr>
     </table>
 

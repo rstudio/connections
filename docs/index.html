@@ -73,8 +73,106 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># install.packages("remotes")</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"edgararuiz/connections"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"edgararuiz/connections"</span>)</a></code></pre></div>
+</div>
+<div id="using" class="section level2">
+<h2 class="hasAnchor">
+<a href="#using" class="anchor"></a>Using</h2>
+<p>The two main functions added by <code>connections</code> are:</p>
+<ul>
+<li>
+<code><a href="reference/connection_open.html">connection_open()</a></code> - Opens the database connection. Use instead of <code>dbConnect()</code>, but use the exact same arguments. It also automatically starts the Connections pane.</li>
+<li>
+<code><a href="reference/connection_close.html">connection_close()</a></code> - Closes the database connection.</li>
+</ul>
+<!-- end list --><div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(connections)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(RSQLite)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">con &lt;-<span class="st"> </span><span class="kw"><a href="reference/connection_open.html">connection_open</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/RSQLite/man/SQLite.html">SQLite</a></span>(), <span class="st">"local.sqlite"</span>)</a></code></pre></div>
+<!--html_preserve-->
+<p><img src="reference/figures/connection-1.png" style="display: block; margin-left: auto; margin-right: auto; width: 300px;"><br><!--/html_preserve--></p>
+<p>The connection can now be closed by using the appropriate button in the Connections pane, or by using <code><a href="reference/connection_close.html">connection_close()</a></code></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/connection_close.html">connection_close</a></span>(con)</a></code></pre></div>
+<!--html_preserve-->
+<p><img src="reference/figures/connection-2.png" style="display: block; margin-left: auto; margin-right: auto; width: 300px;"><br><!--/html_preserve--></p>
+<p>The connection code is parsed when connecting to the database, and it is visible once the connection is closed.</p>
+<div id="dplyr" class="section level3">
+<h3 class="hasAnchor">
+<a href="#dplyr" class="anchor"></a><code>dplyr</code>
+</h3>
+<p><code>connections</code> integrates with <code>dplyr</code> by supporting the following two functions:</p>
+<ul>
+<li>
+<code>tbl()</code> - To create a pointer to a table or view within the database.</li>
+<li>
+<code>copy_to()</code> - To copy data from the R session to the database.</li>
+</ul>
+<p>The version of <code>copy_to()</code> inside <code>connections</code> automatically updates the Connections pane, so the new table automatically shows up.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">con &lt;-<span class="st"> </span><span class="kw"><a href="reference/connection_open.html">connection_open</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/RSQLite/man/SQLite.html">SQLite</a></span>(), <span class="st">"local.sqlite"</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">copy_to</span>(con, mtcars, <span class="dt">temporary =</span> <span class="ot">FALSE</span>, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p>To use an existing table inside the database use <code>tbl()</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">db_mtcars &lt;-<span class="st"> </span><span class="kw">tbl</span>(con, <span class="st">"mtcars"</span>)</a></code></pre></div>
+<!--html_preserve-->
+<p><img src="reference/figures/pane-1.png" style="display: block; margin-left: auto; margin-right: auto; width: 300px;"><br><!--/html_preserve--></p>
+<p>The <code>tbl()</code> function opens the rest of the already available <code>dplyr</code> database integration.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">db_mtcars <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(am) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_mpg =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+</div>
+</div>
+<div id="pins" class="section level2">
+<h2 class="hasAnchor">
+<a href="#pins" class="anchor"></a><code>pins</code>
+</h2>
+<p>The <code>connections</code> package integrates with <code>pins</code>. It enables the ability to save and retrieve connections and queries.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(pins)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/board_register_local.html">board_register_local</a></span>(<span class="dt">cache =</span> <span class="st">"~/pins"</span>)</a></code></pre></div>
+<div id="pin-a-connection" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pin-a-connection" class="anchor"></a>Pin a connection</h3>
+<p>Use the same <code><a href="https://rdrr.io/pkg/pins/man/pin.html">pin()</a></code> command to save a database connection. Under the hood, <code>connections</code> saves the <strong>necessary information to recreate the connection code, not the actual connection R object</strong>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin.html">pin</a></span>(con, <span class="st">"my_conn"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a></code></pre></div>
+<!--html_preserve-->
+<p><img src="reference/figures/pins-1.png" style="display: block; margin-left: auto; margin-right: auto; width: 300px;"><br><!--/html_preserve--></p>
+<p>Use <code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> to re-open the connection. In effect, <code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> will replay the exact same code used to initially connect to the database. This means that <code><a href="reference/connection_open.html">connection_open()</a></code> is already called for you, so the Connections pane should automatically start up.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">con &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"my_conn"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a></code></pre></div>
+<p>Assign the output of <code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> to a variable, such as <code>con</code>. The variable will work just like any connection variable.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">db_mtcars &lt;-<span class="st"> </span><span class="kw">tbl</span>(con, <span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(am) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_mpg =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">db_mtcars</a></code></pre></div>
+</div>
+<div id="pin-a-dplyr-database-query" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pin-a-dplyr-database-query" class="anchor"></a>Pin a <code>dplyr</code> database query</h3>
+<p>When <code>dplyr</code> works with database data, the resulting query is not executed until the data is explicitly collected into R, or when printing the top results to the R Console. The <code>pin</code> records two things:</p>
+<ul>
+<li>The <code>dplyr</code> R object that contains all of the transformations. <strong>It does not save the actual results</strong>.</li>
+<li>The necessary information to recreate the database connection. This is to make sure that the data is being retrieved from the original database connection.</li>
+</ul>
+<!-- end list --><div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin.html">pin</a></span>(db_mtcars, <span class="st">"avg_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a></code></pre></div>
+<!--html_preserve-->
+<p><img src="reference/figures/pins-2.png" style="display: block; margin-left: auto; margin-right: auto; width: 300px;"><br><!--/html_preserve--></p>
+<p><code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> will connect to the database, and return the <code>dplyr</code> object. Without assigning it to a variable, the pin will immediately print the results of the database. Those results are being processed at the time <code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> runs.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"avg_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a></code></pre></div>
+</div>
+<div id="full-pins-example" class="section level3">
+<h3 class="hasAnchor">
+<a href="#full-pins-example" class="anchor"></a>Full <code>pins</code> example</h3>
+<p>The way <code>pins</code> integrates with databases, via the <code>connections</code> package, allows to open the connection from a pin, and pipe all of the subsequent code into a new pin. Afterwards, that pin can be used to collect or to continue using the <code>dplyr</code> object.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"my_conn"</span>, <span class="dt">board =</span> <span class="st">"local"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">tbl</span>(<span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(cyl) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_mpg =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin.html">pin</a></span>(<span class="st">"cyl_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"cyl_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a></code></pre></div>
+<!--html_preserve-->
+<p><img src="reference/figures/pins-3.png" style="display: block; margin-left: auto; margin-right: auto; width: 300px;"><br><!--/html_preserve--></p>
+</div>
 </div>
 </div>
   </div>
