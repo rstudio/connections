@@ -13,6 +13,11 @@ knitr::opts_chunk$set(
   eval = TRUE
 )
 
+add_figure <- function(path) {
+  char_html <- paste0("<img src='", path,"' width = '400px'/><br/>")
+  htmltools::HTML(char_html)
+}
+
 toc <- function() {
   re <- readLines("README.Rmd")
   has_title <- as.logical(lapply(re, function(x) substr(x, 1, 2) == "##"))
@@ -88,7 +93,7 @@ con <- connection_open(SQLite(), "local.sqlite")
 ```
 
 
-<img src='man/figures/connection-1.png' style='display: block; margin-left: auto; margin-right: auto; width:400px ;'/><br/>
+`r add_figure("man/figures/connection-1.png")`
 
 The connection can now be closed by using the appropriate button in the Connections pane, or by using `connection_close()`
 
@@ -96,7 +101,7 @@ The connection can now be closed by using the appropriate button in the Connecti
 connection_close(con)
 ```
 
-<img src='man/figures/connection-2.png' style='display: block; margin-left: auto; margin-right: auto; width:400px ;'/><br/>
+`r add_figure("man/figures/connection-2.png")`
 
 The connection code is parsed when connecting to the database, and it is visible once the connection is closed.
 
@@ -121,7 +126,7 @@ To use an existing table inside the database use `tbl()`.
 db_mtcars <- tbl(con, "mtcars")
 ```
 
-<img src='man/figures/pane-1.png' style='display: block; margin-left: auto; margin-right: auto; width:400px ;'/><br/>
+`r add_figure("man/figures/pane-1.png")`
 
 The `tbl()` function opens the rest of the already available `dplyr` database integration.
 
@@ -148,7 +153,7 @@ Use the same `pin()` command to save a database connection.  Under the hood, `co
 pin(con, "my_conn", board = "local")
 ```
 
-<img src='man/figures/pins-1.png' style='display: block; margin-left: auto; margin-right: auto; width:400px ;'/><br/>
+`r add_figure("man/figures/pins-1.png")`
 
 Use `pin_get()` to re-open the connection.  In effect, `pin_get()` will replay the exact same code used to initially connect to the database.  This means that `connection_open()` is already called for you, so the Connections pane should automatically start up.
 
@@ -177,7 +182,7 @@ When `dplyr` works with database data, the resulting query is not executed until
 pin(db_mtcars, "avg_mpg", board = "local")
 ```
 
-<img src='man/figures/pins-2.png' style='display: block; margin-left: auto; margin-right: auto; width:400px ;'/><br/>
+`r add_figure("man/figures/pins-2.png")`
 
 `pin_get()` will connect to the database, and return the `dplyr` object.  Without assigning it to a variable, the pin will immediately print the results of the database.  Those results are being processed at the time `pin_get()` runs. 
 
@@ -199,4 +204,5 @@ pin_get("my_conn", board = "local") %>%
 pin_get("cyl_mpg", board = "local")
 ```
 
-<img src='man/figures/pins-3.png' style='display: block; margin-left: auto; margin-right: auto; width:400px ;'/><br/>
+`r add_figure("man/figures/pins-3.png")`
+

@@ -62,7 +62,9 @@ library(RSQLite)
 con <- connection_open(SQLite(), "local.sqlite")
 ```
 
-<img src='man/figures/connection-1.png' style='display: block; margin-left: auto; margin-right: auto; width:400px ;'/><br/>
+<!--html_preserve-->
+
+<img src='man/figures/connection-1.png' width = '400px'/><br/><!--/html_preserve-->
 
 The connection can now be closed by using the appropriate button in the
 Connections pane, or by using
@@ -72,7 +74,9 @@ Connections pane, or by using
 connection_close(con)
 ```
 
-<img src='man/figures/connection-2.png' style='display: block; margin-left: auto; margin-right: auto; width:400px ;'/><br/>
+<!--html_preserve-->
+
+<img src='man/figures/connection-2.png' width = '400px'/><br/><!--/html_preserve-->
 
 The connection code is parsed when connecting to the database, and it is
 visible once the connection is closed.
@@ -117,7 +121,9 @@ To use an existing table inside the database use
 db_mtcars <- tbl(con, "mtcars")
 ```
 
-<img src='man/figures/pane-1.png' style='display: block; margin-left: auto; margin-right: auto; width:400px ;'/><br/>
+<!--html_preserve-->
+
+<img src='man/figures/pane-1.png' width = '400px'/><br/><!--/html_preserve-->
 
 The `tbl()` function opens the rest of the already available `dplyr`
 database integration.
@@ -155,7 +161,9 @@ object**.
 pin(con, "my_conn", board = "local")
 ```
 
-<img src='man/figures/pins-1.png' style='display: block; margin-left: auto; margin-right: auto; width:400px ;'/><br/>
+<!--html_preserve-->
+
+<img src='man/figures/pins-1.png' width = '400px'/><br/><!--/html_preserve-->
 
 Use `pin_get()` to re-open the connection. In effect, `pin_get()` will
 replay the exact same code used to initially connect to the database.
@@ -202,7 +210,9 @@ connection.
 pin(db_mtcars, "avg_mpg", board = "local")
 ```
 
-<img src='man/figures/pins-2.png' style='display: block; margin-left: auto; margin-right: auto; width:400px ;'/><br/>
+<!--html_preserve-->
+
+<img src='man/figures/pins-2.png' width = '400px'/><br/><!--/html_preserve-->
 
 `pin_get()` will connect to the database, and return the `dplyr` object.
 Without assigning it to a variable, the pin will immediately print the
@@ -243,4 +253,6 @@ pin_get("cyl_mpg", board = "local")
 #> 3     8    15.1
 ```
 
-<img src='man/figures/pins-3.png' style='display: block; margin-left: auto; margin-right: auto; width:400px ;'/><br/>
+<!--html_preserve-->
+
+<img src='man/figures/pins-3.png' width = '400px'/><br/><!--/html_preserve-->
