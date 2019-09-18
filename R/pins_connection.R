@@ -5,6 +5,7 @@ pin.connConnection <- function(x, name = NULL, description = NULL, board = NULL,
   on.exit(unlink(path))
   session <- conn_session_get(x@id)
   saveRDS(session, file.path(path, "code.rds"))
+  saveRDS(data.frame(message = "Please close this Viewer window"), "data.rds")
   metadata <- list(
     columns = list(
       host = session$host,

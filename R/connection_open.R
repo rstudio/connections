@@ -22,12 +22,14 @@ connection_open.DBIDriver <- function(drv, ...) {
 
   host <- first_non_empty(
     arg_vals[arg_names == "host"],
+    arg_vals[arg_names == "project"],
     attr(class(con), "package")
   )
 
   name <- first_non_empty(
     arg_vals[arg_names == "database"],
-    arg_vals[arg_names == "dbname"]
+    arg_vals[arg_names == "dbname"],
+    arg_vals[arg_names == "dataset"]
   )
 
   if (is.null(name)) {
@@ -37,7 +39,7 @@ connection_open.DBIDriver <- function(drv, ...) {
   }
 
   pkg <- attributes(class(drv))$package
-  libraries <- list("DBI", "connections")
+  libraries <- list("connections")
   if (!is.null(pkg)) libraries <- c(libraries, pkg)
 
   meta_data <- list(

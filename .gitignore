@@ -26,3 +26,4 @@ vignettes/*.pdf
 rsconnect/
 .Rproj.user
 local.sqlite
+data.rds

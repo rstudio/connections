@@ -6,6 +6,7 @@ pin.tbl_conn <- function(x, name = NULL, description = NULL, board = NULL, ...) 
   session <- conn_session_get(attr(x, "conn_id"))
   saveRDS(session, file.path(path, "code.rds"))
   saveRDS(x, file.path(path, "tbl.rds"))
+  saveRDS(data.frame(message = "Please close this Viewer window"), "data.rds")
   metadata <- list(
     columns = list(
       colnames(x)
