@@ -111,7 +111,22 @@
 <p>The version of <code>copy_to()</code> inside <code>connections</code> automatically updates the Connections pane, so the new table automatically shows up.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">con &lt;-<span class="st"> </span><span class="kw"><a href="reference/connection_open.html">connection_open</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/RSQLite/man/SQLite.html">SQLite</a></span>(), <span class="st">"local.sqlite"</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">copy_to</span>(con, mtcars, <span class="dt">temporary =</span> <span class="ot">FALSE</span>, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">copy_to</span>(con, mtcars, <span class="dt">temporary =</span> <span class="ot">FALSE</span>, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; # Source:   table&lt;mtcars&gt; [?? x 11]</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt;  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt;  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt;  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; # … with more rows</span></a></code></pre></div>
 <p>To use an existing table inside the database use <code>tbl()</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">db_mtcars &lt;-<span class="st"> </span><span class="kw">tbl</span>(con, <span class="st">"mtcars"</span>)</a></code></pre></div>
 <!--html_preserve-->
@@ -119,7 +134,13 @@
 <p>The <code>tbl()</code> function opens the rest of the already available <code>dplyr</code> database integration.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">db_mtcars <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(am) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_mpg =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_mpg =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; # Source:   lazy query [?? x 2]</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;      am avg_mpg</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; 1     0    17.1</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; 2     1    24.4</span></a></code></pre></div>
 </div>
 </div>
 <div id="pins" class="section level2">
@@ -143,7 +164,13 @@
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(am) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_mpg =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">db_mtcars</a></code></pre></div>
+<a class="sourceLine" id="cb10-5" data-line-number="5">db_mtcars</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; # Source:   lazy query [?? x 2]</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;      am avg_mpg</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; 1     0    17.1</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; 2     1    24.4</span></a></code></pre></div>
 </div>
 <div id="pin-a-dplyr-database-query" class="section level3">
 <h3 class="hasAnchor">
@@ -157,7 +184,13 @@
 <!--html_preserve-->
 <p><img src="reference/figures/pins-2.png" style="display: block; margin-left: auto; margin-right: auto; width: 300px;"><br><!--/html_preserve--></p>
 <p><code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> will connect to the database, and return the <code>dplyr</code> object. Without assigning it to a variable, the pin will immediately print the results of the database. Those results are being processed at the time <code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> runs.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"avg_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"avg_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; # Source:   lazy query [?? x 2]</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;      am avg_mpg</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; 1     0    17.1</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; 2     1    24.4</span></a></code></pre></div>
 </div>
 <div id="full-pins-example" class="section level3">
 <h3 class="hasAnchor">
@@ -169,7 +202,14 @@
 <a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_mpg =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin.html">pin</a></span>(<span class="st">"cyl_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a>
 <a class="sourceLine" id="cb13-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"cyl_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"cyl_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; # Source:   lazy query [?? x 2]</span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt;     cyl avg_mpg</span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt; 1     4    26.7</span></a>
+<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; 2     6    19.7</span></a>
+<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt; 3     8    15.1</span></a></code></pre></div>
 <!--html_preserve-->
 <p><img src="reference/figures/pins-3.png" style="display: block; margin-left: auto; margin-right: auto; width: 300px;"><br><!--/html_preserve--></p>
 </div>
