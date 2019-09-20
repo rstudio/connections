@@ -29,12 +29,6 @@ A second goal is to provide integration with the
 package allows you to pin database connections and
 [dplyr](https://dplyr.tidyverse.org/) table objects.
 
-A third goal of `connections` is to provide a simpler API to the way
-RStudio Connections pane integrates with R. This is meant for use by
-advanced R developers who wish to create custom connection
-configurations, or for `DBI`-compliant package developers who wish to
-directly integrate the Connections pane with their package.
-
 ## Installation
 
 Install the development version from [GitHub](https://github.com/) with:

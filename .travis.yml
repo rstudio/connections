@@ -3,8 +3,8 @@ cache: packages
 sudo: false
 warnings_are_errors: false
 
-install:
-  - ./travis-tool.sh install_github edgararuiz/rscontract
+r_github_packages:
+  - edgararuiz/rscontract
 
 include:
   - r: release
