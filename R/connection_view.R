@@ -28,14 +28,6 @@ connection_view.connConnection <- function(con, connection_code = "", host = "",
 }
 
 #' @export
-connection_view.conn_rs_contract <- function(con, connection_code = "", host = "", name = "", connection_id = NULL) {
-  con$connectCode <- first_non_empty(connection_code, con$connectCode)
-  con$host <- first_non_empty(host, con$host)
-  con$displayName <- first_non_empty(name, con$displayName)
-  open_connection_contract(con)
-}
-
-#' @export
 connection_view.DBIConnection <- function(con, connection_code = "", host = "", name = "", connection_id = "") {
   session <- conn_session_get(connection_id)
   if(is.null(session)) {
@@ -50,7 +42,7 @@ connection_view.DBIConnection <- function(con, connection_code = "", host = "", 
     connect_code <- first_non_empty(connection_code, dbi_build_code(session))
   }
   sch <- dbi_schemas(con)
-  spec_contract <- connection_contract_spec(
+  spec_contract <- rscontract_spec(
     type = type,
     name = name,
     host = host,
@@ -65,6 +57,5 @@ connection_view.DBIConnection <- function(con, connection_code = "", host = "", 
     preview_code = function(limit, table, schema, ...)
       dbi_preview_object(limit, table, schema, sch, con)
   )
-  rs_contract <- as_connection_contract(spec_contract)
-  open_connection_contract(rs_contract)
+  rscontract_open(spec_contract)
 }

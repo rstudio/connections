@@ -4,15 +4,15 @@ dbi_schemas <- function(con) {
   if (length(po) == 0) {
     return(NULL)
   }
-  schs <- lapply(
-    po,
-    function(x)
-      list(
-        type = names(attributes(x)$name),
-        name = as.character(attributes(x)$name)
-      )
-  )
+  schs <- lapply(po, get_attrs)
   item_to_table(schs)
+}
+
+get_attrs <- function(x) {
+  list(
+    type = names(attributes(x)$name),
+    name = as.character(attributes(x)$name)
+  )
 }
 
 dbi_preview_object <- function(limit, table, schema, sch, con, ...) {

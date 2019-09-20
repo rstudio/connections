@@ -26,3 +26,7 @@ test_that("Schema support in dbi functions work as expected", {
 })
 
 connection_close(con)
+
+test_that("Support funcitons work", {
+  expect_silent(get_attrs(list(name = list())))
+})

@@ -15,9 +15,5 @@ connection_update <- function(con, hint = "") {
 
 #' @export
 connection_update.connConnection <- function(con, hint = "") {
-  observer <- getOption("connectionObserver")
-  if (is.null(observer)) {
-    return(invisible(NULL))
-  }
-  observer$connectionUpdated(con@type, con@host, hint = hint)
+  rscontract_update(host = con@host, type = con@type, hint = hint)
 }

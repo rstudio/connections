@@ -1,11 +1,9 @@
 Package: connections
-Title: Database and other connections on the RStudio IDE
+Title: Generic database package integration with the RStudio IDE and 'pins'
 Version: 0.0.0.9002
 Authors@R:
     person("Edgar", "Ruiz", email = "edgar@rstudio.com", role = c("aut", "cre"))
-Description: Provides a generic implementation of the RStudio Connection Contract to 
-    make it easier for database connections, and other type of connections, opened 
-    via R packages integrate with the Connections Pane inside the RStudio IDE.
+Description: Enables 'DBI'-complaint package to integrate with the RStudio IDE Connections pane, and with the 'pins' package.
 License: MIT + file LICENSE
 Imports:
   DBI,
@@ -13,7 +11,8 @@ Imports:
   pins,
   dplyr,
   dbplyr,
-  uuid
+  uuid,
+  rscontract
 Suggests:
     RSQLite,
     testthat (>= 2.1.0),

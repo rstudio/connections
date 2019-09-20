@@ -14,24 +14,6 @@ connection_open <- function(..., open_pane = TRUE) {
 }
 
 #' @export
-connection_open.conn_rs_contract <- function(con, ..., open_pane = TRUE) {
-  cc <- connConnection(
-    host = con$host,
-    type = con$type,
-    id = "",
-    con = con
-  )
-  open_connection_contract(con)
-  cc
-}
-
-#' @export
-connection_open.conn_spec_contract <- function(con, ..., open_pane = TRUE) {
-  rs_contract <- as_connection_contract(con)
-  connection_open(rs_contract)
-}
-
-#' @export
 connection_open.DBIDriver <- function(drv, ..., open_pane = TRUE) {
   all_args <- substitute(connection_open(drv, ...))
   con <- dbConnect(drv, ...)
