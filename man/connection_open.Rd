@@ -4,10 +4,12 @@
 \alias{connection_open}
 \title{Opens a connection}
 \usage{
-connection_open(...)
+connection_open(..., open_pane = TRUE)
 }
 \arguments{
 \item{...}{Passes arguments to wrapped connection function}
+
+\item{open_pane}{Signals for the RStudio Connections pane to open. Defaults to TRUE.}
 }
 \description{
 Opens a connection

@@ -4,7 +4,8 @@
 \alias{connection_view}
 \title{Populates the RStudio Connection viewer}
 \usage{
-connection_view(con, connection_code = "", host = "", name = "")
+connection_view(con, connection_code = "", host = "", name = "",
+  connection_id = "")
 }
 \arguments{
 \item{con}{Connection variable}
@@ -14,6 +15,8 @@ connection_view(con, connection_code = "", host = "", name = "")
 \item{host}{Name of Host of the connection}
 
 \item{name}{Connection name}
+
+\item{connection_id}{Unique ID of the connection for the current session}
 }
 \description{
 Populates the RStudio Connection viewer

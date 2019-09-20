@@ -4,6 +4,7 @@
 #' @param connection_code Text of code to connect to the same source
 #' @param host Name of Host of the connection
 #' @param name Connection name
+#' @param connection_id Unique ID of the connection for the current session
 #'
 #' @examples
 #' library(DBI)
@@ -11,35 +12,59 @@
 #' connection_view(con)
 #' connection_close(con)
 #' @export
-connection_view <- function(con, connection_code = "", host = "", name = "") {
+connection_view <- function(con, connection_code = "", host = "", name = "", connection_id = "") {
   UseMethod("connection_view")
 }
 
 #' @export
-connection_view.list <- function(con, connection_code = "", host = "", name = "") {
-  if (host != "") con$host <- host
-  if (name != "") con$name <- name
+connection_view.connConnection <- function(con, connection_code = "", host = "", name = "", connection_id = NULL) {
+  connection_view(
+    con = con@con,
+    connection_code = connection_code,
+    host = first_non_empty(host, con@host),
+    name = name,
+    connection_id = ifelse(is.null(connection_id), con@id, connection_id)
+  )
+}
+
+#' @export
+connection_view.conn_rs_contract <- function(con, connection_code = "", host = "", name = "", connection_id = NULL) {
+  con$connectCode <- first_non_empty(connection_code, con$connectCode)
+  con$host <- first_non_empty(host, con$host)
+  con$displayName <- first_non_empty(name, con$displayName)
   open_connection_contract(con)
 }
 
 #' @export
-connection_view.connConnection <- function(con, connection_code = "", host = "", name = "") {
-  session <- conn_session_get(con@id)
-  conn <- con@con
-  host_name <- ifelse(host != "" && name != "", paste0(host, "/", name), "")
-  sch <- dbi_schemas(conn)
-  spec <- base_spec()
-  spec$type <- session$type
-  spec$name <- first_non_empty(name, session$name)
-  spec$host <- first_non_empty(host, session$host)
-  spec$connect_code <- first_non_empty(connection_code, dbi_build_code(session))
-  spec$disconnect <- function() connection_close(con, host = spec$host)
-  spec$list_objects <- function(catalog = NULL, schema = NULL, ...)
-    dbi_list_objects(catalog, schema, sch, spec$name, spec$type, conn)
-  spec$list_columns <- function(catalog = NULL, schema = NULL, table = NULL, view = NULL, ...)
-    dbi_list_columns(catalog, schema, table, view, sch, conn)
-  spec$preview_object <- function(limit, table, schema, ...)
-    dbi_preview_object(limit, table, schema, sch, conn)
-  contract_spec <- connection_contract(spec)
-  open_connection_contract(contract_spec)
+connection_view.DBIConnection <- function(con, connection_code = "", host = "", name = "", connection_id = "") {
+  session <- conn_session_get(connection_id)
+  if(is.null(session)) {
+    name <- as.character(class(con))
+    host <- as.character(class(con))
+    type <- as.character(class(con))
+    connect_code <- ifelse(connection_code != "", connection_code, "")
+  } else {
+    name <- first_non_empty(name, session$name)
+    host <- first_non_empty(host, session$host)
+    type <- session$type
+    connect_code <- first_non_empty(connection_code, dbi_build_code(session))
+  }
+  sch <- dbi_schemas(con)
+  spec_contract <- connection_contract_spec(
+    type = type,
+    name = name,
+    host = host,
+    connect_script = connect_code,
+    disconnect_code = function()
+      connection_close(con, host = host),
+    object_list = function(catalog = NULL, schema = NULL, ...)
+      dbi_list_objects(catalog, schema, sch, name, type, con),
+    object_columns = function(catalog = NULL, schema = NULL,
+                              table = NULL, view = NULL, ...)
+      dbi_list_columns(catalog, schema, table, view, sch, con),
+    preview_code = function(limit, table, schema, ...)
+      dbi_preview_object(limit, table, schema, sch, con)
+  )
+  rs_contract <- as_connection_contract(spec_contract)
+  open_connection_contract(rs_contract)
 }

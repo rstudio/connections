@@ -83,7 +83,9 @@ dbi_run_code <- function(metadata) {
     function(x) paste0("library(", x, ")")
   )
   eval(parse(text = code_library))
-  cl <- capture.output(metadata$args)
+  ma <- metadata$args
+  ma$open_pane <- FALSE
+  cl <- capture.output(ma)
   cl <- paste0(cl, collapse = "")
   eval(parse(text = cl))
 }

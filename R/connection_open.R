@@ -1,6 +1,7 @@
 #' Opens a connection
 #'
 #' @param ... Passes arguments to wrapped connection function
+#' @param open_pane Signals for the RStudio Connections pane to open. Defaults to TRUE.
 #'
 #' @examples
 #' library(DBI)
@@ -8,12 +9,30 @@
 #' con
 #' connection_close(con)
 #' @export
-connection_open <- function(...) {
+connection_open <- function(..., open_pane = TRUE) {
   UseMethod("connection_open")
 }
 
 #' @export
-connection_open.DBIDriver <- function(drv, ...) {
+connection_open.conn_rs_contract <- function(con, ..., open_pane = TRUE) {
+  cc <- connConnection(
+    host = con$host,
+    type = con$type,
+    id = "",
+    con = con
+  )
+  open_connection_contract(con)
+  cc
+}
+
+#' @export
+connection_open.conn_spec_contract <- function(con, ..., open_pane = TRUE) {
+  rs_contract <- as_connection_contract(con)
+  connection_open(rs_contract)
+}
+
+#' @export
+connection_open.DBIDriver <- function(drv, ..., open_pane = TRUE) {
   all_args <- substitute(connection_open(drv, ...))
   con <- dbConnect(drv, ...)
 
@@ -57,6 +76,6 @@ connection_open.DBIDriver <- function(drv, ...) {
     id = id,
     con = con
   )
-  connection_view(cc)
+  if(open_pane) connection_view(cc)
   cc
 }

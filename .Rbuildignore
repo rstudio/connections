@@ -5,3 +5,4 @@
 ^codecov\.yml$
 docs
 local.sqlite
+data.rds
