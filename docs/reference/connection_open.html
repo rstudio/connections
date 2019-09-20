@@ -109,7 +109,7 @@
     <p>Opens a connection</p>
     </div>
 
-    <pre class="usage"><span class='fu'>connection_open</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>connection_open</span>(<span class='no'>...</span>, <span class='kw'>open_pane</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -117,6 +117,10 @@
     <tr>
       <th>...</th>
       <td><p>Passes arguments to wrapped connection function</p></td>
+    </tr>
+    <tr>
+      <th>open_pane</th>
+      <td><p>Signals for the RStudio Connections pane to open. Defaults to TRUE.</p></td>
     </tr>
     </table>
 
