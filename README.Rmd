@@ -13,8 +13,8 @@ knitr::opts_chunk$set(
   eval = TRUE
 )
 
-add_figure <- function(path) {
-  char_html <- paste0("<img src='", path,"' width = '400px'/><br/>")
+add_figure <- function(path, width = 400) {
+  char_html <- paste0("<img src='", path,"' width ='", width,"px'/><br/>")
   htmltools::HTML(char_html)
 }
 
@@ -54,8 +54,9 @@ toc <- function() {
     - [Pin a `dplyr` database query](#pin-a-dplyr-database-query)
     - [Full `pins` example](#full-pins-example)
   - [Back-end examples](#back-end-examples)
-    - [BigQuery, via `bigrquery`](#bigquery-via-bigrquery)
-    - [PostgreSQL, via `RPostgres`](#postgresql-via-rpostgres)
+    - [BigQuery, via `bigrquery`](#bigquery,-via-bigrquery)
+    - [PostgreSQL, via `RPostgres`](#postgresql,-via-rpostgres)
+  - [`DBI` connections](#dbi-connections)
 
 The main goal of `connections` is to integrate `DBI`-compliant packages with the RStudio IDE's [Connection
 Pane](https://db.rstudio.com/rstudio/connections/).  Packages such as [RPostgres](https://github.com/r-dbi/RPostgres), [RSQLite](https://github.com/r-dbi/RSQLite), [RMariaDB](https://github.com/r-dbi/RMariaDB) and [bigrquery](https://github.com/r-dbi/bigrquery) connect R to those databases, but do not provide a direct integration with the Connections Pane. `connections` reads the configuration of the connection and creates the integration with RStudio.
@@ -257,3 +258,34 @@ con <- connection_open(Postgres(),
 
 `r add_figure("man/figures/postgres-1.png")`
 
+
+## `DBI` connections
+
+It is possible to integrate `DBI` connections not opened via `connection_open()`.  To do that, use `connection_view()` and pass it the variable containing the existing database connection.  
+
+```{r, eval = FALSE}
+library(DBI)
+
+con <- dbConnect(RSQLite::SQLite(), ":memory:")
+
+connection_view(con)
+```
+
+`r add_figure("man/figures/dbi-1.png", 200)`
+
+
+Changes to the database will not automatically load in the Connections pane.  The `connection_update()` function will refresh the pane with the latest.
+
+```{r, eval = FALSE}
+dbWriteTable(con, "mtcars", mtcars)
+
+connection_update(con)
+```
+
+`r add_figure("man/figures/dbi-2.png", 300)`
+
+```{r, eval = FALSE}
+connection_close(con)
+```
+
+`r add_figure("man/figures/dbi-3.png", 300)`

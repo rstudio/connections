@@ -22,8 +22,9 @@ coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge
       - [Pin a `dplyr` database query](#pin-a-dplyr-database-query)
       - [Full `pins` example](#full-pins-example)
   - [Back-end examples](#back-end-examples)
-      - [BigQuery, via `bigrquery`](#bigquery-via-bigrquery)
-      - [PostgreSQL, via `RPostgres`](#postgresql-via-rpostgres)
+      - [BigQuery, via `bigrquery`](#bigquery,-via-bigrquery)
+      - [PostgreSQL, via `RPostgres`](#postgresql,-via-rpostgres)
+  - [`DBI` connections](#dbi-connections)
 
 The main goal of `connections` is to integrate `DBI`-compliant packages
 with the RStudio IDE’s [Connection
@@ -70,7 +71,7 @@ con <- connection_open(SQLite(), "local.sqlite")
 
 <!--html_preserve-->
 
-<img src='man/figures/connection-1.png' width = '400px'/><br/><!--/html_preserve-->
+<img src='man/figures/connection-1.png' width ='400px'/><br/><!--/html_preserve-->
 
 The connection can now be closed by using the appropriate button in the
 Connections pane, or by using
@@ -82,7 +83,7 @@ connection_close(con)
 
 <!--html_preserve-->
 
-<img src='man/figures/connection-2.png' width = '400px'/><br/><!--/html_preserve-->
+<img src='man/figures/connection-2.png' width ='400px'/><br/><!--/html_preserve-->
 
 The connection code is parsed when connecting to the database, and it is
 visible once the connection is closed.
@@ -129,7 +130,7 @@ db_mtcars <- tbl(con, "mtcars")
 
 <!--html_preserve-->
 
-<img src='man/figures/pane-1.png' width = '400px'/><br/><!--/html_preserve-->
+<img src='man/figures/pane-1.png' width ='400px'/><br/><!--/html_preserve-->
 
 The `tbl()` function opens the rest of the already available `dplyr`
 database integration.
@@ -169,7 +170,7 @@ pin(con, "my_conn", board = "local")
 
 <!--html_preserve-->
 
-<img src='man/figures/pins-1.png' width = '400px'/><br/><!--/html_preserve-->
+<img src='man/figures/pins-1.png' width ='400px'/><br/><!--/html_preserve-->
 
 Use `pin_get()` to re-open the connection. In effect, `pin_get()` will
 replay the exact same code used to initially connect to the database.
@@ -218,7 +219,7 @@ pin(db_mtcars, "avg_mpg", board = "local")
 
 <!--html_preserve-->
 
-<img src='man/figures/pins-2.png' width = '400px'/><br/><!--/html_preserve-->
+<img src='man/figures/pins-2.png' width ='400px'/><br/><!--/html_preserve-->
 
 `pin_get()` will connect to the database, and return the `dplyr` object.
 Without assigning it to a variable, the pin will immediately print the
@@ -261,7 +262,7 @@ pin_get("cyl_mpg", board = "local")
 
 <!--html_preserve-->
 
-<img src='man/figures/pins-3.png' width = '400px'/><br/><!--/html_preserve-->
+<img src='man/figures/pins-3.png' width ='400px'/><br/><!--/html_preserve-->
 
 ## Back-end examples
 
@@ -285,7 +286,7 @@ con <- connection_open(
 
 <!--html_preserve-->
 
-<img src='man/figures/bigquery-1.png' width = '400px'/><br/><!--/html_preserve-->
+<img src='man/figures/bigquery-1.png' width ='400px'/><br/><!--/html_preserve-->
 
 ``` r
 connection_close(con)
@@ -293,7 +294,7 @@ connection_close(con)
 
 <!--html_preserve-->
 
-<img src='man/figures/bigquery-2.png' width = '400px'/><br/><!--/html_preserve-->
+<img src='man/figures/bigquery-2.png' width ='400px'/><br/><!--/html_preserve-->
 
 ### PostgreSQL, via `RPostgres`
 
@@ -312,4 +313,44 @@ con <- connection_open(Postgres(),
 
 <!--html_preserve-->
 
-<img src='man/figures/postgres-1.png' width = '400px'/><br/><!--/html_preserve-->
+<img src='man/figures/postgres-1.png' width ='400px'/><br/><!--/html_preserve-->
+
+## `DBI` connections
+
+It is possible to integrate `DBI` connections not opened via
+`connection_open()`. To do that, use `connection_view()` and pass it the
+variable containing the existing database connection.
+
+``` r
+library(DBI)
+
+con <- dbConnect(RSQLite::SQLite(), ":memory:")
+
+connection_view(con)
+```
+
+<!--html_preserve-->
+
+<img src='man/figures/dbi-1.png' width ='200px'/><br/><!--/html_preserve-->
+
+Changes to the database will not automatically load in the Connections
+pane. The `connection_update()` function will refresh the pane with the
+latest.
+
+``` r
+dbWriteTable(con, "mtcars", mtcars)
+
+connection_update(con)
+```
+
+<!--html_preserve-->
+
+<img src='man/figures/dbi-2.png' width ='300px'/><br/><!--/html_preserve-->
+
+``` r
+connection_close(con)
+```
+
+<!--html_preserve-->
+
+<img src='man/figures/dbi-3.png' width ='300px'/><br/><!--/html_preserve-->

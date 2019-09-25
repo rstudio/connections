@@ -17,3 +17,12 @@ connection_update <- function(con, hint = "") {
 connection_update.connConnection <- function(con, hint = "") {
   rscontract_update(host = con@host, type = con@type, hint = hint)
 }
+
+#' @export
+connection_update.DBIConnection <- function(con, hint = "") {
+  rscontract_update(
+    host = as.character(class(con)),
+    type = as.character(class(con)),
+    hint = hint
+    )
+}

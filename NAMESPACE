@@ -3,6 +3,7 @@
 S3method(connection_close,DBIConnection)
 S3method(connection_close,connConnection)
 S3method(connection_open,DBIDriver)
+S3method(connection_update,DBIConnection)
 S3method(connection_update,connConnection)
 S3method(connection_view,DBIConnection)
 S3method(connection_view,connConnection)
