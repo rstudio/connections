@@ -1,9 +1,9 @@
 Package: connections
 Title: Generic database package integration with the RStudio IDE and 'pins'
-Version: 0.0.0.9002
+Version: 0.0.0.9003
 Authors@R:
     person("Edgar", "Ruiz", email = "edgar@rstudio.com", role = c("aut", "cre"))
-Description: Enables 'DBI'-complaint package to integrate with the RStudio IDE Connections pane, and with the 'pins' package.
+Description: Provides integration with the `pins` package, and with the RStudio's Connections pane, to 'DBI' compliant packages or projects.
 License: MIT + file LICENSE
 Imports:
   DBI,

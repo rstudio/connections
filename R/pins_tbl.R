@@ -8,9 +8,7 @@ pin.tbl_conn <- function(x, name = NULL, description = NULL, board = NULL, ...) 
   saveRDS(x, file.path(path, "tbl.rds"))
   saveRDS(data.frame(message = "Please close this Viewer window"), "data.rds")
   metadata <- list(
-    columns = list(
-      colnames(x)
-    )
+    columns = lapply(collect(head(x, 10)), class)
   )
   board_pin_store(board, path, name, description, "pinned_tbl", metadata)
   # To prevent printout of x

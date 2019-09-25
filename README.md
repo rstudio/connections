@@ -13,6 +13,18 @@ status](https://travis-ci.com/edgararuiz/connections.svg?branch=master)](https:/
 coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge.svg)](https://codecov.io/gh/edgararuiz/connections?branch=master)
 <!-- badges: end -->
 
+  - [Installation](#installation)
+  - [Functions](#functions)
+  - [Uploading and referencing tables with
+    `dplyr`](#uploading-and-referencing-tables-with-dplyr)
+  - [`pins`](#pins)
+      - [Pin a connection](#pin-a-connection)
+      - [Pin a `dplyr` database query](#pin-a-dplyr-database-query)
+      - [Full `pins` example](#full-pins-example)
+  - [Back-end examples](#back-end-examples)
+      - [BigQuery, via `bigrquery`](#bigquery-via-bigrquery)
+      - [PostgreSQL, via `RPostgres`](#postgresql-via-rpostgres)
+
 The main goal of `connections` is to integrate `DBI`-compliant packages
 with the RStudio IDE’s [Connection
 Pane](https://db.rstudio.com/rstudio/connections/). Packages such as
@@ -38,7 +50,7 @@ Install the development version from [GitHub](https://github.com/) with:
 remotes::install_github("edgararuiz/connections")
 ```
 
-## Using
+## Functions
 
 The two main functions added by `connections` are:
 
@@ -75,7 +87,7 @@ connection_close(con)
 The connection code is parsed when connecting to the database, and it is
 visible once the connection is closed.
 
-### `dplyr`
+## Uploading and referencing tables with `dplyr`
 
 `connections` integrates with `dplyr` by supporting the following two
 functions:
@@ -250,3 +262,54 @@ pin_get("cyl_mpg", board = "local")
 <!--html_preserve-->
 
 <img src='man/figures/pins-3.png' width = '400px'/><br/><!--/html_preserve-->
+
+## Back-end examples
+
+There are a couple of examples of how the Connections pane will look
+when opening the connection via `connections`.
+
+### BigQuery, via `bigrquery`
+
+``` r
+library(connections)
+library(bigrquery)
+
+con <- connection_open(
+  bigquery(),
+  project = "bigquery-public-data",
+  dataset = "austin_311",
+  billing = "my_project_billing",
+  use_legacy_sql = FALSE
+)
+```
+
+<!--html_preserve-->
+
+<img src='man/figures/bigquery-1.png' width = '400px'/><br/><!--/html_preserve-->
+
+``` r
+connection_close(con)
+```
+
+<!--html_preserve-->
+
+<img src='man/figures/bigquery-2.png' width = '400px'/><br/><!--/html_preserve-->
+
+### PostgreSQL, via `RPostgres`
+
+``` r
+library(connections)
+library(RPostgres)
+con <- connection_open(Postgres(), 
+                       host = "localhost", 
+                       dbname = "datawarehouse",
+                       user = "[user id]", 
+                       password = "[password]", 
+                       bigint = "integer",
+                       port = "5432"
+                       )
+```
+
+<!--html_preserve-->
+
+<img src='man/figures/postgres-1.png' width = '400px'/><br/><!--/html_preserve-->

@@ -22,7 +22,7 @@ test_that("Schema support in dbi functions work as expected", {
   expect_error(
     dbi_preview_object(limit = 10, sch = sch, schema = "test", table = "mtcars", con = conn),
     "no such table: test.mtcars"
-    )
+  )
 })
 
 connection_close(con)

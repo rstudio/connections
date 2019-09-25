@@ -26,7 +26,8 @@ dbi_list_objects <- function(catalog = NULL, schema = NULL,
       data_frame(
         name = ifelse(name == "", type, name),
         type = "catalog"
-      ))
+      )
+    )
   }
   if (is.null(schema)) {
     if (is.null(sch)) {
@@ -44,9 +45,9 @@ dbi_list_objects <- function(catalog = NULL, schema = NULL,
   obs_only <- lapply(
     obs[!obs$is_prefix, 1],
     function(x) list(
-      name = as.character(attributes(x)$name),
-      type = names(attributes(x)$name)
-    )
+        name = as.character(attributes(x)$name),
+        type = names(attributes(x)$name)
+      )
   )
   tbls <- item_to_table(obs_only)
   tbls[tbls$type != "schema", ]

@@ -21,13 +21,13 @@ connection_close.connConnection <- function(con, host = "", type = "", leave_ope
     host = first_non_empty(host, con@host),
     type = first_non_empty(type, con@type),
     leave_open = leave_open
-    )
+  )
 }
 
 #' @export
 connection_close.DBIConnection <- function(con, host = NULL, type = NULL, leave_open = FALSE) {
-  if(is.null(host)) host <- as.character(class(con))
-  if(is.null(type)) type <- as.character(class(con))
+  if (is.null(host)) host <- as.character(class(con))
+  if (is.null(type)) type <- as.character(class(con))
   rscontract_close(host = host, type = type)
   if (!leave_open) dbDisconnect(con)
 }

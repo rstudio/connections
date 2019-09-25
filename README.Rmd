@@ -29,15 +29,12 @@ toc <- function() {
   toc_list <- lapply(
     seq_along(titles),
     function(x) {
-      if(substr(only_titles[x], 1, 3) == "###") {
-        paste0("<ul><li><a href=#", links[x], ">", titles[x], "</a></li></ul>")  
-      } else {
-        paste0("<li><a href=#", links[x], ">", titles[x], "</a></li>")  
-      }
+      pad <- ifelse(substr(only_titles[x], 1, 3) == "###", "    - ", "  - ")
+      paste0(pad, "[", titles[x], "](#",links[x], ")")
     }
   )
-  toc_full <- paste(toc_list, collapse = "") 
-  paste0("<ul>", toc_full, "</ul>")
+  toc_full <- paste(toc_list, collapse = "\n") 
+  cat(toc_full)
 }
 ```
 
@@ -48,6 +45,17 @@ toc <- function() {
 [![Travis build status](https://travis-ci.com/edgararuiz/connections.svg?branch=master)](https://travis-ci.com/edgararuiz/connections)
 [![Codecov test coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge.svg)](https://codecov.io/gh/edgararuiz/connections?branch=master)
 <!-- badges: end -->
+
+  - [Installation](#installation)
+  - [Functions](#functions)
+  - [Uploading and referencing tables with `dplyr`](#uploading-and-referencing-tables-with-dplyr)
+  - [`pins`](#pins)
+    - [Pin a connection](#pin-a-connection)
+    - [Pin a `dplyr` database query](#pin-a-dplyr-database-query)
+    - [Full `pins` example](#full-pins-example)
+  - [Back-end examples](#back-end-examples)
+    - [BigQuery, via `bigrquery`](#bigquery-via-bigrquery)
+    - [PostgreSQL, via `RPostgres`](#postgresql-via-rpostgres)
 
 The main goal of `connections` is to integrate `DBI`-compliant packages with the RStudio IDE's [Connection
 Pane](https://db.rstudio.com/rstudio/connections/).  Packages such as [RPostgres](https://github.com/r-dbi/RPostgres), [RSQLite](https://github.com/r-dbi/RSQLite), [RMariaDB](https://github.com/r-dbi/RMariaDB) and [bigrquery](https://github.com/r-dbi/bigrquery) connect R to those databases, but do not provide a direct integration with the Connections Pane. `connections` reads the configuration of the connection and creates the integration with RStudio.
@@ -76,7 +84,7 @@ pin_remove("cyl_mpg", "local")
 if(file.exists("local.sqlite")) unlink("local.sqlite")
 ```
 
-## Using
+## Functions
 
 The two main functions added by `connections` are: 
 
@@ -103,7 +111,7 @@ connection_close(con)
 
 The connection code is parsed when connecting to the database, and it is visible once the connection is closed.
 
-### `dplyr`
+## Uploading and referencing tables with `dplyr`
 
 `connections` integrates with `dplyr` by supporting the following two functions: 
 
@@ -203,4 +211,49 @@ pin_get("cyl_mpg", board = "local")
 ```
 
 `r add_figure("man/figures/pins-3.png")`
+
+## Back-end examples
+
+There are a couple of examples of how the Connections pane will look when opening the connection via `connections`.
+
+### BigQuery, via `bigrquery`
+
+```{r, eval = FALSE}
+library(connections)
+library(bigrquery)
+
+con <- connection_open(
+  bigquery(),
+  project = "bigquery-public-data",
+  dataset = "austin_311",
+  billing = "my_project_billing",
+  use_legacy_sql = FALSE
+)
+```
+
+`r add_figure("man/figures/bigquery-1.png")`
+
+```{r, eval = FALSE}
+connection_close(con)
+```
+
+`r add_figure("man/figures/bigquery-2.png")`
+
+
+###  PostgreSQL, via `RPostgres`
+
+```{r, eval = FALSE}
+library(connections)
+library(RPostgres)
+con <- connection_open(Postgres(), 
+                       host = "localhost", 
+                       dbname = "datawarehouse",
+                       user = "[user id]", 
+                       password = "[password]", 
+                       bigint = "integer",
+                       port = "5432"
+                       )
+```
+
+`r add_figure("man/figures/postgres-1.png")`
 

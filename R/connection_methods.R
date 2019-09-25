@@ -7,11 +7,11 @@ NULL
 
 connConnection <- function(host, type, id, con) {
   new("connConnection",
-      host = host,
-      type = type,
-      id = id,
-      con = con
-      )
+    host = host,
+    type = type,
+    id = id,
+    con = con
+  )
 }
 
 #' @rdname DBI
@@ -51,7 +51,7 @@ setMethod(
 #' @export
 tbl.connConnection <- function(src, from, ...) {
   t <- tbl(src@con, from)
-  attr(t, "conn_id") <-  src@id
+  attr(t, "conn_id") <- src@id
   class(t) <- c("tbl_conn", class(t))
   t
 }
@@ -60,10 +60,10 @@ tbl.connConnection <- function(src, from, ...) {
 copy_to.connConnection <- function(dest, df,
                                    name = deparse(substitute(df)),
                                    overwrite = FALSE, ...) {
-  ct <- copy_to(dest = dest@con, df = df,
-          name = name, overwrite = overwrite, ...)
+  ct <- copy_to(
+    dest = dest@con, df = df,
+    name = name, overwrite = overwrite, ...
+  )
   connection_update(dest)
   ct
 }
-
-

@@ -30,7 +30,7 @@ connection_view.connConnection <- function(con, connection_code = "", host = "",
 #' @export
 connection_view.DBIConnection <- function(con, connection_code = "", host = "", name = "", connection_id = "") {
   session <- conn_session_get(connection_id)
-  if(is.null(session)) {
+  if (is.null(session)) {
     name <- as.character(class(con))
     host <- as.character(class(con))
     type <- as.character(class(con))
@@ -52,7 +52,7 @@ connection_view.DBIConnection <- function(con, connection_code = "", host = "", 
     object_list = function(catalog = NULL, schema = NULL, ...)
       dbi_list_objects(catalog, schema, sch, name, type, con),
     object_columns = function(catalog = NULL, schema = NULL,
-                              table = NULL, view = NULL, ...)
+                                  table = NULL, view = NULL, ...)
       dbi_list_columns(catalog, schema, table, view, sch, con),
     preview_code = function(limit, table, schema, ...)
       dbi_preview_object(limit, table, schema, sch, con)

@@ -58,6 +58,6 @@ connection_open.DBIDriver <- function(drv, ..., open_pane = TRUE) {
     id = id,
     con = con
   )
-  if(open_pane) connection_view(cc)
+  if (open_pane) connection_view(cc)
   cc
 }
