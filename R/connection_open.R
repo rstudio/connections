@@ -8,6 +8,12 @@
 #' con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 #' con
 #' connection_close(con)
+#'
+#' @return
+#'
+#' Returns a NULL object.  If using the RStudio IDE, it will attempt to open the
+#' connection
+#'
 #' @export
 connection_open <- function(..., open_pane = TRUE) {
   UseMethod("connection_open")

@@ -11,6 +11,10 @@ connection_update(con, hint = "")
 
 \item{hint}{Optional argument passed to the Contract}
 }
+\value{
+Returns a NULL object. If using the RStudio IDE, it will attempt to refresh the
+connection identified by attributes of the con object
+}
 \description{
 Refreshes a connection
 }
@@ -19,4 +23,5 @@ library(DBI)
 con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 connection_update(con)
 connection_close(con)
+
 }

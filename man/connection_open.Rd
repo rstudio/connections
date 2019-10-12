@@ -11,6 +11,10 @@ connection_open(..., open_pane = TRUE)
 
 \item{open_pane}{Signals for the RStudio Connections pane to open. Defaults to TRUE.}
 }
+\value{
+Returns a NULL object.  If using the RStudio IDE, it will attempt to open the
+connection
+}
 \description{
 Opens a connection
 }
@@ -19,4 +23,5 @@ library(DBI)
 con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 con
 connection_close(con)
+
 }

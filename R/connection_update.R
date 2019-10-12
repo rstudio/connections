@@ -8,6 +8,12 @@
 #' con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 #' connection_update(con)
 #' connection_close(con)
+#'
+#' @return
+#'
+#' Returns a NULL object. If using the RStudio IDE, it will attempt to refresh the
+#' connection identified by attributes of the con object
+#'
 #' @export
 connection_update <- function(con, hint = "") {
   UseMethod("connection_update")
@@ -24,5 +30,5 @@ connection_update.DBIConnection <- function(con, hint = "") {
     host = as.character(class(con)),
     type = as.character(class(con)),
     hint = hint
-    )
+  )
 }

@@ -15,6 +15,10 @@ connection_close(con, host = "", type = "", leave_open = FALSE)
 
 \item{leave_open}{Should the connection be left open. Defaults to FALSE}
 }
+\value{
+Returns a NULL object. If using the RStudio IDE, it will attempt to close the
+connection identified by the `host` and `type` arguments, or the con object
+}
 \description{
 Close a connection
 }
@@ -23,4 +27,5 @@ library(DBI)
 con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 connection_close(con)
 con
+
 }

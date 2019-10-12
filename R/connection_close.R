@@ -4,11 +4,17 @@
 #' @param host Host name of the connection. Optional, defaults to empty
 #' @param type Type of connection. Optional, defaults to empty
 #' @param leave_open Should the connection be left open. Defaults to FALSE
+#'
 #' @examples
 #' library(DBI)
 #' con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 #' connection_close(con)
 #' con
+#'
+#' @return
+#' Returns a NULL object. If using the RStudio IDE, it will attempt to close the
+#' connection identified by the `host` and `type` arguments, or the con object
+#'
 #' @export
 connection_close <- function(con, host = "", type = "", leave_open = FALSE) {
   UseMethod("connection_close")
