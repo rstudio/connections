@@ -2,10 +2,7 @@
 #' @import pins
 #' @import rscontract
 #' @importFrom methods new
-#' @importFrom dplyr tbl
-#' @importFrom dplyr copy_to
-#' @importFrom dplyr collect
-#' @importFrom utils capture.output
-#' @importFrom utils head
+#' @importFrom dplyr tbl copy_to collect
+#' @importFrom utils capture.output head
 #' @keywords internal
 NULL

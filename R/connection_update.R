@@ -8,7 +8,6 @@
 #' con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 #' connection_update(con)
 #' connection_close(con)
-#'
 #' @return
 #'
 #' Returns a NULL object. If using the RStudio IDE, it will attempt to refresh the

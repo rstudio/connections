@@ -10,7 +10,6 @@
 #' con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 #' connection_close(con)
 #' con
-#'
 #' @return
 #' Returns a NULL object. If using the RStudio IDE, it will attempt to close the
 #' connection identified by the `host` and `type` arguments, or the con object

@@ -9,9 +9,10 @@ dbi_schemas <- function(con) {
 }
 
 get_attrs <- function(x) {
+  attr_name <- attributes(x)$name
   list(
-    type = names(attributes(x)$name),
-    name = as.character(attributes(x)$name)
+    type = names(attr_name),
+    name = as.character(attr_name)
   )
 }
 
@@ -42,13 +43,7 @@ dbi_list_objects <- function(catalog = NULL, schema = NULL,
   } else {
     obs <- dbListObjects(con)
   }
-  obs_only <- lapply(
-    obs[!obs$is_prefix, 1],
-    function(x) list(
-        name = as.character(attributes(x)$name),
-        type = names(attributes(x)$name)
-      )
-  )
+  obs_only <- lapply(obs[!obs$is_prefix, 1], get_attrs)
   tbls <- item_to_table(obs_only)
   tbls[tbls$type != "schema", ]
 }
@@ -70,7 +65,10 @@ dbi_preview_object <- function(limit, table, schema, sch, con, ...) {
 }
 
 dbi_build_code <- function(metadata) {
-  code_library <- lapply(metadata$libraries, function(x) paste0("library(", x, ")"))
+  code_library <- lapply(
+    metadata$libraries,
+    function(x) paste0("library(", x, ")")
+  )
   cl <- trimws(capture.output(metadata$args))
   cl <- paste0(cl, collapse = "")
   cl <- paste0("con <- ", cl)
@@ -106,7 +104,10 @@ top_rows <- function(limit = 10, table, schema, sch, con) {
 item_to_table <- function(item) {
   t <- lapply(
     item,
-    function(x) data_frame(name = x$name, type = x$type)
+    function(x) data_frame(
+        name = x$name,
+        type = x$type
+      )
   )
   tbls <- NULL
   for (j in seq_along(t)) {
