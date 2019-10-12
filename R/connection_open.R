@@ -33,11 +33,7 @@ connection_open.DBIDriver <- function(drv, ..., open_pane = TRUE) {
     arg_vals[arg_names == "dataset"]
   )
 
-  if (is.null(name)) {
-    name <- as.character(class(con))
-  } else {
-    name <- paste0(host, "/", name)
-  }
+  if (is.null(name)) name <- as.character(class(con))
 
   pkg <- attributes(class(drv))$package
   libraries <- list("connections")

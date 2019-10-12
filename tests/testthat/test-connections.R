@@ -14,4 +14,6 @@ test_that("Tracking works", {
 
 test_that("Utils work", {
   expect_equal(as_data_frame(x = "a"), as.data.frame(x = "a", stringsAsFactors = FALSE))
+  expect_true(flat_list(list()))
+  expect_false(flat_list(10))
 })

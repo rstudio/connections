@@ -27,6 +27,17 @@ test_that("Schema support in dbi functions work as expected", {
 
 connection_close(con)
 
-test_that("Support funcitons work", {
+context("DBI connection")
+
+con <- dbConnect(RSQLite::SQLite(), path = ":dbname:")
+
+test_that("connection functions work on DBI connections", {
+  expect_silent(connection_update(con))
+  expect_silent(connection_view(con))
+  expect_silent(connection_close(con))
+})
+
+
+test_that("Support functions work", {
   expect_silent(get_attrs(list(name = list())))
 })

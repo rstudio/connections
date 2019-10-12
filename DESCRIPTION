@@ -3,8 +3,9 @@ Title: Generic database package integration with the RStudio IDE and 'pins'
 Version: 0.0.0.9003
 Authors@R:
     person("Edgar", "Ruiz", email = "edgar@rstudio.com", role = c("aut", "cre"))
-Description: Provides integration with the `pins` package, and with the RStudio's Connections pane, to 'DBI' compliant packages or projects.
-License: MIT + file LICENSE
+Description: Provides integration with the `pins` package, and with the RStudio's Connections pane, 
+    to 'DBI' compliant packages or projects.
+License: GPL-3
 Imports:
   DBI,
   methods,
@@ -14,9 +15,9 @@ Imports:
   uuid,
   rscontract
 Suggests:
-    RSQLite,
-    testthat (>= 2.1.0),
-    covr
+  RSQLite,
+  testthat (>= 2.1.0),
+  covr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
