@@ -23,5 +23,4 @@ library(DBI)
 con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
 con
 connection_close(con)
-
 }
