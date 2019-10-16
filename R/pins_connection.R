@@ -5,7 +5,10 @@ pin.connConnection <- function(x, name = NULL, description = NULL, board = NULL,
   on.exit(unlink(path))
   session <- conn_session_get(x@id)
   saveRDS(session, file.path(path, "code.rds"))
-  saveRDS(data.frame(message = "Please close this Viewer window"), "data.rds")
+  saveRDS(
+    data.frame(message = "No Viewer preview available for this type of pin"),
+    file.path(path, "data.rds")
+    )
   metadata <- list(
     columns = list(
       host = session$host,
@@ -22,6 +25,3 @@ pin_load.conn_open <- function(path, ...) {
   code <- readRDS(file.path(path, "code.rds"))
   dbi_run_code(code)
 }
-
-#' @export
-pin_preview.connConnection <- function(x, board = NULL, ...) {}

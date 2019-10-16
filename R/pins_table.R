@@ -6,7 +6,10 @@ pin.tbl_conn <- function(x, name = NULL, description = NULL, board = NULL, ...) 
   session <- conn_session_get(attr(x, "conn_id"))
   saveRDS(session, file.path(path, "code.rds"))
   saveRDS(x, file.path(path, "tbl.rds"))
-  saveRDS(data.frame(message = "Please close this Viewer window"), "data.rds")
+  saveRDS(
+    data.frame(message = "Load the `connections` package to view the results form the database"),
+    file.path(path, "data.rds")
+  )
   metadata <- list(
     columns = lapply(collect(head(x, 10)), class)
   )
@@ -21,8 +24,11 @@ pin_load.pinned_tbl <- function(path, ...) {
   code <- readRDS(file.path(path, "code.rds"))
   con <- dbi_run_code(code)
   tbl_read$src$con <- con@con
+  init_dbplyr <- dbplyr::remote_src(tbl_read)
   tbl_read
 }
 
 #' @export
-pin_preview.tbl_conn <- function(x, board = NULL, ...) {}
+pin_preview.tbl_conn <- function(x, board = NULL, ...) {
+  collect(head(x, 1000))
+}
