@@ -1,6 +1,6 @@
 Package: connections
 Title: Generic database package integration with the 'RStudio' IDE and 'pins'
-Version: 0.0.0.9004
+Version: 0.1.0
 Authors@R:
     person("Edgar", "Ruiz", email = "edgar@rstudio.com", role = c("aut", "cre"))
 Description: Provides a generic integration with the 'RStudio' connections pane, and the 'pins' package. 

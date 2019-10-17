@@ -22,8 +22,8 @@ coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge
       - [Pin a `dplyr` database query](#pin-a-dplyr-database-query)
       - [Full `pins` example](#full-pins-example)
   - [Back-end examples](#back-end-examples)
-      - [BigQuery, via `bigrquery`](#bigquery,-via-bigrquery)
-      - [PostgreSQL, via `RPostgres`](#postgresql,-via-rpostgres)
+      - [BigQuery, via `bigrquery`](#bigquery-via-bigrquery)
+      - [PostgreSQL, via `RPostgres`](#postgresql-via-rpostgres)
   - [`DBI` connections](#dbi-connections)
 
 The main goal of `connections` is to integrate `DBI`-compliant packages
@@ -175,14 +175,22 @@ pin(con, "my_conn", board = "local")
 Use `pin_get()` to re-open the connection. In effect, `pin_get()` will
 replay the exact same code used to initially connect to the database.
 This means that `connection_open()` is already called for you, so the
-Connections pane should automatically start up.
+Connections pane should automatically start up. Assign the output of
+`pin_get()` to a variable, such as `con`. The variable will work just
+like any connection variable.
 
 ``` r
 con <- pin_get("my_conn", board = "local")
 ```
 
-Assign the output of `pin_get()` to a variable, such as `con`. The
-variable will work just like any connection variable.
+The Connections Pane does not open by default when pulled via a pin. To
+open it use `connection_view()`
+
+``` r
+connection_view(con)
+```
+
+The `con` variable is now a regular database connection variable.
 
 ``` r
 db_mtcars <- tbl(con, "mtcars") %>%

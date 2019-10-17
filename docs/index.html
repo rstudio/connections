@@ -11,7 +11,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Generic database package integration with the RStudio IDE and pins">
-<meta property="og:description" content="Provides integration with the `pins` package, and with the RStudios Connections pane, to DBI' compliant packages or projects.">
+<meta property="og:description" content="Provides a generic integration with the RStudio connections pane, and the pins package. 
+  It is meant to be used with DBI compliant connection packages.">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -31,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">connections</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -86,8 +87,8 @@
 <li>
 <a href="#back-end-examples">Back-end examples</a>
 <ul>
-<li><a href="#bigquery,-via-bigrquery">BigQuery, via <code>bigrquery</code></a></li>
-<li><a href="#postgresql,-via-rpostgres">PostgreSQL, via <code>RPostgres</code></a></li>
+<li><a href="#bigquery-via-bigrquery">BigQuery, via <code>bigrquery</code></a></li>
+<li><a href="#postgresql-via-rpostgres">PostgreSQL, via <code>RPostgres</code></a></li>
 </ul>
 </li>
 <li><a href="#dbi-connections"><code>DBI</code> connections</a></li>
@@ -182,20 +183,22 @@
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin.html">pin</a></span>(con, <span class="st">"my_conn"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a></code></pre></div>
 <!--html_preserve-->
 <p><img src="reference/figures/pins-1.png" width="400px"><br><!--/html_preserve--></p>
-<p>Use <code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> to re-open the connection. In effect, <code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> will replay the exact same code used to initially connect to the database. This means that <code><a href="reference/connection_open.html">connection_open()</a></code> is already called for you, so the Connections pane should automatically start up.</p>
+<p>Use <code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> to re-open the connection. In effect, <code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> will replay the exact same code used to initially connect to the database. This means that <code><a href="reference/connection_open.html">connection_open()</a></code> is already called for you, so the Connections pane should automatically start up. Assign the output of <code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> to a variable, such as <code>con</code>. The variable will work just like any connection variable.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">con &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"my_conn"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a></code></pre></div>
-<p>Assign the output of <code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> to a variable, such as <code>con</code>. The variable will work just like any connection variable.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">db_mtcars &lt;-<span class="st"> </span><span class="kw">tbl</span>(con, <span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(am) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_mpg =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">db_mtcars</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; # Source:   lazy query [?? x 2]</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;      am avg_mpg</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; 1     0    17.1</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; 2     1    24.4</span></a></code></pre></div>
+<p>The Connections Pane does not open by default when pulled via a pin. To open it use <code><a href="reference/connection_view.html">connection_view()</a></code></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="reference/connection_view.html">connection_view</a></span>(con)</a></code></pre></div>
+<p>The <code>con</code> variable is now a regular database connection variable.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">db_mtcars &lt;-<span class="st"> </span><span class="kw">tbl</span>(con, <span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(am) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_mpg =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">db_mtcars</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; # Source:   lazy query [?? x 2]</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;      am avg_mpg</span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt; 1     0    17.1</span></a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt; 2     1    24.4</span></a></code></pre></div>
 </div>
 <div id="pin-a-dplyr-database-query" class="section level3">
 <h3 class="hasAnchor">
@@ -205,36 +208,36 @@
 <li>The <code>dplyr</code> R object that contains all of the transformations. <strong>It does not save the actual results</strong>.</li>
 <li>The necessary information to recreate the database connection. This is to make sure that the data is being retrieved from the original database connection.</li>
 </ul>
-<!-- end list --><div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin.html">pin</a></span>(db_mtcars, <span class="st">"avg_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a></code></pre></div>
+<!-- end list --><div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin.html">pin</a></span>(db_mtcars, <span class="st">"avg_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a></code></pre></div>
 <!--html_preserve-->
 <p><img src="reference/figures/pins-2.png" width="400px"><br><!--/html_preserve--></p>
 <p><code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> will connect to the database, and return the <code>dplyr</code> object. Without assigning it to a variable, the pin will immediately print the results of the database. Those results are being processed at the time <code><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get()</a></code> runs.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"avg_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; # Source:   lazy query [?? x 2]</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;      am avg_mpg</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; 1     0    17.1</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; 2     1    24.4</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"avg_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; # Source:   lazy query [?? x 2]</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt;      am avg_mpg</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 1     0    17.1</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 2     1    24.4</span></a></code></pre></div>
 </div>
 <div id="full-pins-example" class="section level3">
 <h3 class="hasAnchor">
 <a href="#full-pins-example" class="anchor"></a>Full <code>pins</code> example</h3>
 <p>The way <code>pins</code> integrates with databases, via the <code>connections</code> package, allows to open the connection from a pin, and pipe all of the subsequent code into a new pin. Afterwards, that pin can be used to collect or to continue using the <code>dplyr</code> object.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"my_conn"</span>, <span class="dt">board =</span> <span class="st">"local"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">tbl</span>(<span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(cyl) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_mpg =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin.html">pin</a></span>(<span class="st">"cyl_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"cyl_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; # Source:   lazy query [?? x 2]</span></a>
-<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]</span></a>
-<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt;     cyl avg_mpg</span></a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt; 1     4    26.7</span></a>
-<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; 2     6    19.7</span></a>
-<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt; 3     8    15.1</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"my_conn"</span>, <span class="dt">board =</span> <span class="st">"local"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw">tbl</span>(<span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(cyl) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_mpg =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin.html">pin</a></span>(<span class="st">"cyl_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/pkg/pins/man/pin_get.html">pin_get</a></span>(<span class="st">"cyl_mpg"</span>, <span class="dt">board =</span> <span class="st">"local"</span>)</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; # Source:   lazy query [?? x 2]</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt; # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]</span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt;     cyl avg_mpg</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">#&gt; 1     4    26.7</span></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt; 2     6    19.7</span></a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt; 3     8    15.1</span></a></code></pre></div>
 <!--html_preserve-->
 <p><img src="reference/figures/pins-3.png" width="400px"><br><!--/html_preserve--></p>
 </div>
@@ -247,19 +250,19 @@
 <h3 class="hasAnchor">
 <a href="#bigquery-via-bigrquery" class="anchor"></a>BigQuery, via <code>bigrquery</code>
 </h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(connections)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(bigrquery)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">con &lt;-<span class="st"> </span><span class="kw"><a href="reference/connection_open.html">connection_open</a></span>(</a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">  <span class="kw"><a href="https://rdrr.io/pkg/bigrquery/man/bigquery.html">bigquery</a></span>(),</a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">  <span class="dt">project =</span> <span class="st">"bigquery-public-data"</span>,</a>
-<a class="sourceLine" id="cb14-7" data-line-number="7">  <span class="dt">dataset =</span> <span class="st">"austin_311"</span>,</a>
-<a class="sourceLine" id="cb14-8" data-line-number="8">  <span class="dt">billing =</span> <span class="st">"my_project_billing"</span>,</a>
-<a class="sourceLine" id="cb14-9" data-line-number="9">  <span class="dt">use_legacy_sql =</span> <span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb14-10" data-line-number="10">)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(connections)</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(bigrquery)</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">con &lt;-<span class="st"> </span><span class="kw"><a href="reference/connection_open.html">connection_open</a></span>(</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="kw"><a href="https://rdrr.io/pkg/bigrquery/man/bigquery.html">bigquery</a></span>(),</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">  <span class="dt">project =</span> <span class="st">"bigquery-public-data"</span>,</a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">  <span class="dt">dataset =</span> <span class="st">"austin_311"</span>,</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8">  <span class="dt">billing =</span> <span class="st">"my_project_billing"</span>,</a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">  <span class="dt">use_legacy_sql =</span> <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10">)</a></code></pre></div>
 <!--html_preserve-->
 <p><img src="reference/figures/bigquery-1.png" width="400px"><br><!--/html_preserve--></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="reference/connection_close.html">connection_close</a></span>(con)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="reference/connection_close.html">connection_close</a></span>(con)</a></code></pre></div>
 <!--html_preserve-->
 <p><img src="reference/figures/bigquery-2.png" width="400px"><br><!--/html_preserve--></p>
 </div>
@@ -267,16 +270,16 @@
 <h3 class="hasAnchor">
 <a href="#postgresql-via-rpostgres" class="anchor"></a>PostgreSQL, via <code>RPostgres</code>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(connections)</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(RPostgres)</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">con &lt;-<span class="st"> </span><span class="kw"><a href="reference/connection_open.html">connection_open</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/RPostgres/man/Postgres.html">Postgres</a></span>(), </a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">                       <span class="dt">host =</span> <span class="st">"localhost"</span>, </a>
-<a class="sourceLine" id="cb16-5" data-line-number="5">                       <span class="dt">dbname =</span> <span class="st">"datawarehouse"</span>,</a>
-<a class="sourceLine" id="cb16-6" data-line-number="6">                       <span class="dt">user =</span> <span class="st">"[user id]"</span>, </a>
-<a class="sourceLine" id="cb16-7" data-line-number="7">                       <span class="dt">password =</span> <span class="st">"[password]"</span>, </a>
-<a class="sourceLine" id="cb16-8" data-line-number="8">                       <span class="dt">bigint =</span> <span class="st">"integer"</span>,</a>
-<a class="sourceLine" id="cb16-9" data-line-number="9">                       <span class="dt">port =</span> <span class="st">"5432"</span></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10">                       )</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(connections)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(RPostgres)</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">con &lt;-<span class="st"> </span><span class="kw"><a href="reference/connection_open.html">connection_open</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/RPostgres/man/Postgres.html">Postgres</a></span>(), </a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">                       <span class="dt">host =</span> <span class="st">"localhost"</span>, </a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">                       <span class="dt">dbname =</span> <span class="st">"datawarehouse"</span>,</a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">                       <span class="dt">user =</span> <span class="st">"[user id]"</span>, </a>
+<a class="sourceLine" id="cb17-7" data-line-number="7">                       <span class="dt">password =</span> <span class="st">"[password]"</span>, </a>
+<a class="sourceLine" id="cb17-8" data-line-number="8">                       <span class="dt">bigint =</span> <span class="st">"integer"</span>,</a>
+<a class="sourceLine" id="cb17-9" data-line-number="9">                       <span class="dt">port =</span> <span class="st">"5432"</span></a>
+<a class="sourceLine" id="cb17-10" data-line-number="10">                       )</a></code></pre></div>
 <!--html_preserve-->
 <p><img src="reference/figures/postgres-1.png" width="400px"><br><!--/html_preserve--></p>
 </div>
@@ -285,20 +288,20 @@
 <h2 class="hasAnchor">
 <a href="#dbi-connections" class="anchor"></a><code>DBI</code> connections</h2>
 <p>It is possible to integrate <code>DBI</code> connections not opened via <code><a href="reference/connection_open.html">connection_open()</a></code>. To do that, use <code><a href="reference/connection_view.html">connection_view()</a></code> and pass it the variable containing the existing database connection.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(DBI)</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">con &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/DBI/man/dbConnect.html">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/RSQLite/man/SQLite.html">SQLite</a></span>(), <span class="st">":memory:"</span>)</a>
-<a class="sourceLine" id="cb17-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="kw"><a href="reference/connection_view.html">connection_view</a></span>(con)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(DBI)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">con &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/DBI/man/dbConnect.html">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/RSQLite/man/SQLite.html">SQLite</a></span>(), <span class="st">":memory:"</span>)</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="kw"><a href="reference/connection_view.html">connection_view</a></span>(con)</a></code></pre></div>
 <!--html_preserve-->
 <p><img src="reference/figures/dbi-1.png" width="200px"><br><!--/html_preserve--></p>
 <p>Changes to the database will not automatically load in the Connections pane. The <code><a href="reference/connection_update.html">connection_update()</a></code> function will refresh the pane with the latest.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/DBI/man/dbWriteTable.html">dbWriteTable</a></span>(con, <span class="st">"mtcars"</span>, mtcars)</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="kw"><a href="reference/connection_update.html">connection_update</a></span>(con)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/DBI/man/dbWriteTable.html">dbWriteTable</a></span>(con, <span class="st">"mtcars"</span>, mtcars)</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="kw"><a href="reference/connection_update.html">connection_update</a></span>(con)</a></code></pre></div>
 <!--html_preserve-->
 <p><img src="reference/figures/dbi-2.png" width="300px"><br><!--/html_preserve--></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="reference/connection_close.html">connection_close</a></span>(con)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="reference/connection_close.html">connection_close</a></span>(con)</a></code></pre></div>
 <!--html_preserve-->
 <p><img src="reference/figures/dbi-3.png" width="300px"><br><!--/html_preserve--></p>
 </div>
@@ -318,9 +321,7 @@
 <div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
-</li>
+<li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
 </ul>
 </div>
 <div class="developers">

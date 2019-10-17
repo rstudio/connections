@@ -6,3 +6,4 @@
 docs
 local.sqlite
 data.rds
+^cran-comments\.md$

@@ -8,7 +8,7 @@ pin.connConnection <- function(x, name = NULL, description = NULL, board = NULL,
   saveRDS(
     data.frame(message = "No Viewer preview available for this type of pin"),
     file.path(path, "data.rds")
-    )
+  )
   metadata <- list(
     columns = list(
       host = session$host,
