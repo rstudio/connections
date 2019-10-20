@@ -7,4 +7,8 @@
 
 0 errors | 0 warnings | 1 note
 
+## Release summary
+
 * This is a new package
+
+* As requested, updated the Title in DESCRIPTION to be in title case
