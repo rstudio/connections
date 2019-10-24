@@ -11,4 +11,5 @@
 
 * This is a new package
 
-* As requested, updated the Title in DESCRIPTION to be in title case
+* Reduces Title length, and expands description, as requested
+
