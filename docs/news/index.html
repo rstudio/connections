@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Populates the RStudio Connection viewer — connection_view • connections</title>
+<title>Changelog • connections</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,7 @@
 
 
 
-<meta property="og:title" content="Populates the RStudio Connection viewer — connection_view" />
-<meta property="og:description" content="Populates the RStudio Connection viewer" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -56,7 +54,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -108,63 +106,30 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Populates the RStudio Connection viewer</h1>
-    <small class="dont-index">Source: <a href='https://github.com/edgararuiz/connections/blob/master/R/connection_view.R'><code>R/connection_view.R</code></a></small>
-    <div class="hidden name"><code>connection_view.Rd</code></div>
+      <h1>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/edgararuiz/connections/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="ref-description">
-    <p>Populates the RStudio Connection viewer</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>connection_view</span>(
-  <span class='no'>con</span>,
-  <span class='kw'>connection_code</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>host</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>connection_id</span> <span class='kw'>=</span> <span class='st'>""</span>
-)</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>con</th>
-      <td><p>Connection variable</p></td>
-    </tr>
-    <tr>
-      <th>connection_code</th>
-      <td><p>Text of code to connect to the same source</p></td>
-    </tr>
-    <tr>
-      <th>host</th>
-      <td><p>Name of Host of the connection</p></td>
-    </tr>
-    <tr>
-      <th>name</th>
-      <td><p>Connection name</p></td>
-    </tr>
-    <tr>
-      <th>connection_id</th>
-      <td><p>Unique ID of the connection for the current session</p></td>
-    </tr>
-    </table>
-
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>DBI</span>)
-<span class='no'>con</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='connection_open.html'>connection_open</a></span>(<span class='kw pkg'>RSQLite</span><span class='kw ns'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>(), <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>":dbname:"</span>)
-<span class='fu'>connection_view</span>(<span class='no'>con</span>)
-<span class='fu'><a href='connection_close.html'>connection_close</a></span>(<span class='no'>con</span>)</div></pre>
+    <div id="connections-0-1-1" class="section level1">
+<h1 class="page-header">
+<a href="#connections-0-1-1" class="anchor"></a>connections 0.1.1<small> Unreleased </small>
+</h1>
+<ul>
+<li><p>Added a <code>NEWS.md</code> file to track changes to the package.</p></li>
+<li><p>Makes Javier Luraschi maintainer of the package</p></li>
+</ul>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#connections-0-1-1">0.1.1</a></li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
 
