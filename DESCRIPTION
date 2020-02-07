@@ -2,7 +2,10 @@ Package: connections
 Title: Integrates with the 'RStudio' Connections Pane and 'pins'
 Version: 0.1.0
 Authors@R:
-    person("Edgar", "Ruiz", email = "edgar@rstudio.com", role = c("aut", "cre"))
+  c(
+    person("Javier", "Luraschi", email = "javier@rstudio.com", role = c("aut", "cre")),
+    person("Edgar", "Ruiz", email = "edgararuiz@gmail.com", role = c("aut"))
+  )
 Description: Enables 'DBI' compliant packages to integrate with the 'RStudio' connections 
   pane, and the 'pins' package. It automates the display of schemata, tables, views, as well 
   as the preview of the table's top 1000 records. 
@@ -21,6 +24,6 @@ Suggests:
   covr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 URL: https://github.com/edgararuiz/connections
 BugReports: https://github.com/edgararuiz/connections/issues

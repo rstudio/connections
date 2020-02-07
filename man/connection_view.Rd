@@ -4,8 +4,13 @@
 \alias{connection_view}
 \title{Populates the RStudio Connection viewer}
 \usage{
-connection_view(con, connection_code = "", host = "", name = "",
-  connection_id = "")
+connection_view(
+  con,
+  connection_code = "",
+  host = "",
+  name = "",
+  connection_id = ""
+)
 }
 \arguments{
 \item{con}{Connection variable}
