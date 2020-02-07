@@ -1,6 +1,6 @@
 Package: connections
 Title: Integrates with the 'RStudio' Connections Pane and 'pins'
-Version: 0.1.0
+Version: 0.1.1
 Authors@R:
   c(
     person("Javier", "Luraschi", email = "javier@rstudio.com", role = c("aut", "cre")),
