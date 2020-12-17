@@ -38,7 +38,7 @@ Pane. `connections` reads the configuration of the connection and
 creates the integration with RStudio.
 
 A second goal is to provide integration with the
-[pins](https://rstudio.github.io/pins/) package. The `connections`
+[pins](https://pins.rstudio.com/) package. The `connections`
 package allows you to pin database connections and
 [dplyr](https://dplyr.tidyverse.org/) table objects.
 

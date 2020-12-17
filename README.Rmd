@@ -62,7 +62,7 @@ toc <- function() {
 The main goal of `connections` is to integrate `DBI`-compliant packages with the RStudio IDE's [Connection
 Pane](https://db.rstudio.com/rstudio/connections/).  Packages such as [RPostgres](https://github.com/r-dbi/RPostgres), [RSQLite](https://github.com/r-dbi/RSQLite), [RMariaDB](https://github.com/r-dbi/RMariaDB) and [bigrquery](https://github.com/r-dbi/bigrquery) connect R to those databases, but do not provide a direct integration with the Connections Pane. `connections` reads the configuration of the connection and creates the integration with RStudio.
 
-A second goal is to provide integration with the [pins](https://rstudio.github.io/pins/) package.  The `connections` package allows you to pin database connections and [dplyr](https://dplyr.tidyverse.org/) table objects. 
+A second goal is to provide integration with the [pins](https://pins.rstudio.com/) package.  The `connections` package allows you to pin database connections and [dplyr](https://dplyr.tidyverse.org/) table objects. 
 
 ## Installation
 
