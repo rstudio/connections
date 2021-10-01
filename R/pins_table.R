@@ -10,12 +10,22 @@ pin.tbl_conn <- function(x, name = NULL, description = NULL, board = NULL, ...) 
     data.frame(message = "Load the `connections` package to view the results form the database"),
     file.path(path, "data.rds")
   )
-  metadata <- list(
-    columns = lapply(collect(head(x, 10)), class)
-  )
-  board_pin_store(board, path, name, description, "pinned_tbl", metadata)
-  # To prevent printout of x
-  x <- NULL
+
+  if (utils::packageVersion("pins") > "0.99") {
+    metadata <- list(
+      description = description,
+      type = "pinned_tbl",
+      columns = lapply(collect(head(x, 10)), class)
+    )
+    invisible(board_pin_store(board, path, name, metadata))
+  } else {
+    metadata <- list(
+      columns = lapply(collect(head(x, 10)), class)
+    )
+    board_pin_store(board, path, name, description, "pinned_tbl", metadata)
+    # To prevent printout of x
+    x <- NULL
+  }
 }
 
 #' @export
