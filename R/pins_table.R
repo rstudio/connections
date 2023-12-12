@@ -38,7 +38,3 @@ pin_load.pinned_tbl <- function(path, ...) {
   tbl_read
 }
 
-#' @export
-pin_preview.tbl_conn <- function(x, board = NULL, ...) {
-  collect(head(x, 1000))
-}
