@@ -18,7 +18,7 @@ coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge
 - [Uploading and referencing tables with
   `dplyr`](#uploading-and-referencing-tables-with-dplyr)
 - [`pins`](#pins)
-  - [Pin a connection](#pin-a-connection)
+  - [Pin a database connection](#pin-a-database-connection)
   - [Pin a `dplyr` database query](#pin-a-dplyr-database-query)
   - [Full `pins` example](#full-pins-example)
 - [Back-end examples](#back-end-examples)
@@ -138,40 +138,50 @@ db_mtcars %>%
 
 ## `pins`
 
-The `connections` package integrates with `pins`. It enables the ability
-to save and retrieve connections and queries.
+The `connections` package integrates with `pins`. It adds the ability to
+“pin” database connections and queries. It follows the same approach as
+the
+[vetiver](https://rstudio.github.io/vetiver-r/reference/vetiver_pin_write.html)
+package. `connections` now has two new functions:
+
+- `connection_pin_write()`
+- `connection_pin_read()`
+
+### Pin a database connection
+
+The `connection_pin_write()` function does **not** save the R object. It
+records the code necessary to recreate the connection.
 
 ``` r
 library(pins)
 board <- board_folder("~/pins")
-```
 
-### Pin a connection
-
-Use the same `pin()` command to save a database connection. Under the
-hood, `connections` saves the **necessary information to recreate the
-connection code, not the actual connection R object**.
-
-``` r
 connection_pin_write(board, con, name = "my_conn")
-#> ! The hash of pin "my_conn" has not changed.
-#> • Your pin will not be stored.
+#> Creating new version '20231213T203409Z-8d9ce'
+#> Writing to pin 'my_conn'
 ```
 
 <img src='man/figures/pins-1.png' width ='400px'/><br/>
 
-Use `pin_get()` to re-open the connection. In effect, `pin_get()` will
-replay the exact same code used to initially connect to the database.
-This means that `connection_open()` is already called for you, so the
-Connections pane should automatically start up. Assign the output of
-`pin_get()` to a variable, such as `con`. The variable will work just
-like any connection variable.
+If you wish to see the code that `connections` will use when recreating
+the conneciton from the pin, you can use `connection_code()`:
+
+``` r
+connection_code(con)
+#> library(connections)
+#> library(RSQLite)
+#> con <- connection_open(SQLite(), "local.sqlite")
+```
+
+`connection_pin_read()` will replay the exact same code used to
+initially connect to the database. Assign the output to a variable, such
+as `con1`. The variable will work just like any connection variable.
 
 ``` r
 con1 <- connection_pin_read(board, "my_conn")
 ```
 
-The `con` variable is now a regular database connection variable.
+The `con1` variable is now a regular database connection variable.
 
 ``` r
 db_mtcars <- tbl(con1, "mtcars") %>%
@@ -195,22 +205,23 @@ the top results to the R Console. The `pin` records two things:
 
 - The `dplyr` R object that contains all of the transformations. **It
   does not save the actual results**.
+
 - The necessary information to recreate the database connection. This is
   to make sure that the data is being retrieved from the original
   database connection.
 
 ``` r
 connection_pin_write(board, db_mtcars, name = "avg_mpg")
-#> Replacing version '20231213T160232Z-0ae2a' with '20231213T160510Z-5eb5b'
+#> Creating new version '20231213T203409Z-36b69'
 #> Writing to pin 'avg_mpg'
 ```
 
 <img src='man/figures/pins-2.png' width ='400px'/><br/>
 
-`pin_get()` will connect to the database, and return the `dplyr` object.
-Without assigning it to a variable, the pin will immediately print the
-results of the database. Those results are being processed at the time
-`pin_get()` runs.
+`connection_pin_read()` will connect to the database, and return the
+`dplyr` object. Without assigning it to a variable, the pin will
+immediately print the results of the database. Those results are being
+processed at the time `connection_pin_read()` runs.
 
 ``` r
 connection_pin_read(board, "avg_mpg")
@@ -241,7 +252,7 @@ tbl_summary <- con %>%
 
 
 connection_pin_write(board, tbl_summary, name = "cyl_mpg")
-#> Replacing version '20231213T160232Z-353c8' with '20231213T160510Z-a5041'
+#> Creating new version '20231213T203409Z-5c2db'
 #> Writing to pin 'cyl_mpg'
 
 connection_close(con)
@@ -291,14 +302,15 @@ connection_close(con)
 ``` r
 library(connections)
 library(RPostgres)
-con <- connection_open(Postgres(), 
-                       host = "localhost", 
-                       dbname = "datawarehouse",
-                       user = "[user id]", 
-                       password = "[password]", 
-                       bigint = "integer",
-                       port = "5432"
-                       )
+con <- connection_open(
+  Postgres(), 
+  host = "localhost", 
+  dbname = "datawarehouse",
+  user = "[user id]", 
+  password = "[password]", 
+  bigint = "integer",
+  port = "5432"
+  )
 ```
 
 <img src='man/figures/postgres-1.png' width ='400px'/><br/>
