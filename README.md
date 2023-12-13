@@ -47,7 +47,7 @@ Install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("edgararuiz/connections")
+remotes::install_github("rstudio/connections")
 ```
 
 ## Functions
@@ -156,7 +156,7 @@ library(pins)
 board <- board_folder("~/pins")
 
 connection_pin_write(board, con, name = "my_conn")
-#> Creating new version '20231213T213608Z-8d9ce'
+#> Creating new version '20231213T222232Z-8d9ce'
 #> Writing to pin 'my_conn'
 ```
 
@@ -211,7 +211,7 @@ the top results to the R Console. The `pin` records two things:
 
 ``` r
 connection_pin_write(board, db_mtcars, name = "avg_mpg")
-#> Creating new version '20231213T213608Z-956aa'
+#> Creating new version '20231213T222232Z-05866'
 #> Writing to pin 'avg_mpg'
 ```
 
@@ -251,7 +251,7 @@ tbl_summary <- con %>%
 
 
 connection_pin_write(board, tbl_summary, name = "cyl_mpg")
-#> Creating new version '20231213T213609Z-30482'
+#> Creating new version '20231213T222232Z-dacdc'
 #> Writing to pin 'cyl_mpg'
 
 connection_close(con)
