@@ -12,12 +12,24 @@
 #' connection_view(con)
 #' connection_close(con)
 #' @export
-connection_view <- function(con, connection_code = "", host = "", name = "", connection_id = "") {
+connection_view <- function(
+    con,
+    connection_code = "",
+    host = "",
+    name = "",
+    connection_id = ""
+    ) {
   UseMethod("connection_view")
 }
 
 #' @export
-connection_view.connConnection <- function(con, connection_code = "", host = "", name = "", connection_id = NULL) {
+connection_view.connConnection <- function(
+    con,
+    connection_code = "",
+    host = "",
+    name = "",
+    connection_id = NULL
+    ) {
   connection_view(
     con = con@con,
     connection_code = connection_code,
@@ -28,7 +40,13 @@ connection_view.connConnection <- function(con, connection_code = "", host = "",
 }
 
 #' @export
-connection_view.DBIConnection <- function(con, connection_code = "", host = "", name = "", connection_id = "") {
+connection_view.DBIConnection <- function(
+    con,
+    connection_code = "",
+    host = "",
+    name = "",
+    connection_id = ""
+    ) {
   session <- conn_session_get(connection_id)
   if (is.null(session)) {
     name <- as.character(class(con))

@@ -22,6 +22,6 @@ read_pin_conn.conn_table <- function(x) {
   con <- dbi_run_code(x$con)
   tbl_read <- x$tbl
   tbl_read$src$con <- con@con
-  init_dbplyr <- dbplyr::remote_src(tbl_read)
+  dbplyr::remote_src(tbl_read)
   tbl_read
 }
