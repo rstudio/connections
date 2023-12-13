@@ -47,15 +47,19 @@ connection_view.DBIConnection <- function(con, connection_code = "", host = "", 
     name = name,
     host = host,
     connect_script = connect_code,
-    disconnect_code = function()
-      connection_close(con, host = host),
-    object_list = function(catalog = NULL, schema = NULL, ...)
-      dbi_list_objects(catalog, schema, sch, name, type, con),
+    disconnect_code = function() {
+      connection_close(con, host = host)
+    },
+    object_list = function(catalog = NULL, schema = NULL, ...) {
+      dbi_list_objects(catalog, schema, sch, name, type, con)
+    },
     object_columns = function(catalog = NULL, schema = NULL,
-                                  table = NULL, view = NULL, ...)
-      dbi_list_columns(catalog, schema, table, view, sch, con),
-    preview_code = function(limit, table, schema, ...)
+                              table = NULL, view = NULL, ...) {
+      dbi_list_columns(catalog, schema, table, view, sch, con)
+    },
+    preview_code = function(limit, table, schema, ...) {
       dbi_preview_object(limit, table, schema, sch, con)
+    }
   )
   rscontract_open(spec_contract)
 }

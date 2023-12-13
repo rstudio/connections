@@ -59,6 +59,3 @@ write_pin_conn.tbl_conn <- function(x, board, ...) {
   )
   invisible()
 }
-
-
-
