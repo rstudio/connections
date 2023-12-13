@@ -8,3 +8,4 @@ local.sqlite
 data.rds
 ^cran-comments\.md$
 ^CRAN-RELEASE$
+^LICENSE\.md$

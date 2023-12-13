@@ -1,18 +1,20 @@
-context("DBI")
 
-con <- connection_open(RSQLite::SQLite(), path = ":dbname:")
+
 
 test_that("copy_to() works", {
+  con <- test_connection()
   expect_silent(copy_to(con, mtcars))
 })
 
 test_that("Support dbi functions work.", {
+  con <- test_connection()
   expect_silent(dbi_list_objects(sch = NULL, con = con))
   expect_silent(dbi_list_columns(sch = NULL, table = "mtcars", con = con))
   expect_silent(dbi_preview_object(limit = 10, sch = NULL, table = "mtcars", con = con))
 })
 
 test_that("Schema support in dbi functions work as expected", {
+  con <- test_connection()
   sch <- data.frame(name = "test", type = "schema", stringsAsFactors = FALSE)
   conn <- con@con
   expect_silent(dbi_list_objects(catalog = "Default", sch = sch, schema = "test", con = conn))
@@ -25,16 +27,12 @@ test_that("Schema support in dbi functions work as expected", {
   )
 })
 
-connection_close(con)
-
-context("DBI connection")
-
-con <- dbConnect(RSQLite::SQLite(), path = ":dbname:")
-
 test_that("connection functions work on DBI connections", {
+  con <- test_connection()
   expect_silent(connection_update(con))
   expect_silent(connection_view(con))
   expect_silent(connection_close(con))
+  test_env$con <- NULL
 })
 
 
