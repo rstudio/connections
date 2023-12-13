@@ -1,7 +1,8 @@
 #' Opens a connection
 #'
 #' @param ... Passes arguments to wrapped connection function
-#' @param open_pane Signals for the RStudio Connections pane to open. Defaults to TRUE.
+#' @param open_pane Signals for the RStudio Connections pane to open.
+#' Defaults to TRUE.
 #'
 #' @examples
 #' library(DBI)

@@ -9,7 +9,8 @@ connection_open(..., open_pane = TRUE)
 \arguments{
 \item{...}{Passes arguments to wrapped connection function}
 
-\item{open_pane}{Signals for the RStudio Connections pane to open. Defaults to TRUE.}
+\item{open_pane}{Signals for the RStudio Connections pane to open.
+Defaults to TRUE.}
 }
 \value{
 Returns a NULL object.  If using the RStudio IDE, it will attempt to open the

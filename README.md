@@ -47,7 +47,7 @@ Install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("edgararuiz/connections")
+remotes::install_github("rstudio/connections")
 ```
 
 ## Functions
@@ -156,7 +156,7 @@ library(pins)
 board <- board_folder("~/pins")
 
 connection_pin_write(board, con, name = "my_conn")
-#> Creating new version '20231213T213608Z-8d9ce'
+#> Creating new version '20231213T222754Z-8d9ce'
 #> Writing to pin 'my_conn'
 ```
 
@@ -211,7 +211,7 @@ the top results to the R Console. The `pin` records two things:
 
 ``` r
 connection_pin_write(board, db_mtcars, name = "avg_mpg")
-#> Creating new version '20231213T213608Z-956aa'
+#> Creating new version '20231213T222755Z-efdfe'
 #> Writing to pin 'avg_mpg'
 ```
 
@@ -247,11 +247,11 @@ con <- connection_pin_read(board, "my_conn")
 tbl_summary <- con %>%
   tbl("mtcars") %>%
   group_by(cyl) %>%
-  summarise(avg_mpg = mean(mpg, na.rm = TRUE)) 
+  summarise(avg_mpg = mean(mpg, na.rm = TRUE))
 
 
 connection_pin_write(board, tbl_summary, name = "cyl_mpg")
-#> Creating new version '20231213T213609Z-30482'
+#> Creating new version '20231213T222755Z-93829'
 #> Writing to pin 'cyl_mpg'
 
 connection_close(con)
@@ -302,14 +302,14 @@ connection_close(con)
 library(connections)
 library(RPostgres)
 con <- connection_open(
-  Postgres(), 
-  host = "localhost", 
+  Postgres(),
+  host = "localhost",
   dbname = "datawarehouse",
-  user = "[user id]", 
-  password = "[password]", 
+  user = "[user id]",
+  password = "[password]",
   bigint = "integer",
   port = "5432"
-  )
+)
 ```
 
 <img src='man/figures/postgres-1.png' width ='400px'/><br/>

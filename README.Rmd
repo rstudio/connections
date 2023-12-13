@@ -5,8 +5,7 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
-
-if(dir.exists("~/pins")) unlink("~/pins", recursive = TRUE)
+if (dir.exists("~/pins")) unlink("~/pins", recursive = TRUE)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -17,7 +16,7 @@ knitr::opts_chunk$set(
 )
 
 add_figure <- function(path, width = 400) {
-  char_html <- paste0("<img src='", path,"' width ='", width,"px'/><br/>")
+  char_html <- paste0("<img src='", path, "' width ='", width, "px'/><br/>")
   htmltools::HTML(char_html)
 }
 
@@ -34,10 +33,10 @@ toc <- function() {
     seq_along(titles),
     function(x) {
       pad <- ifelse(substr(only_titles[x], 1, 3) == "###", "    - ", "  - ")
-      paste0(pad, "[", titles[x], "](#",links[x], ")")
+      paste0(pad, "[", titles[x], "](#", links[x], ")")
     }
   )
-  toc_full <- paste(toc_list, collapse = "\n") 
+  toc_full <- paste(toc_list, collapse = "\n")
   cat(toc_full)
 }
 ```
@@ -81,7 +80,7 @@ Install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("edgararuiz/connections")
+remotes::install_github("rstudio/connections")
 ```
 ```{r setup, include = FALSE}
 library(connections)
@@ -89,7 +88,7 @@ library(RSQLite)
 library(dplyr)
 library(pins)
 
-if(file.exists("local.sqlite")) unlink("local.sqlite")
+if (file.exists("local.sqlite")) unlink("local.sqlite")
 ```
 
 ## Functions
@@ -246,7 +245,7 @@ con <- connection_pin_read(board, "my_conn")
 tbl_summary <- con %>%
   tbl("mtcars") %>%
   group_by(cyl) %>%
-  summarise(avg_mpg = mean(mpg, na.rm = TRUE)) 
+  summarise(avg_mpg = mean(mpg, na.rm = TRUE))
 
 
 connection_pin_write(board, tbl_summary, name = "cyl_mpg")
@@ -293,14 +292,14 @@ connection_close(con)
 library(connections)
 library(RPostgres)
 con <- connection_open(
-  Postgres(), 
-  host = "localhost", 
+  Postgres(),
+  host = "localhost",
   dbname = "datawarehouse",
-  user = "[user id]", 
-  password = "[password]", 
+  user = "[user id]",
+  password = "[password]",
   bigint = "integer",
   port = "5432"
-  )
+)
 ```
 
 `r add_figure("man/figures/postgres-1.png")`

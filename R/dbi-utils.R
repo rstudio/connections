@@ -104,10 +104,12 @@ top_rows <- function(limit = 10, table, schema, sch, con) {
 item_to_table <- function(item) {
   t <- lapply(
     item,
-    function(x) data_frame(
+    function(x) {
+      data_frame(
         name = x$name,
         type = x$type
       )
+    }
   )
   tbls <- NULL
   for (j in seq_along(t)) {

@@ -27,3 +27,4 @@ rsconnect/
 .Rproj.user
 local.sqlite
 data.rds
+docs

@@ -1,6 +1,3 @@
-
-
-
 test_that("copy_to() works", {
   con <- test_connection()
   expect_silent(copy_to(con, mtcars))

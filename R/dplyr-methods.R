@@ -11,8 +11,7 @@ copy_to.connConnection <- function(dest,
                                    df,
                                    name = deparse(substitute(df)),
                                    overwrite = FALSE,
-                                   ...
-                                   ) {
+                                   ...) {
   ct <- copy_to(
     dest = dest@con,
     df = df,
