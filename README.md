@@ -157,7 +157,7 @@ library(pins)
 board <- board_folder("~/pins")
 
 connection_pin_write(board, con, name = "my_conn")
-#> Creating new version '20231213T203409Z-8d9ce'
+#> Creating new version '20231213T210633Z-8d9ce'
 #> Writing to pin 'my_conn'
 ```
 
@@ -212,7 +212,7 @@ the top results to the R Console. The `pin` records two things:
 
 ``` r
 connection_pin_write(board, db_mtcars, name = "avg_mpg")
-#> Creating new version '20231213T203409Z-36b69'
+#> Creating new version '20231213T210633Z-e3f56'
 #> Writing to pin 'avg_mpg'
 ```
 
@@ -252,7 +252,7 @@ tbl_summary <- con %>%
 
 
 connection_pin_write(board, tbl_summary, name = "cyl_mpg")
-#> Creating new version '20231213T203409Z-5c2db'
+#> Creating new version '20231213T210633Z-de76e'
 #> Writing to pin 'cyl_mpg'
 
 connection_close(con)

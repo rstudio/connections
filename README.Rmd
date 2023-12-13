@@ -89,11 +89,6 @@ library(RSQLite)
 library(dplyr)
 library(pins)
 
-board_register_local(cache = "~/pins")
-pin_remove("my_conn", "local")
-pin_remove("avg_mpg", "local")
-pin_remove("cyl_mpg", "local")
-
 if(file.exists("local.sqlite")) unlink("local.sqlite")
 ```
 
