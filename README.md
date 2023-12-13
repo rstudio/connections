@@ -13,18 +13,18 @@ status](https://travis-ci.com/edgararuiz/connections.svg?branch=master)](https:/
 coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge.svg)](https://codecov.io/gh/edgararuiz/connections?branch=master)
 <!-- badges: end -->
 
-  - [Installation](#installation)
-  - [Functions](#functions)
-  - [Uploading and referencing tables with
-    `dplyr`](#uploading-and-referencing-tables-with-dplyr)
-  - [`pins`](#pins)
-      - [Pin a connection](#pin-a-connection)
-      - [Pin a `dplyr` database query](#pin-a-dplyr-database-query)
-      - [Full `pins` example](#full-pins-example)
-  - [Back-end examples](#back-end-examples)
-      - [BigQuery, via `bigrquery`](#bigquery-via-bigrquery)
-      - [PostgreSQL, via `RPostgres`](#postgresql-via-rpostgres)
-  - [`DBI` connections](#dbi-connections)
+- [Installation](#installation)
+- [Functions](#functions)
+- [Uploading and referencing tables with
+  `dplyr`](#uploading-and-referencing-tables-with-dplyr)
+- [`pins`](#pins)
+  - [Pin a connection](#pin-a-connection)
+  - [Pin a `dplyr` database query](#pin-a-dplyr-database-query)
+  - [Full `pins` example](#full-pins-example)
+- [Back-end examples](#back-end-examples)
+  - [BigQuery, via `bigrquery`](#bigquery-via-bigrquery)
+  - [PostgreSQL, via `RPostgres`](#postgresql-via-rpostgres)
+- [`DBI` connections](#dbi-connections)
 
 The main goal of `connections` is to integrate `DBI`-compliant packages
 with the RStudio IDE’s [Connection
@@ -38,8 +38,8 @@ Pane. `connections` reads the configuration of the connection and
 creates the integration with RStudio.
 
 A second goal is to provide integration with the
-[pins](https://pins.rstudio.com/) package. The `connections`
-package allows you to pin database connections and
+[pins](https://pins.rstudio.com/) package. The `connections` package
+allows you to pin database connections and
 [dplyr](https://dplyr.tidyverse.org/) table objects.
 
 ## Installation
@@ -55,12 +55,10 @@ remotes::install_github("edgararuiz/connections")
 
 The two main functions added by `connections` are:
 
-  - `connection_open()` - Opens the database connection. Use instead of
-    `dbConnect()`, but use the exact same arguments. It also
-    automatically starts the Connections pane.
-  - `connection_close()` - Closes the database connection.
-
-<!-- end list -->
+- `connection_open()` - Opens the database connection. Use instead of
+  `dbConnect()`, but use the exact same arguments. It also automatically
+  starts the Connections pane.
+- `connection_close()` - Closes the database connection.
 
 ``` r
 library(connections)
@@ -69,21 +67,16 @@ library(RSQLite)
 con <- connection_open(SQLite(), "local.sqlite")
 ```
 
-<!--html_preserve-->
-
-<img src='man/figures/connection-1.png' width ='400px'/><br/><!--/html_preserve-->
+<img src='man/figures/connection-1.png' width ='400px'/><br/>
 
 The connection can now be closed by using the appropriate button in the
-Connections pane, or by using
-`connection_close()`
+Connections pane, or by using `connection_close()`
 
 ``` r
 connection_close(con)
 ```
 
-<!--html_preserve-->
-
-<img src='man/figures/connection-2.png' width ='400px'/><br/><!--/html_preserve-->
+<img src='man/figures/connection-2.png' width ='400px'/><br/>
 
 The connection code is parsed when connecting to the database, and it is
 visible once the connection is closed.
@@ -93,9 +86,8 @@ visible once the connection is closed.
 `connections` integrates with `dplyr` by supporting the following two
 functions:
 
-  - `tbl()` - To create a pointer to a table or view within the
-    database.
-  - `copy_to()` - To copy data from the R session to the database.
+- `tbl()` - To create a pointer to a table or view within the database.
+- `copy_to()` - To copy data from the R session to the database.
 
 The version of `copy_to()` inside `connections` automatically updates
 the Connections pane, so the new table automatically shows up.
@@ -105,7 +97,7 @@ con <- connection_open(SQLite(), "local.sqlite")
 
 copy_to(con, mtcars, temporary = FALSE, overwrite = TRUE)
 #> # Source:   table<mtcars> [?? x 11]
-#> # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]
+#> # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]
 #>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 #>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 #>  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
@@ -118,19 +110,16 @@ copy_to(con, mtcars, temporary = FALSE, overwrite = TRUE)
 #>  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
 #>  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
 #> 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
-#> # … with more rows
+#> # ℹ more rows
 ```
 
-To use an existing table inside the database use
-`tbl()`.
+To use an existing table inside the database use `tbl()`.
 
 ``` r
 db_mtcars <- tbl(con, "mtcars")
 ```
 
-<!--html_preserve-->
-
-<img src='man/figures/pane-1.png' width ='400px'/><br/><!--/html_preserve-->
+<img src='man/figures/pane-1.png' width ='400px'/><br/>
 
 The `tbl()` function opens the rest of the already available `dplyr`
 database integration.
@@ -139,8 +128,8 @@ database integration.
 db_mtcars %>%
   group_by(am) %>%
   summarise(avg_mpg = mean(mpg, na.rm = TRUE))
-#> # Source:   lazy query [?? x 2]
-#> # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]
+#> # Source:   SQL [2 x 2]
+#> # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]
 #>      am avg_mpg
 #>   <dbl>   <dbl>
 #> 1     0    17.1
@@ -154,23 +143,22 @@ to save and retrieve connections and queries.
 
 ``` r
 library(pins)
-board_register_local(cache = "~/pins")
+board <- board_folder("~/pins")
 ```
 
 ### Pin a connection
 
 Use the same `pin()` command to save a database connection. Under the
 hood, `connections` saves the **necessary information to recreate the
-connection code, not the actual connection R
-object**.
+connection code, not the actual connection R object**.
 
 ``` r
-pin(con, "my_conn", board = "local")
+connection_pin_write(board, con, name = "my_conn")
+#> ! The hash of pin "my_conn" has not changed.
+#> • Your pin will not be stored.
 ```
 
-<!--html_preserve-->
-
-<img src='man/figures/pins-1.png' width ='400px'/><br/><!--/html_preserve-->
+<img src='man/figures/pins-1.png' width ='400px'/><br/>
 
 Use `pin_get()` to re-open the connection. In effect, `pin_get()` will
 replay the exact same code used to initially connect to the database.
@@ -180,26 +168,19 @@ Connections pane should automatically start up. Assign the output of
 like any connection variable.
 
 ``` r
-con <- pin_get("my_conn", board = "local")
-```
-
-The Connections Pane does not open by default when pulled via a pin. To
-open it use `connection_view()`
-
-``` r
-connection_view(con)
+con1 <- connection_pin_read(board, "my_conn")
 ```
 
 The `con` variable is now a regular database connection variable.
 
 ``` r
-db_mtcars <- tbl(con, "mtcars") %>%
+db_mtcars <- tbl(con1, "mtcars") %>%
   group_by(am) %>%
   summarise(avg_mpg = mean(mpg, na.rm = TRUE))
 
 db_mtcars
-#> # Source:   lazy query [?? x 2]
-#> # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]
+#> # Source:   SQL [2 x 2]
+#> # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]
 #>      am avg_mpg
 #>   <dbl>   <dbl>
 #> 1     0    17.1
@@ -212,22 +193,19 @@ When `dplyr` works with database data, the resulting query is not
 executed until the data is explicitly collected into R, or when printing
 the top results to the R Console. The `pin` records two things:
 
-  - The `dplyr` R object that contains all of the transformations. **It
-    does not save the actual results**.
-  - The necessary information to recreate the database connection. This
-    is to make sure that the data is being retrieved from the original
-    database
-connection.
-
-<!-- end list -->
+- The `dplyr` R object that contains all of the transformations. **It
+  does not save the actual results**.
+- The necessary information to recreate the database connection. This is
+  to make sure that the data is being retrieved from the original
+  database connection.
 
 ``` r
-pin(db_mtcars, "avg_mpg", board = "local")
+connection_pin_write(board, db_mtcars, name = "avg_mpg")
+#> Replacing version '20231213T160232Z-0ae2a' with '20231213T160510Z-5eb5b'
+#> Writing to pin 'avg_mpg'
 ```
 
-<!--html_preserve-->
-
-<img src='man/figures/pins-2.png' width ='400px'/><br/><!--/html_preserve-->
+<img src='man/figures/pins-2.png' width ='400px'/><br/>
 
 `pin_get()` will connect to the database, and return the `dplyr` object.
 Without assigning it to a variable, the pin will immediately print the
@@ -235,9 +213,9 @@ results of the database. Those results are being processed at the time
 `pin_get()` runs.
 
 ``` r
-pin_get("avg_mpg", board = "local")
-#> # Source:   lazy query [?? x 2]
-#> # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]
+connection_pin_read(board, "avg_mpg")
+#> # Source:   SQL [2 x 2]
+#> # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]
 #>      am avg_mpg
 #>   <dbl>   <dbl>
 #> 1     0    17.1
@@ -252,15 +230,25 @@ code into a new pin. Afterwards, that pin can be used to collect or to
 continue using the `dplyr` object.
 
 ``` r
-pin_get("my_conn", board = "local") %>%
+board <- board_folder("~/pins")
+
+con <- connection_pin_read(board, "my_conn")
+
+tbl_summary <- con %>%
   tbl("mtcars") %>%
   group_by(cyl) %>%
-  summarise(avg_mpg = mean(mpg, na.rm = TRUE)) %>%
-  pin("cyl_mpg", board = "local")
+  summarise(avg_mpg = mean(mpg, na.rm = TRUE)) 
 
-pin_get("cyl_mpg", board = "local")
-#> # Source:   lazy query [?? x 2]
-#> # Database: sqlite 3.29.0 [/home/edgar/connections/local.sqlite]
+
+connection_pin_write(board, tbl_summary, name = "cyl_mpg")
+#> Replacing version '20231213T160232Z-353c8' with '20231213T160510Z-a5041'
+#> Writing to pin 'cyl_mpg'
+
+connection_close(con)
+
+connection_pin_read(board, "cyl_mpg")
+#> # Source:   SQL [3 x 2]
+#> # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]
 #>     cyl avg_mpg
 #>   <dbl>   <dbl>
 #> 1     4    26.7
@@ -268,9 +256,7 @@ pin_get("cyl_mpg", board = "local")
 #> 3     8    15.1
 ```
 
-<!--html_preserve-->
-
-<img src='man/figures/pins-3.png' width ='400px'/><br/><!--/html_preserve-->
+<img src='man/figures/pins-3.png' width ='400px'/><br/>
 
 ## Back-end examples
 
@@ -292,17 +278,13 @@ con <- connection_open(
 )
 ```
 
-<!--html_preserve-->
-
-<img src='man/figures/bigquery-1.png' width ='400px'/><br/><!--/html_preserve-->
+<img src='man/figures/bigquery-1.png' width ='400px'/><br/>
 
 ``` r
 connection_close(con)
 ```
 
-<!--html_preserve-->
-
-<img src='man/figures/bigquery-2.png' width ='400px'/><br/><!--/html_preserve-->
+<img src='man/figures/bigquery-2.png' width ='400px'/><br/>
 
 ### PostgreSQL, via `RPostgres`
 
@@ -319,9 +301,7 @@ con <- connection_open(Postgres(),
                        )
 ```
 
-<!--html_preserve-->
-
-<img src='man/figures/postgres-1.png' width ='400px'/><br/><!--/html_preserve-->
+<img src='man/figures/postgres-1.png' width ='400px'/><br/>
 
 ## `DBI` connections
 
@@ -337,9 +317,7 @@ con <- dbConnect(RSQLite::SQLite(), ":memory:")
 connection_view(con)
 ```
 
-<!--html_preserve-->
-
-<img src='man/figures/dbi-1.png' width ='200px'/><br/><!--/html_preserve-->
+<img src='man/figures/dbi-1.png' width ='200px'/><br/>
 
 Changes to the database will not automatically load in the Connections
 pane. The `connection_update()` function will refresh the pane with the
@@ -351,14 +329,10 @@ dbWriteTable(con, "mtcars", mtcars)
 connection_update(con)
 ```
 
-<!--html_preserve-->
-
-<img src='man/figures/dbi-2.png' width ='300px'/><br/><!--/html_preserve-->
+<img src='man/figures/dbi-2.png' width ='300px'/><br/>
 
 ``` r
 connection_close(con)
 ```
 
-<!--html_preserve-->
-
-<img src='man/figures/dbi-3.png' width ='300px'/><br/><!--/html_preserve-->
+<img src='man/figures/dbi-3.png' width ='300px'/><br/>

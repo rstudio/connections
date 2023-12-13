@@ -1,5 +1,17 @@
 #' @export
-pin.connConnection <- function(x, name = NULL, description = NULL, board = NULL, ...) {
+connection_pin_write <- function(board, x, ...) {
+  write_pin_conn(
+    x = x,
+    board = board,
+    ...
+  )
+}
+
+write_pin_conn <- function(x, board, ...) {
+  UseMethod("write_pin_conn")
+}
+
+write_pin_conn.connConnection <- function(x, board, ...) {
   session <- conn_session_get(x@id)
   metadata <- list(
     host = session$host,
@@ -9,18 +21,29 @@ pin.connConnection <- function(x, name = NULL, description = NULL, board = NULL,
   pin_write(
     x = x,
     board = board,
-    name = name,
-    description = description,
     type = "rds",
     metadata = metadata,
     ...
-    )
-  # To prevent printout of x
-  x <- NULL
+  )
+  invisible()
 }
 
 #' @export
-pin_load.conn_open <- function(path, ...) {
-  code <- readRDS(file.path(path, "code.rds"))
-  dbi_run_code(code)
+connection_pin_read <- function(board, name, version = NULL) {
+  pinned <- pin_read(board = board, name = name, version = version)
+  read_pin_conn(pinned)
 }
+
+read_pin_conn <- function(x) {
+  UseMethod("read_pin_conn")
+}
+
+read_pin_conn.conn_open <- function(x) {
+  dbi_conn <- dbi_run_code(x)
+  connection_view(dbi_conn)
+  dbi_conn
+}
+
+
+
+

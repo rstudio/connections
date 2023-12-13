@@ -7,13 +7,21 @@ tbl.connConnection <- function(src, from, ...) {
 }
 
 #' @export
-copy_to.connConnection <- function(dest, df,
+copy_to.connConnection <- function(dest,
+                                   df,
                                    name = deparse(substitute(df)),
-                                   overwrite = FALSE, ...) {
+                                   overwrite = FALSE,
+                                   ...
+                                   ) {
   ct <- copy_to(
-    dest = dest@con, df = df,
-    name = name, overwrite = overwrite, ...
+    dest = dest@con,
+    df = df,
+    name = name,
+    overwrite = overwrite,
+    ...
   )
   connection_update(dest)
+  attr(ct, "conn_id") <- dest@id
+  class(ct) <- c("tbl_conn", class(ct))
   ct
 }
