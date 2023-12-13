@@ -17,6 +17,18 @@ connection_view <- function(con, connection_code = "", host = "", name = "", con
 }
 
 #' @export
+connection_view.conn_open <- function(con, connection_code = "", host = "", name = "", connection_id = NULL) {
+  con <- dbi_run_code(con)
+  connection_view(
+    con = con@con,
+    connection_code = connection_code,
+    host = first_non_empty(host, con@host),
+    name = name,
+    connection_id = ifelse(is.null(connection_id), con@id, connection_id)
+  )
+}
+
+#' @export
 connection_view.connConnection <- function(con, connection_code = "", host = "", name = "", connection_id = NULL) {
   connection_view(
     con = con@con,
