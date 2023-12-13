@@ -7,10 +7,9 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build
-status](https://travis-ci.com/edgararuiz/connections.svg?branch=master)](https://travis-ci.com/edgararuiz/connections)
 [![Codecov test
 coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge.svg)](https://codecov.io/gh/edgararuiz/connections?branch=master)
+[![R-CMD-check](https://github.com/rstudio/connections/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/connections/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 - [Installation](#installation)
@@ -157,7 +156,7 @@ library(pins)
 board <- board_folder("~/pins")
 
 connection_pin_write(board, con, name = "my_conn")
-#> Creating new version '20231213T210633Z-8d9ce'
+#> Creating new version '20231213T212903Z-8d9ce'
 #> Writing to pin 'my_conn'
 ```
 
@@ -212,7 +211,7 @@ the top results to the R Console. The `pin` records two things:
 
 ``` r
 connection_pin_write(board, db_mtcars, name = "avg_mpg")
-#> Creating new version '20231213T210633Z-e3f56'
+#> Creating new version '20231213T212903Z-5420a'
 #> Writing to pin 'avg_mpg'
 ```
 
@@ -252,7 +251,7 @@ tbl_summary <- con %>%
 
 
 connection_pin_write(board, tbl_summary, name = "cyl_mpg")
-#> Creating new version '20231213T210633Z-de76e'
+#> Creating new version '20231213T212903Z-491d6'
 #> Writing to pin 'cyl_mpg'
 
 connection_close(con)

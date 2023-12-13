@@ -1,7 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
-^\.travis\.yml$
 ^codecov\.yml$
 docs
 local.sqlite
@@ -9,3 +8,4 @@ data.rds
 ^cran-comments\.md$
 ^CRAN-RELEASE$
 ^LICENSE\.md$
+^\.github$

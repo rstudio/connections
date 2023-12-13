@@ -46,8 +46,8 @@ toc <- function() {
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build status](https://travis-ci.com/edgararuiz/connections.svg?branch=master)](https://travis-ci.com/edgararuiz/connections)
 [![Codecov test coverage](https://codecov.io/gh/edgararuiz/connections/branch/master/graph/badge.svg)](https://codecov.io/gh/edgararuiz/connections?branch=master)
+[![R-CMD-check](https://github.com/rstudio/connections/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/connections/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
   - [Installation](#installation)
