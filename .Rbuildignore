@@ -9,3 +9,6 @@ data.rds
 ^CRAN-RELEASE$
 ^LICENSE\.md$
 ^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
