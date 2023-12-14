@@ -1,4 +1,22 @@
 url: https://rstudio.github.io/connections/
 template:
   bootstrap: 5
-
+  bslib:
+    base_font:
+      google: Lato
+    code_font:
+      google: Roboto Mono
+reference:
+- title: Manage connections
+  contents:
+  - connection_open
+  - connection_close
+  - connection_update
+- title: Integration with `pins`
+  contents:
+  - connection_pin_write
+  - connection_pin_read
+- title: Utilities
+  contents:
+  - connection_view
+  - connection_code
