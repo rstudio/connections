@@ -1,12 +1,21 @@
+## New submission
+
+This submission attempts to restore the 'connections' package to CRAN. The
+code, tests, and repository have been updated. The original maintainer has been
+restored, with an updated email address. The previous maintainer is no longer
+accessible through the email on file for the latest version that was in CRAN.
+
 ## Test environments
-* ubuntu 18.04, R 3.6.2
-* ubuntu 16.04 (on travis-ci), R 3.6.1
+
+* Mac OS M1 (aarch64-apple-darwin20), R 4.3.2 (Local)
+* Mac OS x86_64-apple-darwin20.0 (64-bit), R 4.3.2 (GH Actions)
+* Windows x86_64-w64-mingw32 (64-bit), R 4.3.2 (GH Actions)
+* Linux x86_64-pc-linux-gnu (64-bit), R 4.3.2 (GH Actions)
+* Linux x86_64-pc-linux-gnu (64-bit), R dev (GH Actions)
+* Linux x86_64-pc-linux-gnu (64-bit), R old release (GH Actions)
+* Local Mac OS M1 (aarch64-apple-darwin20), R 4.3.1 (Local)
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes
-
-## Release summary
-
-* Makes Javier Luraschi maintainer of the package
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 

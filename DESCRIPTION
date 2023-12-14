@@ -1,9 +1,9 @@
 Package: connections
 Title: Integrates with the 'RStudio' Connections Pane and 'pins'
-Version: 0.1.2.9000
+Version: 0.2
 Authors@R:
   c(
-    person("Edgar", "Ruiz", email = "edgar@posit.com", role = c("aut", "cre")),
+    person("Edgar", "Ruiz", email = "edgar@posit.co", role = c("aut", "cre")),
     person(given = "Posit Software, PBC", role = c("cph", "fnd"))
   )
 Description: Enables 'DBI' compliant packages to integrate with the 'RStudio' connections 
