@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/rstudio/connections/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/connections/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/rstudio/connections/branch/main/graph/badge.svg)](https://app.codecov.io/gh/rstudio/connections?branch=main)
@@ -27,8 +27,8 @@ coverage](https://codecov.io/gh/rstudio/connections/branch/main/graph/badge.svg)
 
 The main goal of `connections` is to integrate `DBI`-compliant packages
 with the RStudio IDE’s [Connection
-Pane](https://db.rstudio.com/rstudio/connections/). Packages such as
-[RPostgres](https://github.com/r-dbi/RPostgres),
+Pane](https://solutions.posit.co/connections/db/tooling/connections/).
+Packages such as [RPostgres](https://github.com/r-dbi/RPostgres),
 [RSQLite](https://github.com/r-dbi/RSQLite),
 [RMariaDB](https://github.com/r-dbi/RMariaDB) and
 [bigrquery](https://github.com/r-dbi/bigrquery) connect R to those
@@ -156,7 +156,7 @@ library(pins)
 board <- board_folder("~/pins")
 
 connection_pin_write(board, con, name = "my_conn")
-#> Creating new version '20231213T222754Z-8d9ce'
+#> Creating new version '20231215T141203Z-8d9ce'
 #> Writing to pin 'my_conn'
 ```
 
@@ -211,7 +211,7 @@ the top results to the R Console. The `pin` records two things:
 
 ``` r
 connection_pin_write(board, db_mtcars, name = "avg_mpg")
-#> Creating new version '20231213T222755Z-efdfe'
+#> Creating new version '20231215T141203Z-41590'
 #> Writing to pin 'avg_mpg'
 ```
 
@@ -251,7 +251,7 @@ tbl_summary <- con %>%
 
 
 connection_pin_write(board, tbl_summary, name = "cyl_mpg")
-#> Creating new version '20231213T222755Z-93829'
+#> Creating new version '20231215T141203Z-59396'
 #> Writing to pin 'cyl_mpg'
 
 connection_close(con)

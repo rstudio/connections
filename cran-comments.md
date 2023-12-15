@@ -1,6 +1,8 @@
 ## New submission
 
-This submission attempts to restore the 'connections' package to CRAN. The
+- Resubmitting after fixing problematic URLs.
+
+- This submission attempts to restore the 'connections' package to CRAN. The
 code, tests, and repository have been updated. The original maintainer has been
 restored, with an updated email address. The previous maintainer is no longer
 accessible through the email on file for the latest version that was in CRAN.
@@ -17,5 +19,18 @@ accessible through the email on file for the latest version that was in CRAN.
 
 ## R CMD check results
 
-0 errors ✔ | 0 warnings ✔ | 0 notes ✔
+0 errors ✔ | 0 warnings ✔ | 1 note ✖
 
+
+```
+NOTE
+  Maintainer: ‘Edgar Ruiz <edgar@posit.co>’
+  
+  New submission
+  
+  Package was archived on CRAN
+  
+  CRAN repository db overrides:
+    X-CRAN-Comment: Archived on 2021-10-19 as check problems were not
+      corrected in time.
+```

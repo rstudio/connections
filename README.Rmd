@@ -44,7 +44,7 @@ toc <- function() {
 # connections
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/rstudio/connections/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/connections/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/rstudio/connections/branch/main/graph/badge.svg)](https://app.codecov.io/gh/rstudio/connections?branch=main)
 <!-- badges: end -->
@@ -63,7 +63,7 @@ toc <- function() {
 
 The main goal of `connections` is to integrate `DBI`-compliant packages with the
 RStudio IDE's [Connection
-Pane](https://db.rstudio.com/rstudio/connections/).  Packages such as 
+Pane](https://solutions.posit.co/connections/db/tooling/connections/).  Packages such as 
 [RPostgres](https://github.com/r-dbi/RPostgres), [RSQLite](https://github.com/r-dbi/RSQLite), 
 [RMariaDB](https://github.com/r-dbi/RMariaDB) and
 [bigrquery](https://github.com/r-dbi/bigrquery) connect R to those databases, but 
