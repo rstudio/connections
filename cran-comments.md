@@ -1,6 +1,6 @@
 ## New submission
 
-- Resubmitting after fixing problematic URLs.
+- Resubmitting after addressing the recommended changes from CRAN
 
 - This submission attempts to restore the 'connections' package to CRAN. The
 code, tests, and repository have been updated. The original maintainer has been
