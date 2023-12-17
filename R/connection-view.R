@@ -5,7 +5,8 @@
 #' @param host Name of Host of the connection
 #' @param name Connection name
 #' @param connection_id Unique ID of the connection for the current session
-#'
+#' @returns It populates the RStudio Connections pane. It returns nothing to the
+#' console or session.
 #' @examples
 #' library(DBI)
 #' con <- connection_open(RSQLite::SQLite(), path = ":dbname:")

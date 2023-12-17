@@ -23,6 +23,10 @@ connection_view(
 
 \item{connection_id}{Unique ID of the connection for the current session}
 }
+\value{
+It populates the RStudio Connections pane. It returns nothing to the
+console or session.
+}
 \description{
 Populates the RStudio Connection viewer
 }

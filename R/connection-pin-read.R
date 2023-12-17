@@ -2,6 +2,8 @@
 #' @param board A `pins` board object
 #' @param name The name of the pin
 #' @param version The version of the pin to get (optional)
+#' @returns It will return either the database connection, or the remote table
+#' from a database.
 #' @export
 connection_pin_read <- function(board, name, version = NULL) {
   pinned <- pin_read(board = board, name = name, version = version)

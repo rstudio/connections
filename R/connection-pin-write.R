@@ -2,6 +2,7 @@
 #' @param board A `pins` board object
 #' @param x A `connections` table or database connection
 #' @param ... Additional arguments to pass to `pins::pin_write()`
+#' @returns It returns no output.
 #' @export
 connection_pin_write <- function(board, x, ...) {
   write_pin_conn(

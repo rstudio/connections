@@ -13,6 +13,10 @@ connection_pin_read(board, name, version = NULL)
 
 \item{version}{The version of the pin to get (optional)}
 }
+\value{
+It will return either the database connection, or the remote table
+from a database.
+}
 \description{
 Retrieves a database connection or query from a board
 }

@@ -13,6 +13,9 @@ connection_pin_write(board, x, ...)
 
 \item{...}{Additional arguments to pass to `pins::pin_write()`}
 }
+\value{
+It returns no output.
+}
 \description{
 Writes a database connection or query to a board
 }
