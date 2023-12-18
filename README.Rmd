@@ -47,6 +47,7 @@ toc <- function() {
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/rstudio/connections/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/connections/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/rstudio/connections/branch/main/graph/badge.svg)](https://app.codecov.io/gh/rstudio/connections?branch=main)
+[![CRAN status](https://www.r-pkg.org/badges/version/connections)](https://CRAN.R-project.org/package=connections)
 <!-- badges: end -->
 
   - [Installation](#installation)
