@@ -13,3 +13,4 @@ data.rds
 ^docs$
 ^pkgdown$
 ^CRAN-SUBMISSION$
+^utils$
