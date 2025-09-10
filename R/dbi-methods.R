@@ -2,6 +2,8 @@
 #'
 #' Implementations of pure virtual functions defined in the `DBI` package.
 #' @name DBI
+#' @param value A `data.frame` (or coercible to `data.frame`).
+#' @param conn A `DBIConnection-class` object, as returned by [dbConnect()].
 #' @keywords internal
 NULL
 
