@@ -24,8 +24,7 @@ connection_close.connConnection <- function(
     con,
     host = "",
     type = "",
-    leave_open = FALSE
-    ) {
+    leave_open = FALSE) {
   connection_close(
     con@con,
     host = first_non_empty(host, con@host),
@@ -39,8 +38,7 @@ connection_close.DBIConnection <- function(
     con,
     host = NULL,
     type = NULL,
-    leave_open = FALSE
-    ) {
+    leave_open = FALSE) {
   if (is.null(host)) host <- as.character(class(con))
   if (is.null(type)) type <- as.character(class(con))
   rscontract_close(host = host, type = type)
