@@ -10,16 +10,24 @@ connection_pin_read <- function(board, name, version = NULL) {
   read_pin_conn(pinned)
 }
 
+#' Reads pin (internal)
+#' @export
+#' @keywords internal
+#' @param x A `pin` object
 read_pin_conn <- function(x) {
   UseMethod("read_pin_conn")
 }
 
+#' @export
+#' @keywords internal
 read_pin_conn.conn_open <- function(x) {
   dbi_conn <- dbi_run_code(x)
   connection_view(dbi_conn)
   dbi_conn
 }
 
+#' @export
+#' @keywords internal
 read_pin_conn.conn_table <- function(x) {
   con <- dbi_run_code(x$con)
   tbl_read <- x$tbl

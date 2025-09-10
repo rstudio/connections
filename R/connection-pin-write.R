@@ -12,10 +12,16 @@ connection_pin_write <- function(board, x, ...) {
   )
 }
 
+#' Writes pin (internal)
+#' @export
+#' @keywords internal
+#' @inheritParams connection_pin_write
 write_pin_conn <- function(x, board, ...) {
   UseMethod("write_pin_conn")
 }
 
+#' @export
+#' @keywords internal
 write_pin_conn.connConnection <- function(x, board, ...) {
   session <- conn_session_get(x@id)
   metadata <- list(
@@ -33,6 +39,8 @@ write_pin_conn.connConnection <- function(x, board, ...) {
   invisible()
 }
 
+#' @export
+#' @keywords internal
 write_pin_conn.tbl_conn <- function(x, board, ...) {
   session <- conn_session_get(attr(x, "conn_id"))
   con <- structure(session, class = "conn_open")

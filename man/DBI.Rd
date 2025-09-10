@@ -13,8 +13,7 @@
 \S4method{dbSendQuery}{connConnection}(conn, statement, ...)
 }
 \arguments{
-\item{conn}{A \linkS4class{DBIConnection} object, as returned by
-\code{\link[DBI:dbConnect]{dbConnect()}}.}
+\item{conn}{A `DBIConnection-class` object, as returned by [dbConnect()].}
 
 \item{name}{The table name, passed on to \code{\link[DBI:dbQuoteIdentifier]{dbQuoteIdentifier()}}. Options are:
 \itemize{
@@ -26,7 +25,7 @@ e.g. \code{Id(schema = "my_schema", table = "table_name")}
 given verbatim, e.g. \code{SQL('"my_schema"."table_name"')}
 }}
 
-\item{value}{a \link{data.frame} (or coercible to data.frame).}
+\item{value}{A `data.frame` (or coercible to `data.frame`).}
 
 \item{...}{Other parameters passed on to methods.}
 
