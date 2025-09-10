@@ -97,8 +97,8 @@ the Connections pane, so the new table automatically shows up.
 con <- connection_open(SQLite(), "local.sqlite")
 
 copy_to(con, mtcars, temporary = FALSE, overwrite = TRUE)
-#> # Source:   table<mtcars> [?? x 11]
-#> # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]
+#> # Source:   table<`mtcars`> [?? x 11]
+#> # Database: sqlite 3.50.4 [/Users/edgar/Projects/connections/local.sqlite]
 #>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 #>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 #>  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
@@ -129,8 +129,8 @@ database integration.
 db_mtcars %>%
   group_by(am) %>%
   summarise(avg_mpg = mean(mpg, na.rm = TRUE))
-#> # Source:   SQL [2 x 2]
-#> # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]
+#> # Source:   SQL [?? x 2]
+#> # Database: sqlite 3.50.4 [/Users/edgar/Projects/connections/local.sqlite]
 #>      am avg_mpg
 #>   <dbl>   <dbl>
 #> 1     0    17.1
@@ -158,7 +158,7 @@ library(pins)
 board <- board_folder("~/pins")
 
 connection_pin_write(board, con, name = "my_conn")
-#> Creating new version '20231218T234042Z-8d9ce'
+#> Creating new version '20250910T182252Z-b2dcd'
 #> Writing to pin 'my_conn'
 ```
 
@@ -190,8 +190,8 @@ db_mtcars <- tbl(con1, "mtcars") %>%
   summarise(avg_mpg = mean(mpg, na.rm = TRUE))
 
 db_mtcars
-#> # Source:   SQL [2 x 2]
-#> # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]
+#> # Source:   SQL [?? x 2]
+#> # Database: sqlite 3.50.4 [/Users/edgar/Projects/connections/local.sqlite]
 #>      am avg_mpg
 #>   <dbl>   <dbl>
 #> 1     0    17.1
@@ -213,7 +213,7 @@ the top results to the R Console. The `pin` records two things:
 
 ``` r
 connection_pin_write(board, db_mtcars, name = "avg_mpg")
-#> Creating new version '20231218T234042Z-ae23e'
+#> Creating new version '20250910T182252Z-20f35'
 #> Writing to pin 'avg_mpg'
 ```
 
@@ -226,8 +226,8 @@ processed at the time `connection_pin_read()` runs.
 
 ``` r
 connection_pin_read(board, "avg_mpg")
-#> # Source:   SQL [2 x 2]
-#> # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]
+#> # Source:   SQL [?? x 2]
+#> # Database: sqlite 3.50.4 [/Users/edgar/Projects/connections/local.sqlite]
 #>      am avg_mpg
 #>   <dbl>   <dbl>
 #> 1     0    17.1
@@ -253,14 +253,14 @@ tbl_summary <- con %>%
 
 
 connection_pin_write(board, tbl_summary, name = "cyl_mpg")
-#> Creating new version '20231218T234042Z-835f4'
+#> Creating new version '20250910T182252Z-f8594'
 #> Writing to pin 'cyl_mpg'
 
 connection_close(con)
 
 connection_pin_read(board, "cyl_mpg")
-#> # Source:   SQL [3 x 2]
-#> # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]
+#> # Source:   SQL [?? x 2]
+#> # Database: sqlite 3.50.4 [/Users/edgar/Projects/connections/local.sqlite]
 #>     cyl avg_mpg
 #>   <dbl>   <dbl>
 #> 1     4    26.7
