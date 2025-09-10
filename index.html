@@ -130,8 +130,8 @@
 <code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/connection_open.html">connection_open</a></span><span class="op">(</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"local.sqlite"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">copy_to</span><span class="op">(</span><span class="va">con</span>, <span class="va">mtcars</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # Source:   table&lt;mtcars&gt; [?? x 11]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]</span></span>
+<span><span class="co">#&gt; # Source:   table&lt;`mtcars`&gt; [?? x 11]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.50.4 [/Users/edgar/Projects/connections/local.sqlite]</span></span>
 <span><span class="co">#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></span>
 <span><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt;  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4</span></span>
@@ -154,8 +154,8 @@
 <code class="sourceCode R"><span><span class="va">db_mtcars</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">am</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">summarise</span><span class="op">(</span>avg_mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mpg</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # Source:   SQL [2 x 2]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]</span></span>
+<span><span class="co">#&gt; # Source:   SQL [?? x 2]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.50.4 [/Users/edgar/Projects/connections/local.sqlite]</span></span>
 <span><span class="co">#&gt;      am avg_mpg</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1     0    17.1</span></span>
@@ -179,7 +179,7 @@
 <span><span class="va">board</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://pins.rstudio.com/reference/board_folder.html" class="external-link">board_folder</a></span><span class="op">(</span><span class="st">"~/pins"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/connection_pin_write.html">connection_pin_write</a></span><span class="op">(</span><span class="va">board</span>, <span class="va">con</span>, name <span class="op">=</span> <span class="st">"my_conn"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Creating new version '20231218T234042Z-8d9ce'</span></span>
+<span><span class="co">#&gt; Creating new version '20250910T182252Z-b2dcd'</span></span>
 <span><span class="co">#&gt; Writing to pin 'my_conn'</span></span></code></pre></div>
 <p><img src="reference/figures/pins-1.png" width="400px"><br></p>
 <p>If you wish to see the code that <code>connections</code> will use when recreating the conneciton from the pin, you can use <code><a href="reference/connection_code.html">connection_code()</a></code>:</p>
@@ -198,8 +198,8 @@
 <span>  <span class="fu">summarise</span><span class="op">(</span>avg_mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mpg</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">db_mtcars</span></span>
-<span><span class="co">#&gt; # Source:   SQL [2 x 2]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]</span></span>
+<span><span class="co">#&gt; # Source:   SQL [?? x 2]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.50.4 [/Users/edgar/Projects/connections/local.sqlite]</span></span>
 <span><span class="co">#&gt;      am avg_mpg</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1     0    17.1</span></span>
@@ -215,14 +215,14 @@
 </ul>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/connection_pin_write.html">connection_pin_write</a></span><span class="op">(</span><span class="va">board</span>, <span class="va">db_mtcars</span>, name <span class="op">=</span> <span class="st">"avg_mpg"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Creating new version '20231218T234042Z-ae23e'</span></span>
+<span><span class="co">#&gt; Creating new version '20250910T182252Z-20f35'</span></span>
 <span><span class="co">#&gt; Writing to pin 'avg_mpg'</span></span></code></pre></div>
 <p><img src="reference/figures/pins-2.png" width="400px"><br></p>
 <p><code><a href="reference/connection_pin_read.html">connection_pin_read()</a></code> will connect to the database, and return the <code>dplyr</code> object. Without assigning it to a variable, the pin will immediately print the results of the database. Those results are being processed at the time <code><a href="reference/connection_pin_read.html">connection_pin_read()</a></code> runs.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/connection_pin_read.html">connection_pin_read</a></span><span class="op">(</span><span class="va">board</span>, <span class="st">"avg_mpg"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # Source:   SQL [2 x 2]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]</span></span>
+<span><span class="co">#&gt; # Source:   SQL [?? x 2]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.50.4 [/Users/edgar/Projects/connections/local.sqlite]</span></span>
 <span><span class="co">#&gt;      am avg_mpg</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1     0    17.1</span></span>
@@ -244,14 +244,14 @@
 <span></span>
 <span></span>
 <span><span class="fu"><a href="reference/connection_pin_write.html">connection_pin_write</a></span><span class="op">(</span><span class="va">board</span>, <span class="va">tbl_summary</span>, name <span class="op">=</span> <span class="st">"cyl_mpg"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Creating new version '20231218T234042Z-835f4'</span></span>
+<span><span class="co">#&gt; Creating new version '20250910T182252Z-f8594'</span></span>
 <span><span class="co">#&gt; Writing to pin 'cyl_mpg'</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/connection_close.html">connection_close</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/connection_pin_read.html">connection_pin_read</a></span><span class="op">(</span><span class="va">board</span>, <span class="st">"cyl_mpg"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # Source:   SQL [3 x 2]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.41.2 [/Users/edgar/r_projects/connections/local.sqlite]</span></span>
+<span><span class="co">#&gt; # Source:   SQL [?? x 2]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.50.4 [/Users/edgar/Projects/connections/local.sqlite]</span></span>
 <span><span class="co">#&gt;     cyl avg_mpg</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1     4    26.7</span></span>
